@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 30421 İşgücü Devri ve Elde Tutma Metrikleri — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:78px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- aylık tablo --- */
+  .yeartbl{font-size:13.5px}
+  .yeartbl input{width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px;text-align:right}
+  .yeartbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .yeartbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .yeartbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--efc-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--eff-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 30421 İşgücü Devri ve Elde Tutma Metrikleri</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 30421:2021 — <i>Human resource management — Turnover and retention metrics</i></span>
+  <span><b>Kapsam:</b> 4 kullanıcı · 3 metrik ailesi · 35 metrik</span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 30421, bir kuruluşun <b>işgücü devrini</b> (turnover) ve <b>elde tutma</b> (retention)
+düzeyini ölçmek, maliyetlendirmek ve karşılaştırılabilir biçimde raporlamak için kullanılan bir
+teknik şartnamedir. Belge iki şey yapar: kaba oranların nasıl hesaplanacağını tanımlar ve bu oranların
+<b>bağlam olmadan yorumlanamayacağını</b> gösterir. Bu sayfa, standardın metrik kümesini
+filtrelenebilir bir matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı + Python koduna
+dönüştürür. İlişkili başvuru belgeleri: işgücü planlaması için ISO 30409, işe alım maliyeti için
+ISO/TS 30407, işe alımın etkisi ve niteliği için ISO/TS 30410 ve ISO/TS 30411, insan sermayesi
+raporlaması için ISO 30414.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>Payda aylıktır, oran yıllıktır.</b> Aylık devir, o ayın <i>ortalama</i> mevcuduna bölünür;
+  yıllık oran bu on iki aylık oranın toplamıdır. Yıl boyunca tek bir ortalamaya bölmek, işgücü
+  büyüyen ya da küçülen kurumlarda sapma üretir.</li>
+  <li><b>Her devir kötü değildir.</b> Emeklilik, sağlık ve taşınma gibi kaçınılamaz ayrılmalar her
+  kurumda vardır; düşük performansın ayrılması, ücret tasarrufu ve yeni beceri girişi ise
+  <i>işlevsel</i> devirdir. Sorun, ayrılmaların işgücü planıyla uyumsuz olmasıdır.</li>
+  <li><b>Asıl hedef üzücü devirdir.</b> Kurumun elde tutmak istediği kişinin gönüllü ayrılması
+  (regrettable / işlevsiz devir) beceri ve kurumsal bilgi kaybı, yeniden kadrolama maliyeti, verim
+  düşüşü ve kalan ekipte moral etkisi yaratır.</li>
+  <li><b>Devir oranı ile elde tutma oranı birbirinin aynası değildir.</b> Aynı üç pozisyon yıl içinde
+  defalarca el değiştirirse devir oranı yüksek, pozisyon temelli elde tutma oranı yine de %97
+  çıkabilir. Yüksek devirli işlerde iki ölçü birlikte verilir.</li>
+  <li><b>Oran karar aldırmaz, tutar aldırır.</b> Ayrılma, işe alım ve hıza erişme maliyetleri
+  hesaplanmadan elde tutma stratejisine üst yönetim desteği almak zordur.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik seçim adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Aylık devir tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Yıllık işgücü planı hazırlanırken:</b> beklenen ayrılma, açılacak kadro sayısını ve işe alım
+  bütçesini belirler.</li>
+  <li><b>Bir birimde ayrılmalar arttığında:</b> sıcak noktayı (birim, bölge, yönetici, kıdem dilimi)
+  bulmak için kırılımlı devir oranı hesaplanır.</li>
+  <li><b>Elde tutma girişimi önerilirken:</b> devir maliyeti, girişimin bütçesiyle karşılaştırılır.</li>
+  <li><b>Dış raporlamada:</b> yatırımcı, düzenleyici ve sürdürülebilirlik raporlaması için
+  karşılaştırılabilir devir ve elde tutma göstergesi üretilir (ISO 30414 ile birlikte).</li>
+  <li><b>Yeniden yapılanma sonrasında:</b> gönülsüz devirin ardından gelen gönüllü ayrılma dalgasını
+  izlemek için aylık takip yapılır.</li>
+</ul>
+<div class="note">Bu belge <b>ölçme</b> belgesidir; hangi müdahalenin yapılacağını söylemez. Ölçüm,
+ayrılma nedeni verisiyle (çıkış görüşmesi, bağlılık anketi, kalanlarla yapılan görüşme) birleştirilmeden
+müdahale tasarlanamaz.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Üç ölçme amacı</h3>
+<table>
+  <thead><tr><th>Amaç</th><th>Ne yapılır</th><th>Tipik çıktı</th></tr></thead>
+  <tbody>
+    <tr><td><b>İç kıyaslama</b></td><td>Kurumun kendi birimleri, dönemleri ve iş aileleri karşılaştırılır;
+      eğilim izlenir, sıcak noktalar hedeflenir, elde tutma girişimlerinin başarısı ölçülür</td>
+      <td>Dönemler arası eğilim grafiği, birim sıralaması</td></tr>
+    <tr><td><b>Dış kıyaslama</b></td><td>Sektör ortalaması, bölge verisi ya da kıyaslama kulübü
+      verisiyle karşılaştırılır</td><td>Sektöre göre konum, fark analizi</td></tr>
+    <tr><td><b>Nedeni anlama</b></td><td>Çıkış görüşmesi, memnuniyet anketi, çevrimiçi işveren
+      değerlendirme siteleri, ayrılma sonrası anket ve kalanların analizi</td>
+      <td>Kaçınılabilir / kaçınılamaz ayrılma dağılımı</td></tr>
+  </tbody>
+</table>
+
+<h3>Devir türlerinin dört ayrımı</h3>
+<table>
+  <thead><tr><th>Ayrım</th><th>Birinci tür</th><th>İkinci tür</th><th>Neden önemli</th></tr></thead>
+  <tbody>
+    <tr><td>Kararı kim verdi</td><td><b>Gönüllü</b> — çalışan ayrılır</td>
+      <td><b>Gönülsüz</b> — işveren sonlandırır</td>
+      <td>Gönüllü devir işverenleri karşılaştırmakta kullanılan ölçüdür ve en çok ilk kademe
+      yöneticiden etkilenir</td></tr>
+    <tr><td>Yönetimin denetiminde mi</td><td><b>Kaçınılamaz</b> — sağlık, taşınma, kişisel</td>
+      <td><b>Kaçınılabilir</b> — bir tür memnuniyetsizlik</td>
+      <td>Yalnızca kaçınılabilir kısım müdahaleye açıktır</td></tr>
+    <tr><td>Kuruma etkisi</td><td><b>İşlevsel</b> — düşük performansın çıkışı, yeni fikir girişi</td>
+      <td><b>İşlevsiz</b> — beceri ve bilgi kaybı</td>
+      <td>Kaba oran ikisini ayırmaz; düşen oran her zaman iyi haber değildir</td></tr>
+    <tr><td>Kurum ne hissediyor</td><td><b>Üzücü olmayan</b></td><td><b>Üzücü</b> (regrettable)</td>
+      <td>Çoğu kurumda üzücü devir, kritik kadroyla büyük ölçüde örtüşür</td></tr>
+  </tbody>
+</table>
+
+<h3>Üç nicel yöntem</h3>
+<ul>
+  <li><b>Kaba oran (crude rate):</b> ayrılan sayısının ortalama mevcuda bölünmesi. Hızlıdır, kıyaslanabilir,
+  ama tek başına yorumlanamaz.</li>
+  <li><b>İstikrar oranı (stability rate):</b> kişilerin kurumda ne kadar kaldığını gösterir. Kaba oranın
+  gizlediği "dönen kapı" etkisini ortaya çıkarır.</li>
+  <li><b>Kohort analizi:</b> belirli bir grubun (bir yılın işe alımları, bir programın mezunları,
+  bir birim) zaman içinde ne kadarının kaldığını izler.</li>
+</ul>
+<div class="note">Kritiklik ayrı bir kırılım eksenidir. Kritik pozisyon, kurumsal sonuçlar üzerinde
+doğrudan ve belirgin etkisi olan roldür; sektöre ve kurum türüne göre değişir ve <b>üst düzey olması
+gerekmez</b>. Kritik kadroda devir, ayrı bir payda (o grubun ortalama mevcudu) ile hesaplanır.</div>
+
+<h2 id="adimlar">Metrik Seçim Adımları</h2>
+<ol>
+  <li><b>Kapsamı tanımlayın.</b> Kimler sayılıyor: kadrolu çalışanlar, taşeron, geçici ve mevsimlik
+  işgücü? Bir kez karar verin, dönemler boyunca değiştirmeyin.</li>
+  <li><b>Paydayı sabitleyin.</b> Ay başı, ay sonu ya da ay ortalaması. Standardın önerisi ortalamadır.</li>
+  <li><b>Ayrılma nedenini kodlayın.</b> İstifa, emeklilik, küçültme, fesih; sonra gönüllü/gönülsüz ve
+  kaçınılabilir/kaçınılamaz olarak sınıflayın.</li>
+  <li><b>Kritik pozisyonları belirleyin.</b> İşgücü planlaması çalışmasında iş aileleri ve kritik roller
+  tanımlanmamışsa önce o yapılır (ISO 30409).</li>
+  <li><b>Kırılımları seçin.</b> Birim, bölge, kıdem dilimi, iş ailesi, yönetici, kritiklik.</li>
+  <li><b>Maliyeti hesaplayın.</b> Ayrılma, işe alım ve hıza erişme kalemleri; ölçebiliyorsanız verim
+  kaybını ayrı satırda gösterin.</li>
+  <li><b>Elde tutma ölçüsünü eşleştirin.</b> Devir düşükse basit oran yeter; yüksekse pozisyon temelli
+  oran ve istikrar oranı eklenir.</li>
+  <li><b>Kıyaslama bağlamını ekleyin.</b> İç eğilim ve dış sektör verisi olmadan sayı rapora girmez.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kavram</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>İşgücü devri</b></td><td>Çalışanların belirli bir dönemde işgücünden ayrılma ve yerlerine
+      alınma hızı; genellikle yıllık ve yüzde olarak ifade edilir</td></tr>
+    <tr><td><b>Elde tutma</b></td><td>Kurumun işgücünü koruyabilme derecesi; belirli bir hizmet süresini
+      (genellikle bir yıl ve üzeri) dolduranların toplam işgücüne oranı</td></tr>
+    <tr><td><b>Ortalama mevcut</b></td><td>Ay başı ve ay sonu mevcudunun ortalaması; aylık oranın
+      paydası</td></tr>
+    <tr><td><b>Kritik pozisyon</b></td><td>Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan
+      rol; güvenlik, iş sağlığı, büyüme ve sürdürülebilirlik gibi ölçütlerle belirlenir</td></tr>
+    <tr><td><b>Üzücü devir</b></td><td>Kurumun elde tutmak istediği kişinin gönüllü ayrılması</td></tr>
+    <tr><td><b>Yeni çalışan ayrılması</b></td><td>Aynı yıl içinde işe alınıp yine aynı yıl içinde
+      ayrılanlar; yüksek devirli elde tutma formülünde paya geri eklenir</td></tr>
+    <tr><td><b>İstikrar oranı</b></td><td>En az bir yıldır çalışanların, bir yıl önceki mevcuda
+      oranı</td></tr>
+    <tr><td><b>Kıdem</b></td><td>Bordroda kesintisiz geçen süre; ortalama kıdem yılda bir kez, dönem
+      sonunda ölçülür</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın tanımladığı ve türettiği metriklerin kullanıcı × ölçme amacı × dönem
+sınıflandırmasıdır. Filtreleri değiştirdiğinizde tablo anında daralır.</p>
+
+<div class="filters">
+  <div><label for="fUser">Kullanıcı</label>
+    <select id="fUser">
+      <option value="">Tümü</option>
+      <option value="board">Üst yönetim / yönetim kurulu</option>
+      <option value="hr">İK ve işgücü planlama</option>
+      <option value="line">Hat yöneticisi</option>
+      <option value="ext">Dış paydaş (yatırımcı, düzenleyici)</option>
+    </select></div>
+  <div><label for="fPurpose">Ölçme amacı</label>
+    <select id="fPurpose">
+      <option value="">Tümü</option>
+      <option value="ic">İç kıyaslama</option>
+      <option value="dis">Dış kıyaslama</option>
+      <option value="neden">Nedeni anlama</option>
+      <option value="mudahale">Müdahale ve strateji</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">Devir</option>
+      <option value="o">Maliyet</option>
+      <option value="e">Elde tutma ve kıdem</option>
+    </select></div>
+  <div><label for="fPeriod">Dönem</label>
+    <select id="fPeriod">
+      <option value="">Tümü</option>
+      <option value="ay">Aylık</option>
+      <option value="yil">Yıllık</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. kritik"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">Üst yönetim</th>
+    <th class="rot">İK / planlama</th>
+    <th class="rot">Hat yöneticisi</th>
+    <th class="rot">Dış paydaş</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+<div class="legend">
+  <span><span class="dot v"></span> devir</span>
+  <span><span class="dot o"></span> maliyet</span>
+  <span><span class="dot e"></span> elde tutma ve kıdem</span>
+  <span><span class="tag iso">30414</span> insan sermayesi raporlamasında da yer alan metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Sayfadaki hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Aylık Devir Tablosu</h2>
+<p>Standardın devir hesabı bir yıllık tabloya dayanır: her ay için ayrılan sayısı, ay başı ve ay sonu
+mevcudu girilir; ay oranı kendi paydasına bölünerek bulunur ve yıllık oran bu on iki oranın toplamıdır.
+Aşağıdaki tabloya kendi verinizi yazabilirsiniz; alt satır ve kartlar anında güncellenir.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+</div>
+
+<table class="yeartbl">
+  <thead><tr>
+    <th>Ay</th><th class="num">Gönüllü</th><th class="num">Gönülsüz</th>
+    <th class="num">Ay başı</th><th class="num">Ay sonu</th>
+    <th class="calc">Ortalama</th><th class="calc">Ayrılan</th><th class="calc">Oran %</th>
+  </tr></thead>
+  <tbody id="yBody"></tbody>
+  <tfoot><tr>
+    <td>Toplam</td>
+    <td class="calc" id="tGon">—</td><td class="calc" id="tGons">—</td>
+    <td class="calc" colspan="2">Yıllık ortalama mevcut: <span id="tOrt">—</span></td>
+    <td class="calc"></td><td class="calc" id="tAyr">—</td><td class="calc" id="tOran">—</td>
+  </tr></tfoot>
+</table>
+
+<div class="cards" id="yCards"></div>
+<div class="note" id="yNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü sayımdır (ayrılma nedeni dağılımı, kritik pozisyon listesi) ve formül
+gerektirmez. Hesaplanabilir olanların tamamı aşağıdadır; <code>Σ</code> toplam anlamındadır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>Devir ve Elde Tutma Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Oranlar yüzde, tutarlar TL olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30421_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle
+  aynı sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve
+Pyodide (WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30421_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+örnek değerlerle doğrulama çıktısı üretir.</p>
+
+<div class="filename">iso30421_metrikler.py (özet)</div>
+<pre><i># --- Devir metrikleri ---</i>
+
+<b>def</b> <span class="fn">ortalama_isgucu</span>(ay_basi, ay_sonu):
+    <i>"""Aylık oranın paydası: ay başı ve ay sonu mevcudunun ortalaması."""</i>
+    <b>return</b> (ay_basi + ay_sonu) / <u>2</u>
+
+<b>def</b> <span class="fn">aylik_devir</span>(ayrilan, ay_basi, ay_sonu):
+    <b>return</b> <u>100</u> * ayrilan / ortalama_isgucu(ay_basi, ay_sonu)
+
+<b>def</b> <span class="fn">yillik_devir</span>(aylik_oranlar):
+    <i>"""Standardın yöntemi: on iki aylık oranın toplamı."""</i>
+    <b>return</b> float(sum(aylik_oranlar))
+
+<b>def</b> <span class="fn">kritik_devir</span>(kritik_ayrilan, kritik_ay_basi, kritik_ay_sonu):
+    <i>"""Kritik kadro kendi paydasına bölünür, toplam işgücüne değil."""</i>
+    <b>return</b> <u>100</u> * kritik_ayrilan / ortalama_isgucu(kritik_ay_basi, kritik_ay_sonu)
+
+<i># --- Maliyet metrikleri ---</i>
+
+<b>def</b> <span class="fn">toplam_devir_maliyeti</span>(ayrilma, ise_alim, hiza_erisme):
+    <i>"""Üç ana bileşen: ayrılma işlemleri, yerine alma, hıza erişme."""</i>
+    <b>return</b> ayrilma + ise_alim + hiza_erisme
+
+<i># --- Elde tutma metrikleri ---</i>
+
+<b>def</b> <span class="fn">basit_elde_tutma</span>(yillik_devir_orani):
+    <b>return</b> <u>100</u> - yillik_devir_orani
+
+<b>def</b> <span class="fn">yuksek_devirli_elde_tutma</span>(donem_basi, toplam_ayrilma,
+                              yeni_calisan_ayrilmasi, yeni_alim=<u>0</u>):
+    <i>"""Dönem başı kadrosundan yıl sonunda hâlâ orada olanların payı."""</i>
+    <b>return</b> <u>100</u> * (donem_basi - toplam_ayrilma + yeni_calisan_ayrilmasi) \
+        / (donem_basi + yeni_alim)
+
+<b>def</b> <span class="fn">pozisyon_elde_tutma</span>(korunan_pozisyon, toplam_pozisyon):
+    <i>"""Kişi değil pozisyon sayar; yüksek devirli işlerde asıl ölçü budur."""</i>
+    <b>return</b> <u>100</u> * korunan_pozisyon / toplam_pozisyon
+
+<i># --- Kıdem ---</i>
+
+<b>def</b> <span class="fn">ortalama_kidem</span>(kumulatif_kidem_ay, kisi_sayisi):
+    <b>return</b> kumulatif_kidem_ay / kisi_sayisi
+
+<b>def</b> <span class="fn">istikrar_orani</span>(bir_yildan_kidemli, bir_yil_once_mevcut):
+    <i>"""Kaba oranın gizlediği "dönen kapı" etkisini açığa çıkarır."""</i>
+    <b>return</b> <u>100</u> * bir_yildan_kidemli / bir_yil_once_mevcut
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30421_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30421_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Devir oranının "iyi" bir eşiği yoktur.</b> Kabul edilebilir düzey sektöre, bölgeye, iş
+  ailesine ve iş modeline göre değişir. Perakende ve çağrı merkezinde %40 olağan, mühendislikte %10
+  yüksek sayılabilir. Bu sayfadaki eşikler yalnızca yön göstericidir.</li>
+  <li><b>Düşen devir her zaman iyi haber değildir.</b> Daralan iş gücü piyasasında düşük devir,
+  düşük performansın da kurumda kaldığı anlamına gelebilir. İşlevsel ve işlevsiz devir ayrılmadan
+  yorum yapılmaz.</li>
+  <li><b>Gönüllü devir yöneticiyle ilişkilidir.</b> Çalışan memnuniyetini en çok etkileyen tek etken
+  doğrudan bağlı olunan yöneticidir; gönüllü devirin yönetici bazında kırılması müdahaleyi
+  hedefleyen en verimli tek adımdır.</li>
+  <li><b>Gönülsüz devirin gecikmeli maliyeti vardır.</b> Küçültme ve yeniden yapılanma, uzun vadede
+  yüksek gönüllü devirin sonucu olabilir; iki seriyi aynı grafikte izleyin.</li>
+  <li><b>Kritik kadroda düşük sayı yüksek oran demektir.</b> Otuz kişilik kritik gruptan yılda
+  yirmi beş kişinin ayrılması, toplam işgücüne göre küçük görünür ama kritik grupta çok yüksek bir
+  orandır. Bu yüzden payda ayrı tutulur.</li>
+  <li><b>Maliyet raporlanırken kapsamı yazın.</b> Verim kaybı, kurumsal bilgi kaybı ve ekip üzerindeki
+  etki dâhil edilmediyse tutar alt sınırdır; bunu dipnot olarak belirtin.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Standardın yayımlanmış örneğinde iki tutarsızlık vardır.</b> (1) Yüksek devirli elde tutma
+  formülünün paydası metinde "dönem başı mevcut + yeni alım" olarak yazılır, ancak sayısal örnek
+  yalnızca dönem başı mevcuda (100) bölerek %59 verir; formülün yazılı hâli aynı veriyle %26,3
+  üretir. (2) Ortalama kıdem örneğinde 14.566 ay / 100 kişi = 145,66 ay bulunur, ardından bu değer
+  "1 yıl 4 ay" olarak yazılır; oysa 145,66 ay yaklaşık 12,1 yıldır. Kurum içi tanımı yazılı olarak
+  sabitleyin ve hangi paydayı kullandığınızı raporda belirtin.</li>
+  <li>Kaba oran, işlevsel ve işlevsiz devir ile kaçınılabilir ve kaçınılamaz ayrılmayı ayırmaz;
+  bu ayrım ancak ayrılma nedeni verisiyle yapılır.</li>
+  <li>Aylık oranların toplanması ile toplam ayrılanın yıllık ortalamaya bölünmesi farklı sonuçlar
+  verir. Hangi yöntemi kullandığınızı dönemler boyunca değiştirmeyin.</li>
+  <li>Çıkış görüşmesi verisi yanlıdır: ayrılan kişi köprüleri atmamak için gerçek nedeni her zaman
+  söylemez. Ayrılmadan üç–altı ay sonra yapılan anket ve kalanlarla yapılan görüşmeler bu yanlılığı
+  azaltır.</li>
+  <li>Maliyet kalemleri ülkeye, sektöre ve sözleşme tipine göre değişir; kıdem tazminatı, ihbar
+  süresi ve hukuki giderler Türkiye'de tutarın büyük bölümünü oluşturabilir.</li>
+  <li>Küçük birimlerde oran çok oynaktır: on kişilik bir ekipte bir ayrılma %10 devir demektir.
+  Küçük paydalarda mutlak sayı ile birlikte raporlayın.</li>
+  <li>Kırılımlı raporlamada kişi sayısı azaldıkça çalışan mahremiyeti riski doğar; asgari grup
+  büyüklüğü kuralı (örneğin beş kişi) belirleyin.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Rapor türü</th><th>İçerik</th><th>Sıklık</th></tr></thead>
+  <tbody>
+    <tr><td>Üst yönetim / kurul</td><td>İK skor kartı</td>
+      <td>Yıllık devir, gönüllü devir, kritik pozisyon devri, devir maliyeti, elde tutma oranı;
+        geçen yıl ve plan ile karşılaştırmalı</td><td>Aylık özet, yıllık ayrıntı</td></tr>
+    <tr><td>İK ve işgücü planlama</td><td>Analitik rapor</td>
+      <td>Tüm kırılımlar, sıcak noktalar, ayrılma nedeni dağılımı, kohort eğrileri, maliyet
+        ayrıntısı</td><td>Aylık</td></tr>
+    <tr><td>Hat yöneticisi</td><td>Birim panosu</td>
+      <td>Kendi biriminin gönüllü devri, ilk yıl devri, kritik roller, kurum ortalamasıyla
+        karşılaştırma</td><td>Aylık</td></tr>
+    <tr><td>Dış paydaş</td><td>Faaliyet / sürdürülebilirlik raporu</td>
+      <td>Toplam devir ve gönüllü devir oranı, hesaplama yöntemi ve kapsam dipnotu, ortalama
+        kıdem</td><td>Yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> kapsam (kimler sayıldı), payda tanımı, dönem, kırılım
+düzeyi ve karşılaştırma tabanı. Bu dört bilgi yoksa oran kıyaslanamaz.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü; bu belgedeki tanımlar oradan
+  gelir.</li>
+  <li><b>ISO 30409</b> — işgücü planlaması; iş aileleri, kritik roller ve kadro segmentasyonu burada
+  tanımlanır. Kritiklik kırılımının ön koşuludur.</li>
+  <li><b>ISO 30405</b> — işe alım rehberi; devirin doğurduğu yerine alma sürecini düzenler.</li>
+  <li><b>ISO/TS 30407</b> — işe alım başına maliyet (cost-per-hire); devir maliyetinin işe alım
+  bileşeni bu belgeyle uyumlu hesaplanır.</li>
+  <li><b>ISO/TS 30410</b> ve <b>ISO/TS 30411</b> — işe alımın etkisi ve niteliği; yeni çalışanın tam
+  verime erişme süresi (dolaylı devir maliyeti) buradan alınır.</li>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması; devir, elde tutma ve kıdem
+  göstergeleri bu belgede de yer alır.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Paydada ay başı mı, ay sonu mu, ortalama mı kullanmalıyım?</summary>
+<p>Standardın önerisi ay başı ile ay sonunun ortalamasıdır; ay içindeki giriş ve çıkışlara en az
+duyarlı olan budur. Kolaylık nedeniyle ay başı ya da ay sonu da kullanılabilir, ancak hangisini
+kullandığınız raporda yazılmalı ve dönemler arasında değiştirilmemelidir. Değiştirirseniz eğilim
+grafiği kırılır.</p></details>
+
+<details><summary>Yıllık oranı neden aylık oranları toplayarak buluyoruz?</summary>
+<p>Çünkü her ayın paydası farklıdır. İşgücü yıl içinde 100'den 130'a çıkmışsa, toplam ayrılanı tek bir
+yıllık ortalamaya bölmek büyüme dönemindeki ayrılmaları olduğundan küçük gösterir. Aylık oranların
+toplanması her ayrılmayı gerçekleştiği ayın mevcuduna göre tartar. İki yöntem arasındaki fark
+sayfadaki tabloda ayrıca gösterilir.</p></details>
+
+<details><summary>Taşeron ve geçici personel devire dâhil mi?</summary>
+<p>Standardın devir tanımı çalışanların yanı sıra yükleniciler ile geçici ve mevsimlik işgücünü de
+kapsayacak genişliktedir. Ancak bu gruplar dâhil edildiğinde oran, yalnızca kadroluyu sayan
+kurumlarla kıyaslanamaz hâle gelir. Yaygın çözüm iki seri raporlamaktır: kadrolu devir ve toplam
+işgücü devri.</p></details>
+
+<details><summary>Devir oranı ile elde tutma oranı neden toplamda 100 etmiyor?</summary>
+<p>Basit elde tutma oranı tanımı gereği 100 − devir oranıdır ve toplamı 100 eder. Ancak yüksek
+devirli ortamda anlamlı olan ölçü pozisyon temelli elde tutmadır: aynı üç pozisyon yıl içinde
+defalarca el değiştirirse devir oranı yüzlerce yüzde puana ulaşabilirken pozisyonların %97'si
+istikrarlı kalmış olabilir. İki ölçü farklı soruları yanıtlar; birlikte verilir.</p></details>
+
+<details><summary>Kritik pozisyonu kim belirler?</summary>
+<p>Kurumun kendisi, işgücü planlaması çalışmasının bir parçası olarak. Ölçüt kurumsal sonuçlar
+üzerindeki doğrudan etkidir: güvenlik, iş sağlığı, gelir, süreklilik, mevzuata uyum. Kritik pozisyon
+üst düzey olmak zorunda değildir; tek bir kalifiye kaynakçı ya da tek bir sistem yöneticisi de kritik
+olabilir. Liste yılda bir gözden geçirilir.</p></details>
+
+<details><summary>Devir maliyetini nasıl savunulur biçimde hesaplarım?</summary>
+<p>Yalnızca doğrudan ve belgelenebilir kalemlerle başlayın: çıkış görüşmesi ve idari zaman, ayrılma
+ödemeleri, ilan ve mülakat zamanı, değerlendirme, oryantasyon ve biçimsel eğitim. Verim kaybı gibi
+dolaylı kalemleri ayrı satırda, varsayımını yazarak gösterin. Böylece toplam tutar tartışıldığında
+doğrudan kalemler ayakta kalır. Tutarı yıllık ücret giderine oranlayarak sunmak, üst yönetimde
+büyüklük algısını netleştirir.</p></details>
+
+<details><summary>Elde tutma girişiminin işe yaradığını nasıl gösteririm?</summary>
+<p>Girişimden etkilenen grubu bir kohort olarak tanımlayın ve aynı dönemde etkilenmeyen benzer bir
+grupla karşılaştırın. Tek bir toplam oranın düşmesi girişime kanıt oluşturmaz; işgücü piyasası da
+aynı anda soğumuş olabilir. Kohort karşılaştırması, kritik pozisyon devri ve ortalama kıdem
+birlikte raporlandığında iddia savunulabilir hâle gelir.</p></details>
+
+<footer>
+  ISO/TS 30421:2021 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın kendisi
+  telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30421_metrikler.py
+=====================
+ISO/TS 30421:2021 (Human resource management — Turnover and retention metrics)
+çerçevesindeki hesaplanabilir işgücü devri ve elde tutma metriklerinin Python karşılığı.
+
+Metrikler standardın yapısına göre dört bölümde toplanmıştır:
+
+    1) Devir      (turnover)   — aylık ve yıllık kaba oran, kırılımlar, kritik pozisyon
+    2) Maliyet    (cost)       — ayrılma, işe alım ve hıza erişme kalemleri
+    3) Elde tutma (retention)  — basit oran, yüksek devirli oran, pozisyon temelli oran
+    4) Kıdem      (tenure)     — ortalama kıdem, istikrar oranı, kohort analizi
+
+Kullanım:
+    from iso30421_metrikler import aylik_devir, yillik_devir
+    aylik_devir(3, 100, 97)   ->  3.045...
+
+Doğrudan çalıştırıldığında (python3 iso30421_metrikler.py) tüm fonksiyonlar
+örnek verilerle çalıştırılır ve sonuçlar tablo hâlinde yazdırılır.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 30421:2021'e dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif korumalıdır.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Sequence
+
+__all__ = [
+    # devir
+    "ortalama_isgucu", "aylik_devir", "yillik_devir", "kaba_yillik_devir",
+    "gonullu_pay", "kritik_devir", "uzucu_devir",
+    # maliyet
+    "ayrilma_maliyeti", "ise_alim_maliyeti", "hiza_erisme_maliyeti",
+    "toplam_devir_maliyeti", "ayrilan_basina_maliyet",
+    # elde tutma
+    "basit_elde_tutma", "yuksek_devirli_elde_tutma", "pozisyon_elde_tutma",
+    # kıdem
+    "ortalama_kidem", "istikrar_orani", "kohort_elde_tutma",
+    # yardımcı
+    "Ay", "DevirTablosu", "ornek_tablo", "metrik_denetimi", "hesapla",
+    "METRIK_LISTESI",
+]
+
+
+# ---------------------------------------------------------------------------
+# 1) Devir metrikleri
+# ---------------------------------------------------------------------------
+
+def ortalama_isgucu(ay_basi: float, ay_sonu: float) -> float:
+    """Ay içindeki ortalama işgücü: ay başı ve ay sonu mevcudunun ortalaması.
+
+    Payda olarak ay başı ya da ay sonu tek başına da kullanılabilir; ortalama,
+    ay içindeki giriş ve çıkışlara daha az duyarlı olduğu için tercih edilir.
+    """
+    return (ay_basi + ay_sonu) / 2
+
+
+def aylik_devir(ayrilan: float, ay_basi: float, ay_sonu: float) -> float:
+    """Aylık devir oranı (%) = ayrılan sayısı / o ayın ortalama işgücü."""
+    return 100 * ayrilan / ortalama_isgucu(ay_basi, ay_sonu)
+
+
+def yillik_devir(aylik_oranlar: Sequence[float]) -> float:
+    """Yıllık devir oranı (%): on iki aylık oranın toplamı.
+
+    Standardın yöntemi budur; her ay kendi paydasına bölünür, sonra oranlar
+    toplanır. İşgücü yıl içinde büyük ölçüde değiştiyse bu yöntem, toplam
+    ayrılanı yıllık ortalama işgücüne bölen kaba yönteme göre daha doğrudur.
+    """
+    return float(sum(aylik_oranlar))
+
+
+def kaba_yillik_devir(toplam_ayrilan: float, ortalama_yillik_isgucu: float) -> float:
+    """Kaba yıllık devir oranı (%) = yıl boyunca ayrılan / yıllık ortalama işgücü.
+
+    Karşılaştırma amacıyla verilir; aylık oranların toplamıyla birebir aynı
+    sonucu vermez.
+    """
+    return 100 * toplam_ayrilan / ortalama_yillik_isgucu
+
+
+def gonullu_pay(gonullu: float, gonulsuz: float) -> float:
+    """Gönüllü ayrılmaların toplam ayrılma içindeki payı (%)."""
+    return 100 * gonullu / (gonullu + gonulsuz)
+
+
+def kritik_devir(kritik_ayrilan: float, kritik_ay_basi: float,
+                 kritik_ay_sonu: float) -> float:
+    """Kritik pozisyonlarda aylık devir oranı (%).
+
+    Kritik pozisyon, kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan
+    roldür; üst düzey olması gerekmez.
+    """
+    return 100 * kritik_ayrilan / ortalama_isgucu(kritik_ay_basi, kritik_ay_sonu)
+
+
+def uzucu_devir(uzucu_ayrilan: float, toplam_ayrilan: float,
+                ortalama_mevcut: float) -> tuple:
+    """Üzücü (regrettable) devir: (toplam ayrılma içindeki pay %, işgücüne oran %).
+
+    Üzücü ayrılma, kurumun elde tutmak istediği kişinin gönüllü ayrılmasıdır;
+    işlevsiz (dysfunctional) devirle büyük ölçüde örtüşür.
+    """
+    pay = 100 * uzucu_ayrilan / toplam_ayrilan
+    oran = 100 * uzucu_ayrilan / ortalama_mevcut
+    return pay, oran
+
+
+# ---------------------------------------------------------------------------
+# 2) Devir maliyeti
+# ---------------------------------------------------------------------------
+
+def ayrilma_maliyeti(gorusme_saat: float, gorusmeci_ucret: float,
+                     idari_saat: float, idari_ucret: float,
+                     odemeler: float) -> float:
+    """Ayrılma (leaving) maliyeti: çıkış görüşmesi + idari işlem + ayrılma ödemeleri.
+
+    Gönülsüz ayrılmada kıdem ve ihbar tazminatı ile hukuki giderler bu kalemdedir;
+    tipik gönüllü ayrılmada bu ödemeler doğmayabilir.
+    """
+    return (gorusme_saat * gorusmeci_ucret
+            + idari_saat * idari_ucret
+            + odemeler)
+
+
+def ise_alim_maliyeti(ilan: float, idari_saat: float, idari_ucret: float,
+                      pozisyon: float, aday_basina: float, mulakatci: float,
+                      mulakat_saat: float, mulakatci_ucret: float,
+                      degerlendirme_adet: float, degerlendirme_birim: float,
+                      diger: float = 0.0) -> float:
+    """İşe alım maliyeti: ilan + idari zaman + mülakat zamanı + değerlendirme + diğer.
+
+    "Diğer" kalemi işe başlama primi, seyahat, taşınma ve sağlık kontrolü gibi
+    kalemleri toplar. Kadro kapatıldığında (küçültme) bu kalem doğmaz.
+    """
+    mulakat = pozisyon * aday_basina * mulakatci * mulakat_saat * mulakatci_ucret
+    return (ilan + idari_saat * idari_ucret + mulakat
+            + degerlendirme_adet * degerlendirme_birim + diger)
+
+
+def hiza_erisme_maliyeti(ory_saat: float, ory_kisi: float, ory_ucret: float,
+                         oturum: float, yeni_calisan: float, kocluk_saat: float,
+                         kocluk_ucret: float, egitim_kisi: float,
+                         egitim_birim: float) -> float:
+    """Hıza erişme (getting-up-to-speed) maliyeti: oryantasyon + koçluk + biçimsel eğitim.
+
+    Yeni çalışanın tam verime ulaşana kadarki verim kaybı bu tutara dâhil
+    değildir; dolaylı maliyet olarak ayrıca raporlanır.
+    """
+    oryantasyon = ory_saat * ory_kisi * ory_ucret * oturum
+    kocluk = yeni_calisan * kocluk_saat * kocluk_ucret
+    egitim = egitim_kisi * egitim_birim
+    return oryantasyon + kocluk + egitim
+
+
+def toplam_devir_maliyeti(ayrilma: float, ise_alim: float,
+                          hiza_erisme: float) -> float:
+    """Devir maliyetinin üç ana bileşeninin toplamı."""
+    return ayrilma + ise_alim + hiza_erisme
+
+
+def ayrilan_basina_maliyet(toplam_maliyet: float, ayrilan: float) -> float:
+    """Ayrılan kişi başına devir maliyeti."""
+    return toplam_maliyet / ayrilan
+
+
+# ---------------------------------------------------------------------------
+# 3) Elde tutma metrikleri
+# ---------------------------------------------------------------------------
+
+def basit_elde_tutma(yillik_devir_orani: float) -> float:
+    """Basit elde tutma oranı (%) = 100 − yıllık devir oranı.
+
+    Devir yüksekse ya da aynı pozisyon yıl içinde birden çok kez el değiştiriyorsa
+    bu ölçü yanıltır; o durumda yuksek_devirli_elde_tutma kullanılır.
+    """
+    return 100 - yillik_devir_orani
+
+
+def yuksek_devirli_elde_tutma(donem_basi: float, toplam_ayrilma: float,
+                              yeni_calisan_ayrilmasi: float,
+                              yeni_alim: float = 0.0) -> float:
+    """Yüksek devirli ortamda elde tutma oranı (%).
+
+        (dönem başı mevcut − toplam ayrılma + yıl içinde alınıp ayrılanlar)
+        ------------------------------------------------------------------
+                        dönem başı mevcut + yeni alım
+
+    Pay, dönem başındaki kadrodan yıl sonunda hâlâ orada olanları verir: yıl
+    içinde alınıp yine yıl içinde ayrılanlar toplam ayrılmadan geri eklenir.
+
+    Uyarı: standardın yayımlanmış örneği paydada yalnızca dönem başı mevcudunu
+    (100) kullanarak %59 sonucunu verir; formülün yazılı hâliyle (100 + 124)
+    sonuç %26,3 olur. Bu tutarsızlık bilinerek raporlanmalı ve kurum içi tanım
+    sabitlenmelidir. Varsayılan yeni_alim=0, standardın örnek sonucunu üretir.
+    """
+    return 100 * (donem_basi - toplam_ayrilma + yeni_calisan_ayrilmasi) \
+        / (donem_basi + yeni_alim)
+
+
+def pozisyon_elde_tutma(korunan_pozisyon: float, toplam_pozisyon: float) -> float:
+    """Pozisyon temelli elde tutma oranı (%) = kadro sahibi değişmeyen pozisyonlar.
+
+    Devir oranı ile elde tutma oranı her zaman birbirinin aynası değildir:
+    100 pozisyonun üçü yıl içinde defalarca el değiştirirse devir yüksek çıkar,
+    pozisyon temelli elde tutma yine de %97 olur.
+    """
+    return 100 * korunan_pozisyon / toplam_pozisyon
+
+
+# ---------------------------------------------------------------------------
+# 4) Kıdem ve kohort
+# ---------------------------------------------------------------------------
+
+def ortalama_kidem(kumulatif_kidem_ay: float, kisi_sayisi: float) -> float:
+    """Ortalama kıdem (ay) = bordrodaki kesintisiz kıdemlerin toplamı / kişi sayısı.
+
+    Yılda bir kez, dönem sonunda (M12) ölçülür.
+    """
+    return kumulatif_kidem_ay / kisi_sayisi
+
+
+def istikrar_orani(bir_yildan_kidemli: float, bir_yil_once_mevcut: float) -> float:
+    """İstikrar oranı (%) = en az bir yıldır çalışanlar / bir yıl önceki mevcut.
+
+    Kişilerin kurumda ne kadar kaldığını gösterir; kaba devir oranının gizlediği
+    "dönen kapı" etkisini ortaya çıkarır.
+    """
+    return 100 * bir_yildan_kidemli / bir_yil_once_mevcut
+
+
+def kohort_elde_tutma(kohort_buyuklugu: float, kalan: float) -> float:
+    """Kohort elde tutma oranı (%): belirli bir grubun dönem sonunda kalan payı.
+
+    Örneğin bir yılın işe alım kohortu, bir programın mezunları ya da bir
+    birimin kadrosu izlenebilir.
+    """
+    return 100 * kalan / kohort_buyuklugu
+
+
+# ---------------------------------------------------------------------------
+# 5) Yardımcı yapılar
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Ay:
+    """Bir ayın devir verisi."""
+    ad: str
+    gonullu: float = 0.0
+    gonulsuz: float = 0.0
+    basi: float = 0.0
+    sonu: float = 0.0
+
+    @property
+    def ayrilan(self) -> float:
+        return self.gonullu + self.gonulsuz
+
+    @property
+    def ortalama(self) -> float:
+        return ortalama_isgucu(self.basi, self.sonu)
+
+    @property
+    def oran(self) -> float:
+        return aylik_devir(self.ayrilan, self.basi, self.sonu)
+
+
+@dataclass
+class DevirTablosu:
+    """On iki aylık devir tablosu; standardın aylık tablo kalıbının karşılığı."""
+    aylar: list = field(default_factory=list)
+
+    def ekle(self, ad: str, gonullu: float, gonulsuz: float,
+             basi: float, sonu: float) -> "DevirTablosu":
+        self.aylar.append(Ay(ad, gonullu, gonulsuz, basi, sonu))
+        return self
+
+    @property
+    def toplam_ayrilan(self) -> float:
+        return sum(a.ayrilan for a in self.aylar)
+
+    @property
+    def toplam_gonullu(self) -> float:
+        return sum(a.gonullu for a in self.aylar)
+
+    @property
+    def yillik_oran(self) -> float:
+        return yillik_devir([a.oran for a in self.aylar])
+
+    @property
+    def ortalama_mevcut(self) -> float:
+        return sum(a.ortalama for a in self.aylar) / len(self.aylar)
+
+    def ozet(self) -> dict:
+        gonulsuz = self.toplam_ayrilan - self.toplam_gonullu
+        return {
+            "yillik_devir": round(self.yillik_oran, 2),
+            "kaba_yillik_devir": round(
+                kaba_yillik_devir(self.toplam_ayrilan, self.ortalama_mevcut), 2),
+            "gonullu_devir": round(yillik_devir(
+                [aylik_devir(a.gonullu, a.basi, a.sonu) for a in self.aylar]), 2),
+            "gonullu_pay": round(gonullu_pay(self.toplam_gonullu, gonulsuz), 1),
+            "basit_elde_tutma": round(basit_elde_tutma(self.yillik_oran), 2),
+            "toplam_ayrilan": self.toplam_ayrilan,
+            "ortalama_mevcut": round(self.ortalama_mevcut, 1),
+        }
+
+
+def ornek_tablo() -> DevirTablosu:
+    """Yüz kişilik bir kurumun on iki aylık örnek devir verisi."""
+    t = DevirTablosu()
+    veri = [
+        ("M1", 1, 2, 100, 97), ("M2", 0, 2, 100, 96), ("M3", 1, 0, 96, 101),
+        ("M4", 0, 0, 103, 105), ("M5", 2, 0, 105, 103), ("M6", 1, 0, 103, 101),
+        ("M7", 2, 0, 101, 100), ("M8", 1, 2, 100, 98), ("M9", 1, 0, 102, 100),
+        ("M10", 1, 1, 100, 106), ("M11", 3, 0, 106, 99), ("M12", 1, 0, 100, 98),
+    ]
+    for ad, gon, gons, basi, sonu in veri:
+        t.ekle(ad, gon, gons, basi, sonu)
+    return t
+
+
+def metrik_denetimi(gonullu_ayristirildi: bool = False,
+                    kritik_kirilim: bool = False,
+                    maliyet_hesaplandi: bool = False,
+                    dolayli_maliyet_dahil: bool = False,
+                    ayrilma_nedeni_toplandi: bool = False,
+                    kiyaslama_var: bool = False) -> list:
+    """Bir devir raporunun eksiklerini listeler.
+
+    Standardın mantığı: tek bir kaba oran karar aldırmaz; oran ancak kırılım,
+    maliyet, neden ve kıyaslama ile birlikte yorumlanabilir.
+    """
+    uyarilar = []
+    if not gonullu_ayristirildi:
+        uyarilar.append("Gönüllü ve gönülsüz ayrılma ayrıştırılmamış: kaba oran, "
+                        "küçültme ile istifayı aynı kefeye koyar.")
+    if not kritik_kirilim:
+        uyarilar.append("Kritik pozisyon kırılımı yok: toplam oran düşükken bile "
+                        "kritik kadrodaki kayıp gizlenebilir.")
+    if not maliyet_hesaplandi:
+        uyarilar.append("Devir maliyeti hesaplanmamış: üst yönetim desteği "
+                        "genellikle oranla değil tutarla alınır.")
+    if maliyet_hesaplandi and not dolayli_maliyet_dahil:
+        uyarilar.append("Maliyet hesabında verim kaybı (dolaylı maliyet) yok: "
+                        "tutar sistematik olarak düşük çıkar.")
+    if not ayrilma_nedeni_toplandi:
+        uyarilar.append("Ayrılma nedeni toplanmamış: kaçınılabilir ve kaçınılamaz "
+                        "ayrılma ayrılamaz, müdahale hedefsiz kalır.")
+    if not kiyaslama_var:
+        uyarilar.append("İç ya da dış kıyaslama yok: oranın yüksek mi düşük mü "
+                        "olduğu söylenemez.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 6) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "aylik_devir", "yillik_devir", "gonullu_gonulsuz", "kritik_devir",
+    "uzucu_devir", "ayrilma_maliyeti", "ise_alim_maliyeti",
+    "hiza_erisme_maliyeti", "toplam_maliyet", "basit_elde_tutma",
+    "yuksek_devirli_elde_tutma", "pozisyon_elde_tutma", "ortalama_kidem",
+    "istikrar_orani", "kohort",
+]
+
+
+def _tl(x: float) -> str:
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "aylik_devir":
+        ort = ortalama_isgucu(g["ay_basi"], g["ay_sonu"])
+        d = aylik_devir(g["ayrilan"], g["ay_basi"], g["ay_sonu"])
+        return {"deger": d, "ondalik": 2, "birim": "% / ay",
+                "ifade": f"({g['ayrilan']:g} ÷ {ort:g}) × 100",
+                "ayrinti": [["Ayın ortalama işgücü", round(ort, 1)],
+                            ["Yıllık eşdeğeri (×12)", round(d * 12, 1)]]}
+
+    if metrik == "yillik_devir":
+        d = float(g["oran_toplami"])
+        kaba = kaba_yillik_devir(g["toplam_ayrilan"], g["ortalama_mevcut"])
+        return {"deger": d, "ondalik": 2, "birim": "% / yıl",
+                "ifade": f"Σ aylık oranlar = {d:g}",
+                "ayrinti": [["Kaba yöntem (toplam ayrılan ÷ ortalama işgücü)", round(kaba, 2)],
+                            ["İki yöntem arasındaki fark (puan)", round(d - kaba, 2)],
+                            ["Elde tutma karşılığı (%)", round(basit_elde_tutma(d), 2)]]}
+
+    if metrik == "gonullu_gonulsuz":
+        ort = g["ortalama_mevcut"]
+        gon = 100 * g["gonullu"] / ort
+        gons = 100 * g["gonulsuz"] / ort
+        return {"deger": gon, "ondalik": 2, "birim": "% gönüllü devir",
+                "ifade": f"({g['gonullu']:g} ÷ {ort:g}) × 100",
+                "ayrinti": [["Gönülsüz devir (%)", round(gons, 2)],
+                            ["Toplam devir (%)", round(gon + gons, 2)],
+                            ["Gönüllünün toplam ayrılmadaki payı (%)",
+                             round(gonullu_pay(g["gonullu"], g["gonulsuz"]), 1)]]}
+
+    if metrik == "kritik_devir":
+        ort = ortalama_isgucu(g["kritik_basi"], g["kritik_sonu"])
+        d = kritik_devir(g["kritik_ayrilan"], g["kritik_basi"], g["kritik_sonu"])
+        genel = 100 * g["kritik_ayrilan"] / g["toplam_isgucu"]
+        return {"deger": d, "ondalik": 2, "birim": "% / ay (kritik)",
+                "ifade": f"({g['kritik_ayrilan']:g} ÷ {ort:g}) × 100",
+                "ayrinti": [["Kritik kadronun ortalaması", round(ort, 1)],
+                            ["Aynı kayıp, toplam işgücüne göre (%)", round(genel, 2)],
+                            ["Kritik kadronun işgücü içindeki payı (%)",
+                             round(100 * ort / g["toplam_isgucu"], 1)]]}
+
+    if metrik == "uzucu_devir":
+        pay, oran = uzucu_devir(g["uzucu"], g["toplam_ayrilan"], g["ortalama_mevcut"])
+        return {"deger": oran, "ondalik": 2, "birim": "% üzücü devir",
+                "ifade": f"({g['uzucu']:g} ÷ {g['ortalama_mevcut']:g}) × 100",
+                "ayrinti": [["Üzücü ayrılmanın toplam içindeki payı (%)", round(pay, 1)],
+                            ["Üzücü olmayan ayrılma", g["toplam_ayrilan"] - g["uzucu"]]]}
+
+    if metrik == "ayrilma_maliyeti":
+        t = ayrilma_maliyeti(g["gorusme_saat"], g["gorusmeci_ucret"],
+                             g["idari_saat"], g["idari_ucret"], g["odemeler"])
+        return {"deger": t, "ondalik": 0, "birim": "TL",
+                "ifade": (f"({g['gorusme_saat']:g}×{g['gorusmeci_ucret']:g}) + "
+                          f"({g['idari_saat']:g}×{g['idari_ucret']:g}) + {g['odemeler']:g}"),
+                "ayrinti": [["Çıkış görüşmesi (TL)", g["gorusme_saat"] * g["gorusmeci_ucret"]],
+                            ["İdari işlem (TL)", g["idari_saat"] * g["idari_ucret"]],
+                            ["Ayrılma ödemeleri (TL)", g["odemeler"]]]}
+
+    if metrik == "ise_alim_maliyeti":
+        mulakat = (g["pozisyon"] * g["aday_basina"] * g["mulakatci"]
+                   * g["mulakat_saat"] * g["mulakatci_ucret"])
+        t = ise_alim_maliyeti(g["ilan"], g["idari_saat"], g["idari_ucret"],
+                              g["pozisyon"], g["aday_basina"], g["mulakatci"],
+                              g["mulakat_saat"], g["mulakatci_ucret"],
+                              g["degerlendirme_adet"], g["degerlendirme_birim"],
+                              g["diger"])
+        return {"deger": t, "ondalik": 0, "birim": "TL",
+                "ifade": (f"{g['ilan']:g} + ({g['idari_saat']:g}×{g['idari_ucret']:g}) + "
+                          f"{mulakat:g} + ({g['degerlendirme_adet']:g}×"
+                          f"{g['degerlendirme_birim']:g}) + {g['diger']:g}"),
+                "ayrinti": [["Mülakat zamanı (TL)", round(mulakat)],
+                            ["İdari zaman (TL)", g["idari_saat"] * g["idari_ucret"]],
+                            ["Pozisyon başına işe alım (TL)", round(t / g["pozisyon"])]]}
+
+    if metrik == "hiza_erisme_maliyeti":
+        ory = g["ory_saat"] * g["ory_kisi"] * g["ory_ucret"] * g["oturum"]
+        koc = g["yeni_calisan"] * g["kocluk_saat"] * g["kocluk_ucret"]
+        egt = g["egitim_kisi"] * g["egitim_birim"]
+        t = ory + koc + egt
+        return {"deger": t, "ondalik": 0, "birim": "TL",
+                "ifade": f"{ory:g} + {koc:g} + {egt:g}",
+                "ayrinti": [["Oryantasyon (TL)", round(ory)],
+                            ["Koçluk ve iş başı destek (TL)", round(koc)],
+                            ["Biçimsel eğitim (TL)", round(egt)],
+                            ["Yeni çalışan başına (TL)", round(t / g["yeni_calisan"])]]}
+
+    if metrik == "toplam_maliyet":
+        t = toplam_devir_maliyeti(g["ayrilma"], g["ise_alim"], g["hiza_erisme"])
+        return {"deger": t, "ondalik": 0, "birim": "TL",
+                "ifade": f"{g['ayrilma']:g} + {g['ise_alim']:g} + {g['hiza_erisme']:g}",
+                "ayrinti": [["Ayrılan başına maliyet (TL)",
+                             round(ayrilan_basina_maliyet(t, g["ayrilan"]))],
+                            ["Yıllık ücret giderine oranı (%)",
+                             round(100 * t / g["yillik_ucret_gideri"], 2)],
+                            ["Ayrılma kaleminin payı (%)", round(100 * g["ayrilma"] / t, 1)],
+                            ["İşe alım kaleminin payı (%)", round(100 * g["ise_alim"] / t, 1)],
+                            ["Hıza erişme kaleminin payı (%)",
+                             round(100 * g["hiza_erisme"] / t, 1)]]}
+
+    if metrik == "basit_elde_tutma":
+        r = basit_elde_tutma(g["yillik_devir"])
+        return {"deger": r, "ondalik": 2, "birim": "%",
+                "ifade": f"100 − {g['yillik_devir']:g}",
+                "ayrinti": [["Yıllık devir oranı (%)", g["yillik_devir"]],
+                            ["Yıl sonunda beklenen kalan (kişi)",
+                             round(g["donem_basi"] * r / 100, 1)],
+                            ["Yenilenmesi gereken kadro (kişi)",
+                             round(g["donem_basi"] * g["yillik_devir"] / 100, 1)]]}
+
+    if metrik == "yuksek_devirli_elde_tutma":
+        std = yuksek_devirli_elde_tutma(g["donem_basi"], g["toplam_ayrilma"],
+                                        g["yeni_calisan_ayrilmasi"], 0)
+        formul = yuksek_devirli_elde_tutma(g["donem_basi"], g["toplam_ayrilma"],
+                                           g["yeni_calisan_ayrilmasi"], g["yeni_alim"])
+        kalan = g["donem_basi"] - g["toplam_ayrilma"] + g["yeni_calisan_ayrilmasi"]
+        return {"deger": std, "ondalik": 1, "birim": "% (dönem başı kadrosu)",
+                "ifade": (f"({g['donem_basi']:g} − {g['toplam_ayrilma']:g} + "
+                          f"{g['yeni_calisan_ayrilmasi']:g}) ÷ {g['donem_basi']:g} × 100"),
+                "ayrinti": [["Dönem başı kadrosundan kalan (kişi)", kalan],
+                            ["Paydaya yeni alımlar eklenirse (%)", round(formul, 1)],
+                            ["Ayrılmaların kaçı yeni çalışan (%)",
+                             round(100 * g["yeni_calisan_ayrilmasi"] / g["toplam_ayrilma"], 1)]]}
+
+    if metrik == "pozisyon_elde_tutma":
+        r = pozisyon_elde_tutma(g["korunan_pozisyon"], g["toplam_pozisyon"])
+        oynak = g["toplam_pozisyon"] - g["korunan_pozisyon"]
+        return {"deger": r, "ondalik": 1, "birim": "% pozisyon",
+                "ifade": f"({g['korunan_pozisyon']:g} ÷ {g['toplam_pozisyon']:g}) × 100",
+                "ayrinti": [["Oynak pozisyon sayısı", oynak],
+                            ["Oynak pozisyon başına devir sayısı",
+                             round(g["toplam_ayrilma"] / oynak, 2) if oynak else "—"],
+                            ["Kadro temelli devir oranı (%)",
+                             round(100 * g["toplam_ayrilma"] / g["toplam_pozisyon"], 1)]]}
+
+    if metrik == "ortalama_kidem":
+        ay = ortalama_kidem(g["kumulatif_kidem_ay"], g["kisi_sayisi"])
+        return {"deger": ay, "ondalik": 1, "birim": "ay",
+                "ifade": f"{g['kumulatif_kidem_ay']:g} ÷ {g['kisi_sayisi']:g}",
+                "ayrinti": [["Yıl karşılığı", round(ay / 12, 2)],
+                            ["Yıl ve ay olarak",
+                             f"{int(ay // 12)} yıl {int(round(ay % 12))} ay"]]}
+
+    if metrik == "istikrar_orani":
+        r = istikrar_orani(g["bir_yildan_kidemli"], g["bir_yil_once_mevcut"])
+        return {"deger": r, "ondalik": 1, "birim": "% istikrar",
+                "ifade": f"({g['bir_yildan_kidemli']:g} ÷ {g['bir_yil_once_mevcut']:g}) × 100",
+                "ayrinti": [["Bir yıl içinde ayrılan (kişi)",
+                             g["bir_yil_once_mevcut"] - g["bir_yildan_kidemli"]],
+                            ["Bugünkü mevcutta kıdemsizlerin payı (%)",
+                             round(100 * (g["bugunku_mevcut"] - g["bir_yildan_kidemli"])
+                                   / g["bugunku_mevcut"], 1)]]}
+
+    if metrik == "kohort":
+        r = kohort_elde_tutma(g["kohort"], g["kalan"])
+        return {"deger": r, "ondalik": 1, "birim": "% kohort",
+                "ifade": f"({g['kalan']:g} ÷ {g['kohort']:g}) × 100",
+                "ayrinti": [["Ayrılan (kişi)", g["kohort"] - g["kalan"]],
+                            ["İlk yıl devri (%)",
+                             round(100 * (g["kohort"] - g["kalan"]) / g["kohort"], 1)]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 7) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _demo() -> None:
+    cizgi = "-" * 62
+    print("ISO/TS 30421 — doğrulama çıktısı")
+    print(cizgi)
+
+    t = ornek_tablo()
+    print("Aylık devir tablosu")
+    print(f"{'Ay':<5}{'Ayrılan':>9}{'Ortalama':>11}{'Oran %':>9}")
+    for a in t.aylar:
+        print(f"{a.ad:<5}{a.ayrilan:>9.0f}{a.ortalama:>11.1f}{a.oran:>9.2f}")
+    print(cizgi)
+    for k, v in t.ozet().items():
+        print(f"{k:<20}: {v}")
+    print(cizgi)
+
+    print(f"Kritik pozisyon devri : {kritik_devir(3, 35, 32):.2f} % (ay)")
+    print(f"Üzücü devir payı      : {uzucu_devir(20, 21, 100)[0]:.1f} %")
+    ayr = ayrilma_maliyeti(1, 2500, 0.75, 1200, 15000)
+    isa = ise_alim_maliyeti(20000, 1.5, 1200, 1, 4, 3, 1, 3500, 1.5, 4000, 5000)
+    hiz = hiza_erisme_maliyeti(7, 3, 1200, 2, 1, 10, 3000, 1, 12000)
+    top = toplam_devir_maliyeti(ayr, isa, hiz)
+    print(f"Ayrılma maliyeti      : {_tl(ayr)} TL")
+    print(f"İşe alım maliyeti     : {_tl(isa)} TL")
+    print(f"Hıza erişme maliyeti  : {_tl(hiz)} TL")
+    print(f"Kişi başına toplam    : {_tl(top)} TL")
+    print(f"20 üzücü ayrılma için : {_tl(top * 20)} TL")
+    print(cizgi)
+
+    print(f"Basit elde tutma      : {basit_elde_tutma(t.yillik_oran):.2f} %")
+    print(f"Yüksek devirli oran   : {yuksek_devirli_elde_tutma(100, 131, 90):.1f} %")
+    print(f"  (payda 100+124 ise) : {yuksek_devirli_elde_tutma(100, 131, 90, 124):.1f} %")
+    print(f"Pozisyon temelli oran : {pozisyon_elde_tutma(97, 100):.1f} %")
+    ok = ortalama_kidem(14566, 100)
+    print(f"Ortalama kıdem        : {ok:.2f} ay ({ok/12:.2f} yıl)")
+    print(f"İstikrar oranı        : {istikrar_orani(78, 100):.1f} %")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("basit_elde_tutma", yillik_devir=20.89, donem_basi=100))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir kırılımı olmayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   u: kullanıcılar (board üst yönetim / hr İK / line hat yöneticisi / ext dış paydaş)
+   p: ölçme amacı (ic, dis, neden, mudahale)
+   pr: dönem (ay / yil)
+   t: aile (v devir / o maliyet / e elde tutma ve kıdem)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   ========================================================= */
+var METRICS = [
+ {g:"Devir — genel oranlar", t:"v", items:[
+  {n:"Aylık devir oranı", pr:"ay", calc:"aylik_devir", d:"Ayrılan / ayın ortalama mevcudu", u:["hr","line"], p:["ic"]},
+  {n:"Yıllık devir oranı", pr:"yil", iso:1, calc:"yillik_devir", d:"On iki aylık oranın toplamı", u:["board","hr","line","ext"], p:["ic","dis"]},
+  {n:"Gönüllü devir oranı", pr:"yil", iso:1, calc:"gonullu_gonulsuz", d:"Çalışanın kendi kararıyla ayrılması", u:["board","hr","line","ext"], p:["ic","dis","neden"]},
+  {n:"Gönülsüz devir oranı", pr:"yil", iso:1, d:"İşverenin sonlandırdığı ayrılmalar", u:["board","hr","ext"], p:["ic","dis"]},
+  {n:"Kaçınılabilir devir payı", pr:"yil", d:"Memnuniyetsizlik kaynaklı, yönetimin denetimindeki ayrılmalar", u:["hr","line"], p:["neden","mudahale"]},
+  {n:"Kaçınılamaz devir payı", pr:"yil", d:"Sağlık, taşınma, kişisel koşullar, emeklilik", u:["hr"], p:["neden"]},
+  {n:"İşlevsel / işlevsiz devir ayrımı", pr:"yil", d:"Ayrılmanın kuruma net etkisi", u:["board","hr"], p:["neden","mudahale"]},
+  {n:"Üzücü (regrettable) devir oranı", pr:"yil", calc:"uzucu_devir", d:"Elde tutulmak istenen kişinin gönüllü ayrılması", u:["board","hr","line"], p:["mudahale"]},
+  {n:"Ayrılma nedeni dağılımı", pr:"yil", d:"İstifa, emeklilik, küçültme, fesih kırılımı", u:["board","hr","ext"], p:["neden"]}
+ ]},
+ {g:"Devir — kırılımlar ve sıcak noktalar", t:"v", items:[
+  {n:"Kritik pozisyon aylık devir oranı", pr:"ay", calc:"kritik_devir", d:"Kritik kadro kendi paydasına bölünür", u:["hr","line"], p:["ic","mudahale"]},
+  {n:"Kritik pozisyon yıllık devir oranı", pr:"yil", d:"Kritik kadroda yıllık kayıp", u:["board","hr"], p:["ic","mudahale"]},
+  {n:"İş ailesine göre devir", pr:"yil", d:"Meslek grubu bazında kırılım", u:["hr","line"], p:["ic"]},
+  {n:"Kıdem dilimine göre devir", pr:"yil", d:"0–1 yıl, 1–3 yıl, 3+ yıl kırılımı", u:["hr","line"], p:["ic","neden"]},
+  {n:"Birim ve bölge sıcak noktaları", pr:"yil", d:"Kurum ortalamasından belirgin sapan birimler", u:["hr","line"], p:["ic","mudahale"]},
+  {n:"İlk yıl devri (yeni çalışan devri)", pr:"yil", calc:"kohort", d:"İşe alınıp aynı yıl içinde ayrılanlar", u:["hr","line"], p:["ic","neden","mudahale"]},
+  {n:"Yönetici bazında gönüllü devir", pr:"yil", d:"Hat yöneticisi için içsel performans göstergesi", u:["hr","line"], p:["mudahale"]},
+  {n:"Kıdem ve cinsiyet kırılımlı devir", pr:"yil", iso:1, d:"Eşitlik açısından izlenen kırılım", u:["board","hr","ext"], p:["ic","dis"]}
+ ]},
+ {g:"Devir maliyeti", t:"o", items:[
+  {n:"Ayrılma işlemleri maliyeti", pr:"yil", calc:"ayrilma_maliyeti", d:"Çıkış görüşmesi, idari işlem, ayrılma ödemeleri", u:["hr"], p:["mudahale"]},
+  {n:"Ayrılma ödemeleri", pr:"yil", d:"Kıdem ve ihbar tazminatı, izin alacağı, hukuki gider", u:["board","hr"], p:["mudahale"]},
+  {n:"İşe alım maliyeti", pr:"yil", calc:"ise_alim_maliyeti", d:"İlan, idari zaman, mülakat, değerlendirme (ISO/TS 30407)", u:["board","hr"], p:["mudahale"]},
+  {n:"Hıza erişme maliyeti", pr:"yil", calc:"hiza_erisme_maliyeti", d:"Oryantasyon, koçluk, biçimsel eğitim", u:["hr"], p:["mudahale"]},
+  {n:"Yedekleme maliyeti", pr:"ay", d:"Fazla mesai, geçici personel, boş pozisyonun yükü", u:["hr","line"], p:["mudahale"]},
+  {n:"Boş pozisyon tasarrufu (negatif maliyet)", pr:"ay", d:"Ödenmeyen ücret ve yan haklar; kısmi denkleştirme", u:["hr"], p:["mudahale"]},
+  {n:"Tam verime erişme süresi (dolaylı)", pr:"yil", d:"Yeni çalışanın verim açığı (ISO/TS 30410, 30411)", u:["hr","line"], p:["mudahale"]},
+  {n:"Ayrılan başına toplam devir maliyeti", pr:"yil", calc:"toplam_maliyet", d:"Üç bileşenin toplamı ve kişi başına tutar", u:["board","hr"], p:["mudahale","dis"]},
+  {n:"Devir maliyetinin ücret giderine oranı", pr:"yil", d:"Üst yönetime büyüklük algısı veren oran", u:["board","hr"], p:["mudahale"]}
+ ]},
+ {g:"Elde tutma", t:"e", items:[
+  {n:"Basit elde tutma oranı", pr:"yil", iso:1, calc:"basit_elde_tutma", d:"100 − yıllık devir oranı", u:["board","hr","ext"], p:["ic","dis"]},
+  {n:"Yüksek devirli elde tutma oranı", pr:"yil", calc:"yuksek_devirli_elde_tutma", d:"Dönem başı kadrosundan yıl sonunda kalanlar", u:["hr","line"], p:["ic"]},
+  {n:"Pozisyon temelli elde tutma oranı", pr:"yil", calc:"pozisyon_elde_tutma", d:"Kadro sahibi değişmeyen pozisyonların payı", u:["hr","line"], p:["ic","mudahale"]},
+  {n:"Kritik pozisyonlarda elde tutma", pr:"yil", d:"Kritik kadronun korunma düzeyi", u:["board","hr"], p:["ic","mudahale"]},
+  {n:"Elde tutma girişiminin etkisi", pr:"yil", d:"Girişim öncesi ve sonrası kohort karşılaştırması", u:["board","hr"], p:["mudahale"]}
+ ]},
+ {g:"Kıdem ve kohort", t:"e", items:[
+  {n:"Ortalama kıdem", pr:"yil", iso:1, calc:"ortalama_kidem", d:"Kümülatif kıdem / kişi sayısı; dönem sonunda ölçülür", u:["board","hr","ext"], p:["ic","dis"]},
+  {n:"Kritik pozisyonlarda ortalama kıdem", pr:"yil", d:"İyi ya da kötü değil, iş modeline göre okunur", u:["board","hr"], p:["ic"]},
+  {n:"İstikrar oranı (1+ yıl)", pr:"yil", calc:"istikrar_orani", d:"Kişilerin kurumda kalma süresini gösterir", u:["hr","line"], p:["ic","neden"]},
+  {n:"Kohort elde tutma eğrisi", pr:"yil", calc:"kohort", d:"Bir grubun zaman içindeki kalma oranı", u:["hr"], p:["ic","mudahale"]}
+ ]}
+];
+
+var USERS = ["board","hr","line","ext"];
+var AILE_AD = {v:"devir", o:"maliyet", e:"elde tutma"};
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fu = document.getElementById("fUser").value;
+  var fp = document.getElementById("fPurpose").value;
+  var ft = document.getElementById("fType").value;
+  var fr = document.getElementById("fPeriod").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fu && m.u.indexOf(fu) === -1) return;
+      if(fp && m.p.indexOf(fp) === -1) return;
+      if(fr && m.pr !== fr) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = USERS.map(function(u){
+        if(m.u.indexOf(u) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 ' <span class="tag lvl">' + (m.pr === "ay" ? "aylık" : "yıllık") + '</span>' +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="5">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="5">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik gösteriliyor.";
+}
+["fUser","fPurpose","fType","fPeriod","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) AYLIK DEVİR TABLOSU
+   ========================================================= */
+var ORNEK_AYLAR = [
+  [1,2,100,97],[0,2,100,96],[1,0,96,101],[0,0,103,105],
+  [2,0,105,103],[1,0,103,101],[2,0,101,100],[1,2,100,98],
+  [1,0,102,100],[1,1,100,106],[3,0,106,99],[1,0,100,98]
+];
+var AY_ALAN = ["gon","gons","basi","sonu"];
+
+function buildYearTable(){
+  var html = "";
+  for(var i=0;i<12;i++){
+    var hucre = AY_ALAN.map(function(k){
+      return '<td><input type="number" min="0" step="any" id="y_' + k + '_' + i + '"></td>';
+    }).join("");
+    html += '<tr><td>M' + (i+1) + '</td>' + hucre +
+            '<td class="calc" id="y_ort_' + i + '">—</td>' +
+            '<td class="calc" id="y_ayr_' + i + '">—</td>' +
+            '<td class="calc" id="y_oran_' + i + '">—</td></tr>';
+  }
+  document.getElementById("yBody").innerHTML = html;
+  document.getElementById("yBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computeYear);
+  });
+}
+
+function yVal(k, i){
+  var el = document.getElementById("y_" + k + "_" + i);
+  var x = el && el.value !== "" ? parseFloat(el.value) : NaN;
+  return isNaN(x) ? null : x;
+}
+
+var YIL = {oran:null, ayrilan:null, ortalama:null, gonullu:null, gonulsuz:null, gonulluOran:null};
+
+function computeYear(){
+  var toplamOran = 0, toplamAyr = 0, toplamGon = 0, toplamGons = 0,
+      toplamOrt = 0, doluAy = 0, gonulluOran = 0, eksik = false;
+
+  for(var i=0;i<12;i++){
+    var gon = yVal("gon", i), gons = yVal("gons", i),
+        basi = yVal("basi", i), sonu = yVal("sonu", i);
+    var oElem = document.getElementById("y_ort_" + i),
+        aElem = document.getElementById("y_ayr_" + i),
+        rElem = document.getElementById("y_oran_" + i);
+
+    if(basi === null && sonu === null && gon === null && gons === null){
+      oElem.textContent = aElem.textContent = rElem.textContent = "—";
+      eksik = true;
+      continue;
+    }
+    var ayr = (gon || 0) + (gons || 0);
+    var ort = ((basi === null ? sonu : basi) + (sonu === null ? basi : sonu)) / 2;
+    if(!isFinite(ort) || ort <= 0){
+      oElem.textContent = "—"; aElem.textContent = ayr;
+      rElem.textContent = "payda?"; eksik = true;
+      continue;
+    }
+    var oran = 100 * ayr / ort;
+    oElem.textContent = ort.toLocaleString("tr-TR", {maximumFractionDigits:1});
+    aElem.textContent = ayr;
+    rElem.textContent = oran.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2});
+
+    toplamOran += oran; toplamAyr += ayr; toplamGon += (gon || 0);
+    toplamGons += (gons || 0); toplamOrt += ort; doluAy++;
+    gonulluOran += 100 * (gon || 0) / ort;
+  }
+
+  var ortMevcut = doluAy ? toplamOrt / doluAy : 0;
+  document.getElementById("tGon").textContent  = doluAy ? toplamGon : "—";
+  document.getElementById("tGons").textContent = doluAy ? toplamGons : "—";
+  document.getElementById("tAyr").textContent  = doluAy ? toplamAyr : "—";
+  document.getElementById("tOrt").textContent  = doluAy
+    ? ortMevcut.toLocaleString("tr-TR", {maximumFractionDigits:1}) : "—";
+  document.getElementById("tOran").textContent = doluAy
+    ? toplamOran.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2}) : "—";
+
+  YIL = {oran:toplamOran, ayrilan:toplamAyr, ortalama:ortMevcut,
+         gonullu:toplamGon, gonulsuz:toplamGons, gonulluOran:gonulluOran};
+
+  var kart = document.getElementById("yCards");
+  if(!doluAy){
+    kart.innerHTML = "";
+    document.getElementById("yNot").textContent =
+      "Tabloya veri girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+  var kaba = 100 * toplamAyr / ortMevcut;
+  var f2 = function(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2}); };
+  kart.innerHTML =
+    '<div class="card"><b>' + f2(toplamOran) + ' %</b><span>Yıllık devir (aylık oranların toplamı)</span></div>' +
+    '<div class="card warn"><b>' + f2(gonulluOran) + ' %</b><span>Gönüllü devir</span></div>' +
+    '<div class="card alt"><b>' + f2(100 - toplamOran) + ' %</b><span>Basit elde tutma</span></div>' +
+    '<div class="card"><b>' + f2(kaba) + ' %</b><span>Kaba yöntem (toplam ÷ ortalama)</span></div>' +
+    '<div class="card alt"><b>' + toplamAyr + '</b><span>Toplam ayrılan kişi</span></div>';
+
+  var not = "Yöntemler arasındaki fark " + f2(Math.abs(toplamOran - kaba)) +
+            " puan. Gönüllü ayrılmaların toplam içindeki payı %" +
+            (toplamAyr ? (100 * toplamGon / toplamAyr).toLocaleString("tr-TR", {maximumFractionDigits:1}) : "—") + ".";
+  if(eksik) not += " Bazı aylar boş bırakıldı; toplamlar yalnızca dolu aylar üzerinden hesaplandı.";
+  document.getElementById("yNot").textContent = not;
+}
+
+function loadYearExample(){
+  for(var i=0;i<12;i++){
+    for(var j=0;j<4;j++){
+      document.getElementById("y_" + AY_ALAN[j] + "_" + i).value = ORNEK_AYLAR[i][j];
+    }
+  }
+  computeYear();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadYearExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  document.getElementById("yBody").querySelectorAll("input").forEach(function(el){ el.value = ""; });
+  computeYear();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Ay;Gonullu;Gonulsuz;Ay basi;Ay sonu;Ortalama;Ayrilan;Oran %"];
+  for(var i=0;i<12;i++){
+    var gon = yVal("gon",i) || 0, gons = yVal("gons",i) || 0,
+        basi = yVal("basi",i) || 0, sonu = yVal("sonu",i) || 0;
+    var ort = (basi + sonu) / 2, ayr = gon + gons;
+    var oran = ort > 0 ? (100 * ayr / ort).toFixed(2) : "";
+    satir.push(["M"+(i+1), gon, gons, basi, sonu, ort, ayr, oran].join(";"));
+  }
+  if(YIL.oran !== null){
+    satir.push(["Toplam", YIL.gonullu, YIL.gonulsuz, "", "",
+                YIL.ortalama.toFixed(1), YIL.ayrilan, YIL.oran.toFixed(2)].join(";"));
+  }
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30421_aylik_devir.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+var CALC = [
+ {id:"aylik_devir", name:"Aylık devir oranı", grp:"Devir",
+  formula:"Aylık devir = (Ayrılan &divide; ((Ay başı + Ay sonu) &divide; 2)) &times; 100",
+  note:"Payda ay başı ya da ay sonu da olabilir; ortalama, ay içindeki giriş çıkışa en az duyarlı olandır.",
+  fields:[{k:"ayrilan",l:"Ay içinde ayrılan",v:3},{k:"ay_basi",l:"Ay başı mevcut",v:100},
+          {k:"ay_sonu",l:"Ay sonu mevcut",v:97}],
+  unit:"% / ay",
+  py:"aylik_devir(ayrilan=3, ay_basi=100, ay_sonu=97)",
+  calc:function(v){ var ort=(v.ay_basi+v.ay_sonu)/2; var d=100*v.ayrilan/ort;
+    return {value:d, dec:2, expl:"(" + v.ayrilan + " ÷ " + ort + ") × 100",
+      detail:[["Ayın ortalama işgücü", ort],["Yıllık eşdeğeri (×12)", +(d*12).toFixed(1)]]}; },
+  bands:[[4,"bad","Aylık kayıp yüksek; bu tempo yıllık %48'e karşılık gelir."],
+         [2,"warn","Orta düzey; birim ve kıdem kırılımına bakın."],
+         [0,"ok","Aylık dalgalanma olağan aralıkta."]]},
+
+ {id:"yillik_devir", name:"Yıllık devir oranı", grp:"Devir",
+  formula:"Yıllık devir = Σ (aylık devir oranları)",
+  note:"Aylık oranların toplanması, işgücü yıl içinde değiştiğinde kaba yöntemden daha doğrudur. İki yöntem birlikte raporlanmaz; biri seçilip dönemler boyunca korunur.",
+  fields:[{k:"oran_toplami",l:"Aylık oranların toplamı (%)",v:20.89,step:0.01},
+          {k:"toplam_ayrilan",l:"Yıl boyunca ayrılan",v:21},
+          {k:"ortalama_mevcut",l:"Yıllık ortalama mevcut",v:100.8,step:0.1}],
+  unit:"% / yıl",
+  py:'hesapla("yillik_devir", oran_toplami=20.89, toplam_ayrilan=21, ortalama_mevcut=100.8)',
+  calc:function(v){ var kaba=100*v.toplam_ayrilan/v.ortalama_mevcut;
+    return {value:v.oran_toplami, dec:2, expl:"Σ aylık oranlar = " + v.oran_toplami,
+      detail:[["Kaba yöntem (toplam ayrılan ÷ ortalama işgücü)", +kaba.toFixed(2)],
+              ["İki yöntem arasındaki fark (puan)", +(v.oran_toplami-kaba).toFixed(2)],
+              ["Elde tutma karşılığı (%)", +(100-v.oran_toplami).toFixed(2)]]}; },
+  bands:[[30,"bad","Yüksek devir; kadronun üçte birinden fazlası yenileniyor."],
+         [15,"warn","Orta düzey; sektör ortalamasıyla karşılaştırın."],
+         [0,"ok","Devir düşük; işlevsel devirin de yeterli olup olmadığını kontrol edin."]]},
+
+ {id:"gonullu_gonulsuz", name:"Gönüllü ve gönülsüz devir ayrımı", grp:"Devir",
+  formula:"Gönüllü devir = (Gönüllü ayrılan &divide; Ortalama mevcut) &times; 100",
+  note:"İşverenleri karşılaştırmakta kullanılan ölçü gönüllü devirdir ve en çok ilk kademe yöneticiden etkilenir.",
+  fields:[{k:"gonullu",l:"Gönüllü ayrılan (yıl)",v:14},{k:"gonulsuz",l:"Gönülsüz ayrılan (yıl)",v:7},
+          {k:"ortalama_mevcut",l:"Yıllık ortalama mevcut",v:100.8,step:0.1}],
+  unit:"% gönüllü devir",
+  py:"hesapla(\"gonullu_gonulsuz\", gonullu=14, gonulsuz=7, ortalama_mevcut=100.8)",
+  calc:function(v){ var gon=100*v.gonullu/v.ortalama_mevcut, gons=100*v.gonulsuz/v.ortalama_mevcut;
+    return {value:gon, dec:2, expl:"(" + v.gonullu + " ÷ " + v.ortalama_mevcut + ") × 100",
+      detail:[["Gönülsüz devir (%)", +gons.toFixed(2)],["Toplam devir (%)", +(gon+gons).toFixed(2)],
+              ["Gönüllünün toplam ayrılmadaki payı (%)",
+               +(100*v.gonullu/(v.gonullu+v.gonulsuz)).toFixed(1)]]}; },
+  bands:[[20,"bad","Gönüllü devir yüksek; yönetici, ücret ve kariyer eksenlerini birlikte inceleyin."],
+         [10,"warn","Orta düzey; kaçınılabilir kısmı ayırmadan müdahale tasarlamayın."],
+         [0,"ok","Gönüllü devir düşük; ayrılmaların çoğu yönetim kararı kaynaklı."]]},
+
+ {id:"kritik_devir", name:"Kritik pozisyon devir oranı", grp:"Devir",
+  formula:"Kritik devir = (Kritik gruptan ayrılan &divide; Kritik grubun ortalama mevcudu) &times; 100",
+  note:"Kritik kadro kendi paydasına bölünür. Toplam işgücüne bölünürse kayıp olduğundan küçük görünür.",
+  fields:[{k:"kritik_ayrilan",l:"Kritik gruptan ayrılan (ay)",v:3},
+          {k:"kritik_basi",l:"Kritik kadro — ay başı",v:35},
+          {k:"kritik_sonu",l:"Kritik kadro — ay sonu",v:32},
+          {k:"toplam_isgucu",l:"Toplam işgücü (aynı ay)",v:97}],
+  unit:"% / ay (kritik)",
+  py:"hesapla(\"kritik_devir\", kritik_ayrilan=3, kritik_basi=35, kritik_sonu=32, toplam_isgucu=97)",
+  calc:function(v){ var ort=(v.kritik_basi+v.kritik_sonu)/2; var d=100*v.kritik_ayrilan/ort;
+    return {value:d, dec:2, expl:"(" + v.kritik_ayrilan + " ÷ " + ort + ") × 100",
+      detail:[["Kritik kadronun ortalaması", ort],
+              ["Aynı kayıp, toplam işgücüne göre (%)", +(100*v.kritik_ayrilan/v.toplam_isgucu).toFixed(2)],
+              ["Kritik kadronun işgücü içindeki payı (%)", +(100*ort/v.toplam_isgucu).toFixed(1)]]}; },
+  bands:[[5,"bad","Kritik kadroda ciddi kayıp; halefiyet planı ve elde tutma girişimi acil."],
+         [2,"warn","Kritik kadro eriyor; kalanların kıdem ve bağlılık verisine bakın."],
+         [0,"ok","Kritik kadro istikrarlı."]]},
+
+ {id:"uzucu_devir", name:"Üzücü (regrettable) devir", grp:"Devir",
+  formula:"Üzücü devir = (Üzücü ayrılan &divide; Ortalama mevcut) &times; 100",
+  note:"Üzücü devir, kurumun elde tutmak istediği kişinin gönüllü ayrılmasıdır; çoğu kurumda kritik kadroyla örtüşür.",
+  fields:[{k:"uzucu",l:"Üzücü ayrılan (yıl)",v:20},{k:"toplam_ayrilan",l:"Toplam ayrılan (yıl)",v:21},
+          {k:"ortalama_mevcut",l:"Yıllık ortalama mevcut",v:100.8,step:0.1}],
+  unit:"% üzücü devir",
+  py:"hesapla(\"uzucu_devir\", uzucu=20, toplam_ayrilan=21, ortalama_mevcut=100.8)",
+  calc:function(v){ var oran=100*v.uzucu/v.ortalama_mevcut;
+    return {value:oran, dec:2, expl:"(" + v.uzucu + " ÷ " + v.ortalama_mevcut + ") × 100",
+      detail:[["Üzücü ayrılmanın toplam içindeki payı (%)", +(100*v.uzucu/v.toplam_ayrilan).toFixed(1)],
+              ["Üzücü olmayan ayrılma", v.toplam_ayrilan-v.uzucu]]}; },
+  bands:[[15,"bad","Ayrılmaların ağırlığı kurumun kaybetmek istemediği kişilerde; maliyeti hesaplayın."],
+         [7,"warn","Kayda değer bir üzücü devir var; nedenlerini ayrıştırın."],
+         [0,"ok","Ayrılmaların çoğu kurum açısından işlevsel."]]},
+
+ {id:"ayrilma_maliyeti", name:"Ayrılma işlemleri maliyeti", grp:"Maliyet",
+  formula:"Ayrılma maliyeti = (Görüşme saati &times; ücret) + (İdari saat &times; ücret) + Ayrılma ödemeleri",
+  note:"Gönülsüz ayrılmada kıdem ve ihbar tazminatı ile hukuki gider bu kalemdedir; tipik gönüllü ayrılmada bu ödemeler doğmayabilir.",
+  fields:[{k:"gorusme_saat",l:"Çıkış görüşmesi (saat)",v:1,step:0.25},
+          {k:"gorusmeci_ucret",l:"Görüşmeci saat maliyeti (TL)",v:2500},
+          {k:"idari_saat",l:"İdari işlem (saat)",v:0.75,step:0.25},
+          {k:"idari_ucret",l:"İdari personel saat maliyeti (TL)",v:1200},
+          {k:"odemeler",l:"Ayrılma ödemeleri (TL)",v:15000}],
+  unit:"TL",
+  py:"ayrilma_maliyeti(1, 2500, 0.75, 1200, 15000)",
+  calc:function(v){ var g=v.gorusme_saat*v.gorusmeci_ucret, i=v.idari_saat*v.idari_ucret;
+    return {value:g+i+v.odemeler, dec:0,
+      expl:"(" + v.gorusme_saat + "×" + v.gorusmeci_ucret + ") + (" + v.idari_saat + "×" + v.idari_ucret + ") + " + v.odemeler,
+      detail:[["Çıkış görüşmesi (TL)", g],["İdari işlem (TL)", i],["Ayrılma ödemeleri (TL)", v.odemeler]]}; },
+  bands:[[0,"ok","Tutarı ayrılan sayısıyla çarpıp yıllık ayrılma maliyetini bulun."]]},
+
+ {id:"ise_alim_maliyeti", name:"İşe alım (yerine alma) maliyeti", grp:"Maliyet",
+  formula:"İşe alım = İlan + (İdari saat &times; ücret) + Mülakat zamanı + Değerlendirme + Diğer",
+  note:"Mülakat zamanı = pozisyon × aday × mülakatçı × saat × ücret. ISO/TS 30407 ile uyumlu hesaplayın; kadro kapatılıyorsa bu kalem doğmaz.",
+  fields:[{k:"ilan",l:"İlan ve duyuru (TL)",v:20000},
+          {k:"idari_saat",l:"İdari zaman (saat)",v:1.5,step:0.25},
+          {k:"idari_ucret",l:"İdari saat maliyeti (TL)",v:1200},
+          {k:"pozisyon",l:"Pozisyon sayısı",v:1},
+          {k:"aday_basina",l:"Pozisyon başına mülakata çağrılan",v:4},
+          {k:"mulakatci",l:"Mülakatçı sayısı",v:3},
+          {k:"mulakat_saat",l:"Mülakat süresi (saat)",v:1,step:0.25},
+          {k:"mulakatci_ucret",l:"Mülakatçı saat maliyeti (TL)",v:3500},
+          {k:"degerlendirme_adet",l:"Değerlendirme sayısı",v:1.5,step:0.5},
+          {k:"degerlendirme_birim",l:"Değerlendirme birim maliyeti (TL)",v:4000},
+          {k:"diger",l:"Diğer (prim, seyahat, sağlık) (TL)",v:5000}],
+  unit:"TL",
+  py:"ise_alim_maliyeti(20000, 1.5, 1200, 1, 4, 3, 1, 3500, 1.5, 4000, 5000)",
+  calc:function(v){
+    var mul=v.pozisyon*v.aday_basina*v.mulakatci*v.mulakat_saat*v.mulakatci_ucret;
+    var idr=v.idari_saat*v.idari_ucret, deg=v.degerlendirme_adet*v.degerlendirme_birim;
+    var t=v.ilan+idr+mul+deg+v.diger;
+    return {value:t, dec:0,
+      expl:v.ilan + " + (" + v.idari_saat + "×" + v.idari_ucret + ") + " + mul + " + (" +
+           v.degerlendirme_adet + "×" + v.degerlendirme_birim + ") + " + v.diger,
+      detail:[["Mülakat zamanı (TL)", Math.round(mul)],["İdari zaman (TL)", idr],
+              ["Pozisyon başına işe alım (TL)", Math.round(t/v.pozisyon)]]}; },
+  bands:[[0,"ok","Mülakat zamanı çoğu kurumda en büyük gizli kalemdir; saat maliyetini brüt ücretten türetin."]]},
+
+ {id:"hiza_erisme_maliyeti", name:"Hıza erişme (onboarding) maliyeti", grp:"Maliyet",
+  formula:"Hıza erişme = Oryantasyon + Koçluk ve iş başı destek + Biçimsel eğitim",
+  note:"Yeni çalışanın tam verime ulaşana kadarki verim açığı bu tutara dâhil değildir; dolaylı maliyet olarak ayrı satırda gösterilir.",
+  fields:[{k:"ory_saat",l:"Oryantasyon süresi (saat)",v:7},
+          {k:"ory_kisi",l:"Oryantasyonda görevli kişi",v:3},
+          {k:"ory_ucret",l:"Görevli saat maliyeti (TL)",v:1200},
+          {k:"oturum",l:"Oturum sayısı",v:2},
+          {k:"yeni_calisan",l:"Yeni çalışan sayısı",v:1},
+          {k:"kocluk_saat",l:"Kişi başı koçluk (saat)",v:10},
+          {k:"kocluk_ucret",l:"Koçluk saat maliyeti (TL)",v:3000},
+          {k:"egitim_kisi",l:"Biçimsel eğitime gönderilen",v:1},
+          {k:"egitim_birim",l:"Kişi başı eğitim maliyeti (TL)",v:12000}],
+  unit:"TL",
+  py:"hiza_erisme_maliyeti(7, 3, 1200, 2, 1, 10, 3000, 1, 12000)",
+  calc:function(v){
+    var ory=v.ory_saat*v.ory_kisi*v.ory_ucret*v.oturum;
+    var koc=v.yeni_calisan*v.kocluk_saat*v.kocluk_ucret;
+    var egt=v.egitim_kisi*v.egitim_birim;
+    var t=ory+koc+egt;
+    return {value:t, dec:0, expl:ory + " + " + koc + " + " + egt,
+      detail:[["Oryantasyon (TL)", Math.round(ory)],["Koçluk ve iş başı destek (TL)", Math.round(koc)],
+              ["Biçimsel eğitim (TL)", Math.round(egt)],
+              ["Yeni çalışan başına (TL)", Math.round(t/v.yeni_calisan)]]}; },
+  bands:[[0,"ok","Bu kalem çoğu kurumda ayrılma kaleminden büyüktür; bütçede görünür kılın."]]},
+
+ {id:"toplam_maliyet", name:"Toplam devir maliyeti", grp:"Maliyet",
+  formula:"Toplam devir maliyeti = Ayrılma + İşe alım + Hıza erişme",
+  note:"Verim kaybı, kurumsal bilgi kaybı ve ekip etkisi dâhil değildir; bu nedenle tutar bir alt sınırdır.",
+  fields:[{k:"ayrilma",l:"Ayrılma maliyeti (TL)",v:18400},
+          {k:"ise_alim",l:"İşe alım maliyeti (TL)",v:74800},
+          {k:"hiza_erisme",l:"Hıza erişme maliyeti (TL)",v:92400},
+          {k:"ayrilan",l:"Ayrılan kişi sayısı",v:1},
+          {k:"yillik_ucret_gideri",l:"Yıllık toplam ücret gideri (TL)",v:45000000}],
+  unit:"TL",
+  py:"toplam_devir_maliyeti(18400, 74800, 92400)",
+  calc:function(v){ var t=v.ayrilma+v.ise_alim+v.hiza_erisme;
+    return {value:t, dec:0, expl:v.ayrilma + " + " + v.ise_alim + " + " + v.hiza_erisme,
+      detail:[["Ayrılan başına maliyet (TL)", Math.round(t/v.ayrilan)],
+              ["Yıllık ücret giderine oranı (%)", +(100*t/v.yillik_ucret_gideri).toFixed(2)],
+              ["Ayrılma kaleminin payı (%)", +(100*v.ayrilma/t).toFixed(1)],
+              ["İşe alım kaleminin payı (%)", +(100*v.ise_alim/t).toFixed(1)],
+              ["Hıza erişme kaleminin payı (%)", +(100*v.hiza_erisme/t).toFixed(1)]]}; },
+  bands:[[0,"ok","Tutarı ücret giderine oranlayarak sunun; üst yönetimde büyüklük algısını netleştirir."]]},
+
+ {id:"basit_elde_tutma", name:"Basit elde tutma oranı", grp:"Elde tutma",
+  formula:"Elde tutma oranı = 100 &minus; Yıllık devir oranı",
+  note:"Devir yüksekse ya da aynı pozisyon yıl içinde birden çok kez el değiştiriyorsa bu ölçü yanıltır.",
+  fields:[{k:"yillik_devir",l:"Yıllık devir oranı (%)",v:20.89,step:0.01},
+          {k:"donem_basi",l:"Dönem başı mevcut",v:100}],
+  unit:"%",
+  py:"basit_elde_tutma(20.89)",
+  calc:function(v){ var r=100-v.yillik_devir;
+    return {value:r, dec:2, expl:"100 − " + v.yillik_devir,
+      detail:[["Yıllık devir oranı (%)", v.yillik_devir],
+              ["Yıl sonunda beklenen kalan (kişi)", +(v.donem_basi*r/100).toFixed(1)],
+              ["Yenilenmesi gereken kadro (kişi)", +(v.donem_basi*v.yillik_devir/100).toFixed(1)]]}; },
+  bands:[[90,"ok","Elde tutma yüksek; işlevsel devirin yeterliliğini ayrıca kontrol edin."],
+         [80,"warn","Orta düzey; kritik kadroda ayrı ölçün."],
+         [0,"bad","Elde tutma düşük; pozisyon temelli oranla birlikte inceleyin."]]},
+
+ {id:"yuksek_devirli_elde_tutma", name:"Yüksek devirli elde tutma oranı", grp:"Elde tutma",
+  formula:"Elde tutma = ((Dönem başı &minus; Toplam ayrılma + Yeni çalışan ayrılmaları) &divide; Dönem başı) &times; 100",
+  note:"Standardın metninde payda 'dönem başı + yeni alım' olarak yazılır, sayısal örneğinde ise yalnızca dönem başı kullanılır. Ayrıntı satırında iki sonuç da gösterilir; kurum içi tanımı sabitleyin.",
+  fields:[{k:"donem_basi",l:"Dönem başı mevcut",v:100},
+          {k:"toplam_ayrilma",l:"Toplam ayrılma (yıl)",v:131},
+          {k:"yeni_calisan_ayrilmasi",l:"Yıl içinde alınıp ayrılanlar",v:90},
+          {k:"yeni_alim",l:"Yıl içindeki toplam işe alım",v:124}],
+  unit:"% (dönem başı kadrosu)",
+  py:"yuksek_devirli_elde_tutma(100, 131, 90)",
+  calc:function(v){
+    var kalan=v.donem_basi-v.toplam_ayrilma+v.yeni_calisan_ayrilmasi;
+    var std=100*kalan/v.donem_basi, formul=100*kalan/(v.donem_basi+v.yeni_alim);
+    return {value:std, dec:1,
+      expl:"(" + v.donem_basi + " − " + v.toplam_ayrilma + " + " + v.yeni_calisan_ayrilmasi + ") ÷ " + v.donem_basi + " × 100",
+      detail:[["Dönem başı kadrosundan kalan (kişi)", kalan],
+              ["Paydaya yeni alımlar eklenirse (%)", +formul.toFixed(1)],
+              ["Ayrılmaların kaçı yeni çalışan (%)", +(100*v.yeni_calisan_ayrilmasi/v.toplam_ayrilma).toFixed(1)]]}; },
+  bands:[[80,"ok","Çekirdek kadro büyük ölçüde korunmuş; devir yeni alımlarda yoğunlaşıyor."],
+         [55,"warn","Çekirdek kadronun yaklaşık yarısı korunmuş; ilk yıl devrine bakın."],
+         [0,"bad","Çekirdek kadro eriyor; işe alım profilini ve ilk 90 günü gözden geçirin."]]},
+
+ {id:"pozisyon_elde_tutma", name:"Pozisyon temelli elde tutma", grp:"Elde tutma",
+  formula:"Pozisyon temelli elde tutma = (Kadro sahibi değişmeyen pozisyon &divide; Toplam pozisyon) &times; 100",
+  note:"Kişi değil pozisyon sayar. Yüksek devirli ortamda devirin birkaç oynak pozisyonda mı yoğunlaştığını gösterir.",
+  fields:[{k:"korunan_pozisyon",l:"Kadro sahibi değişmeyen pozisyon",v:97},
+          {k:"toplam_pozisyon",l:"Toplam pozisyon",v:100},
+          {k:"toplam_ayrilma",l:"Toplam ayrılma (yıl)",v:21}],
+  unit:"% pozisyon",
+  py:"pozisyon_elde_tutma(97, 100)",
+  calc:function(v){ var r=100*v.korunan_pozisyon/v.toplam_pozisyon;
+    var oynak=v.toplam_pozisyon-v.korunan_pozisyon;
+    return {value:r, dec:1, expl:"(" + v.korunan_pozisyon + " ÷ " + v.toplam_pozisyon + ") × 100",
+      detail:[["Oynak pozisyon sayısı", oynak],
+              ["Oynak pozisyon başına devir sayısı", oynak ? +(v.toplam_ayrilma/oynak).toFixed(2) : "—"],
+              ["Kadro temelli devir oranı (%)", +(100*v.toplam_ayrilma/v.toplam_pozisyon).toFixed(1)]]}; },
+  bands:[[95,"ok","Kadro istikrarlı; devir birkaç oynak pozisyonda yoğunlaşıyor."],
+         [80,"warn","Pozisyonların beşte birine kadarı el değiştirmiş."],
+         [0,"bad","Kadro genelinde istikrarsızlık var; iş tasarımı ve ücret yapısına bakın."]]},
+
+ {id:"ortalama_kidem", name:"Ortalama kıdem", grp:"Kıdem",
+  formula:"Ortalama kıdem = Kümülatif kıdem (ay) &divide; Kişi sayısı",
+  note:"Yılda bir kez, dönem sonunda ölçülür. Tek başına iyi ya da kötü değildir; iş modeli ve büyüme hızıyla birlikte okunur.",
+  fields:[{k:"kumulatif_kidem_ay",l:"Kümülatif kıdem (ay)",v:14566},
+          {k:"kisi_sayisi",l:"Kişi sayısı",v:100}],
+  unit:"ay",
+  py:"ortalama_kidem(14566, 100)",
+  calc:function(v){ var ay=v.kumulatif_kidem_ay/v.kisi_sayisi;
+    return {value:ay, dec:1, expl:v.kumulatif_kidem_ay + " ÷ " + v.kisi_sayisi,
+      detail:[["Yıl karşılığı", +(ay/12).toFixed(2)],
+              ["Yıl ve ay olarak", Math.floor(ay/12) + " yıl " + Math.round(ay%12) + " ay"]]}; },
+  bands:[[60,"ok","Kıdem yüksek; kurumsal bilgi güçlü, yenilenme hızı düşük olabilir."],
+         [24,"warn","Orta kıdem; hızlı büyüyen kurumlarda olağandır."],
+         [0,"bad","Kıdem düşük; işgücünün büyük kısmı ilk iki yılında."]]},
+
+ {id:"istikrar_orani", name:"İstikrar oranı (1+ yıl)", grp:"Kıdem",
+  formula:"İstikrar oranı = (En az bir yıldır çalışanlar &divide; Bir yıl önceki mevcut) &times; 100",
+  note:"Kaba devir oranının gizlediği \u201Cdönen kapı\u201D etkisini açığa çıkarır: aynı pozisyonun defalarca el değiştirmesi.",
+  fields:[{k:"bir_yildan_kidemli",l:"En az bir yıldır çalışan",v:78},
+          {k:"bir_yil_once_mevcut",l:"Bir yıl önceki mevcut",v:100},
+          {k:"bugunku_mevcut",l:"Bugünkü mevcut",v:98}],
+  unit:"% istikrar",
+  py:"istikrar_orani(78, 100)",
+  calc:function(v){ var r=100*v.bir_yildan_kidemli/v.bir_yil_once_mevcut;
+    return {value:r, dec:1, expl:"(" + v.bir_yildan_kidemli + " ÷ " + v.bir_yil_once_mevcut + ") × 100",
+      detail:[["Bir yıl içinde ayrılan (kişi)", v.bir_yil_once_mevcut-v.bir_yildan_kidemli],
+              ["Bugünkü mevcutta kıdemsizlerin payı (%)",
+               +(100*(v.bugunku_mevcut-v.bir_yildan_kidemli)/v.bugunku_mevcut).toFixed(1)]]}; },
+  bands:[[85,"ok","Çekirdek kadro istikrarlı."],
+         [70,"warn","Orta istikrar; ilk yıl devrini ayrıca ölçün."],
+         [0,"bad","Düşük istikrar; kadronun büyük kısmı bir yılı doldurmadan ayrılıyor."]]},
+
+ {id:"kohort", name:"Kohort elde tutma (ilk yıl devri)", grp:"Kıdem",
+  formula:"Kohort elde tutma = (Dönem sonunda kalan &divide; Kohort büyüklüğü) &times; 100",
+  note:"Bir yılın işe alımları, bir programın mezunları ya da bir birim kohort olarak izlenir. Elde tutma girişiminin etkisini göstermenin en savunulabilir yolu budur.",
+  fields:[{k:"kohort",l:"Kohort büyüklüğü (işe alınan)",v:124},
+          {k:"kalan",l:"Dönem sonunda kalan",v:34}],
+  unit:"% kohort",
+  py:"kohort_elde_tutma(124, 34)",
+  calc:function(v){ var r=100*v.kalan/v.kohort;
+    return {value:r, dec:1, expl:"(" + v.kalan + " ÷ " + v.kohort + ") × 100",
+      detail:[["Ayrılan (kişi)", v.kohort-v.kalan],
+              ["İlk yıl devri (%)", +(100*(v.kohort-v.kalan)/v.kohort).toFixed(1)]]}; },
+  bands:[[80,"ok","İşe alım profili ve uyum süreci tutarlı çalışıyor."],
+         [50,"warn","Kohortun yarısına yakını ilk yılda ayrılmış; ilk 90 günü inceleyin."],
+         [0,"bad","İlk yıl devri çok yüksek; seçme ölçütleri, iş tanımı ve gerçekçi iş önizlemesi gözden geçirilmeli."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    var raw = el && el.value !== "" ? parseFloat(el.value) : NaN;
+    if(isNaN(raw)){ missing = true; v[f.k] = f.v; } else { v[f.k] = raw; }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){ return f.k + "=" + r.v[f.k]; }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30421_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(YIL.oran === null){ loadYearExample(); }
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("yillik_devir");
+  sel.value = idx; buildFields();
+  document.getElementById("in_oran_toplami").value = YIL.oran.toFixed(2);
+  document.getElementById("in_toplam_ayrilan").value = YIL.ayrilan;
+  document.getElementById("in_ortalama_mevcut").value = YIL.ortalama.toFixed(1);
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso30421_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30421_metrikler')\n" +
+      "_m.__file__ = 'iso30421_metrikler.py'\n" +
+      "sys.modules['iso30421_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30421_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30421_metrikler import *\n" +
+      "import iso30421_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30421_metrikler import *\n' +
+  'import iso30421_metrikler as m\n\n' +
+  '# Örnek değerlerle hızlı kontrol\n' +
+  'print("Aylık devir      :", round(aylik_devir(3, 100, 97), 2), "%")\n' +
+  'print("Kritik devir     :", round(kritik_devir(3, 35, 32), 2), "%")\n' +
+  'print("Pozisyon temelli :", pozisyon_elde_tutma(97, 100), "%")\n' +
+  'print("Ortalama kıdem   :", round(ortalama_kidem(14_566, 100), 2), "ay")\n' +
+  'print("İstikrar oranı   :", istikrar_orani(78, 100), "%")\n\n' +
+  '# On iki aylık tablo:\n' +
+  't = ornek_tablo()\n' +
+  'for anahtar, deger in t.ozet().items():\n' +
+  '    print(f"{anahtar:<20}: {deger}")\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("basit_elde_tutma", yillik_devir=20.89, donem_basi=100))\n\n' +
+  '# Rapor denetimi: kırılımı ve maliyeti olmayan bir rapor neyi kaçırır?\n' +
+  'for uyari in metrik_denetimi(gonullu_ayristirildi=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30421_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30421_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildYearTable();
+loadYearExample();
+buildFields();
+run();
+</script>
+</body>
+</html>

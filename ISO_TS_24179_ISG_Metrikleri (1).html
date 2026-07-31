@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 24179 İş Sağlığı ve Güvenliği Metrikleri — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --brk-ink:#5a3a86;  --brk-bg:#f0eaf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)}
+  .dot.v{background:var(--efc-ink)} .dot.k{background:var(--brk-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.k{color:var(--brk-ink);background:var(--brk-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:82px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- dönem tablosu --- */
+  .pertbl{font-size:13.5px}
+  .pertbl input{width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px;text-align:right}
+  .pertbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .pertbl td.calc{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .pertbl tr.derived td{background:var(--canvas);color:var(--ink-soft)}
+  .pertbl tr.derived td:first-child{font-weight:650;color:var(--ink)}
+  .pertbl tr.sep td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--ink-soft)}
+  .pertbl td:first-child{width:34%}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--efc-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card i{font-style:normal;font-size:12px;display:block;margin-top:2px}
+  .card i.up{color:var(--bad)} .card i.down{color:var(--ok)}
+  .card.alt{border-top-color:var(--eff-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 24179 İş Sağlığı ve Güvenliği Metrikleri</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 24179:2020 — <i>Human resource management — Occupational health and safety metrics</i></span>
+  <span><b>Kapsam:</b> 4 raporlama bağlamı · 4 metrik ailesi · 45 metrik ve etken</span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 24179, ISO 30414'ün <b>kurumsal sağlık, güvenlik ve iyi olma hâli</b> kümesini ayrıntılandıran
+bir teknik şartnamedir. Dört metrik tanımlar — kayıp zaman, iş kazası sayısı, ölümlü kaza sayısı ve İSG
+eğitimine katılım oranı — ve dördü de aynı basit biçimi kullanır: <b>A = B / C × 100</b>. Belgenin asıl
+katkısı formüller değil, o formüllerin çevresindeki disiplindir: işgücü kategorilerinin tanımlanması,
+tüm olayların kayda geçirilmesi, verinin kırılımlandırılması ve sonucun bağlamıyla birlikte okunması.
+Bu sayfa, standardın metrik kümesini filtrelenebilir bir matrise; hesaplanabilir metrikleri de formül +
+canlı hesaplayıcı + Python koduna dönüştürür. İlişkili başvuru belgeleri: insan sermayesi raporlaması
+için ISO 30414, terimler için ISO 30400.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>Dört metrik de aynı formülü paylaşır.</b> Değişen tek şey payda: kayıp zamanda <i>planlanan
+  çalışma süresi</i>, diğer üçünde <i>ortalama kadro</i>. Bu yüzden birimleri karıştırmamak kritik:
+  saatle gün, kişiyle olay birbirine bölünmez.</li>
+  <li><b>Kayıp zaman tanımı dardır.</b> Ölüm, kalıcı iş göremezlik ya da bir gün veya vardiya ve
+  üzerinde iş kaybıyla sonuçlanan olaylar sayılır. Genel devamsızlık bu metrik değildir.</li>
+  <li><b>Ölümlü kaza mutlak sayıyla da verilir.</b> Standart bunu açıkça söyler: yalnızca yüzde
+  raporlamak, rakamın etkisine karşı duyarsızlaştırır. Beş kişi, "%0,4" değildir.</li>
+  <li><b>Kırılım olmadan müdahale tasarlanamaz.</b> Standart dokuz kırılım ekseni sayar; olay anındaki
+  eğitim durumu da bunlardan biridir. Toplulaştırılmış tek sayı asgari düzeydir.</li>
+  <li><b>Önce kayıt süreci, sonra metrik.</b> Tüm İSG olaylarını yakalayan bir kayıt ve yönetim süreci
+  kurulmadan üretilen sayılar, iyileşmeyi değil eksik kaydı gösterir. Küçük kuruluşlarda basit bir
+  hesap tablosu yeterli olabilir.</li>
+  <li><b>Sonucun kötüleşmesi her zaman kötü haber değildir.</b> Raporlamayı artıran farkındalık,
+  bilinçli kayıt disiplini ya da büyüyen kadro sayıları yukarı çeker. Bağlam yazılmadan yorum
+  yapılmaz.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik kurulum adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Dönem karşılaştırma tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Yıllık İSG performansı raporlanırken:</b> dört metrik, dönem ve yıl karşılaştırmasıyla
+  birlikte verilir.</li>
+  <li><b>Bir birimde olaylar arttığında:</b> kırılımlı veri, sorunun hangi konumda, hangi vardiyada,
+  hangi çalışan kategorisinde yoğunlaştığını gösterir.</li>
+  <li><b>Eğitim programı planlanırken:</b> katılım oranı ve olay anındaki eğitim durumu birlikte
+  okunur.</li>
+  <li><b>Önleyici program savunulurken:</b> kazasız çalışma süresi ve olayın kuruma maliyeti,
+  yatırımın gerekçesini oluşturur.</li>
+  <li><b>Dış raporlamada:</b> düzenleyici, yatırımcı ve sürdürülebilirlik raporlaması için
+  karşılaştırılabilir İSG göstergesi üretilir (ISO 30414 ile birlikte).</li>
+</ul>
+<div class="note">Bu belge <b>ölçme</b> belgesidir; İSG yönetim sisteminin kendisi ISO 45001'in
+konusudur. Metrikler o sistemin sonuçlarını izler, sistemin yerine geçmez.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Dört metrik ve raporlama önerisi</h3>
+<p>Standart, ISO 30414'ün bu kümedeki dört metriğini alır ve her biri için hangi kuruluşun nereye
+raporlaması önerildiğini belirtir. Matristeki sütunlar bu öneriden gelir.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>B (pay)</th><th>C (payda)</th><th>Raporlama önerisi</th></tr></thead>
+  <tbody>
+    <tr><td><b>Kayıp zaman</b><br><small>işle ilgili yaralanma, kaza ve hastalık</small></td>
+      <td>Kaybedilen çalışma süresi</td><td>Planlanan çalışma süresi</td>
+      <td>Büyük kuruluşlarda ayrıca dış raporlama için önerilir</td></tr>
+    <tr><td><b>İş kazası sayısı</b></td><td>Kaza sayısı</td><td>Ortalama kadro</td>
+      <td>Büyük kuruluşlar ve KOBİ'ler için iç ve dış raporlama</td></tr>
+    <tr><td><b>Ölümlü kaza sayısı</b></td><td>Ölen kişi sayısı</td><td>Ortalama kadro</td>
+      <td>Büyük kuruluşlar ve KOBİ'ler için iç ve dış raporlama</td></tr>
+    <tr><td><b>İSG eğitimine katılım</b></td><td>Eğitim katılımcısı sayısı</td><td>Ortalama kadro</td>
+      <td>Büyük kuruluşlar ve KOBİ'ler için iç raporlama</td></tr>
+  </tbody>
+</table>
+
+<h3>Dokuz kırılım ekseni</h3>
+<p>Metrik ne kadar ayrıntılı kırılırsa, analiz ve müdahale olanağı o kadar artar. Standardın saydığı
+eksenler, kök nedene inip iyileştirme stratejisi kurmak için gereken ayrıntıyı verir.</p>
+<table>
+  <thead><tr><th>Eksen</th><th>Ne sorar</th></tr></thead>
+  <tbody>
+    <tr><td>Birim ya da masraf merkezi hiyerarşisi</td><td>Hangi organizasyon biriminde?</td></tr>
+    <tr><td>Konum</td><td>Hangi tesiste, hangi sahada?</td></tr>
+    <tr><td>Ürün hattı</td><td>Hangi üretim hattında?</td></tr>
+    <tr><td>İşlev</td><td>Hangi işlevde (bakım, lojistik, üretim)?</td></tr>
+    <tr><td>Olay türü</td><td>Ne tür bir olay (burkulma, kırık, uzuv kaybı)?</td></tr>
+    <tr><td>Olay alt kümesi</td><td>Türün içinde hangi alt kategori?</td></tr>
+    <tr><td>Çalışan kategorisi</td><td>Kadrolu, geçici, yüklenici, dış kaynak?</td></tr>
+    <tr><td>Günün saati</td><td>Hangi vardiyada, mesainin kaçıncı saatinde?</td></tr>
+    <tr><td>Olay anındaki İSG eğitim durumu</td><td>Kişi eğitimli miydi, tazeleme zamanı geçmiş miydi?</td></tr>
+  </tbody>
+</table>
+<div class="note">İşgücü kategorileri kurumun kendi faaliyetine göre belgelenir ve düzenli olarak
+gözden geçirilir. Yüklenici ya da dış kaynak işgücü sonradan eklendiğinde, tanımın, metriğin ve
+raporlamanın da güncellenmesi gerekir; aksi hâlde seri sessizce kırılır.</div>
+
+<h3>Ölçüm noktası ve karşılaştırma</h3>
+<ul>
+  <li>Hesaplama noktası her ölçüm döneminin sonudur: ay sonu, çeyrek sonu ya da yıl sonu toplamları.</li>
+  <li>Ölçüm dönemi mali yıl, yıllık bütçe döngüsü ya da her ikisiyle hizalanır.</li>
+  <li>Farklı bir ölçüm noktası seçilirse tercih tutarlı uygulanır ve raporda açıkça yazılır.</li>
+  <li>Raporlama, önceki dönemle cari dönemi ve geçmiş yıllarla cari yılı karşılaştırır; tipik
+  karşılaştırma aralığı üç ilâ beş yıldır.</li>
+  <li>Kayıp zaman saat ya da gün olarak ifade edilebilir; yüzde olarak da raporlanabilir. Hangi birim
+  seçilirse seçilsin dönemler boyunca korunur.</li>
+</ul>
+
+<h2 id="adimlar">Metrik Kurulum Adımları</h2>
+<ol>
+  <li><b>İşgücü kategorilerini belgeleyin.</b> Kadrolu, geçici, yüklenici, dış kaynak; hangi
+  kategorilerin metriğe dâhil olduğunu yazın ve düzenli gözden geçirin.</li>
+  <li><b>Kayıt sürecini kurun.</b> Tüm İSG olaylarını yakalayan bir kayıt ve yönetim prosedürü;
+  kuruluşun büyüklüğüne göre basit bir hesap tablosundan gelişmiş bir sisteme kadar.</li>
+  <li><b>Kayıp zaman ölçütünü sabitleyin.</b> Bir gün veya vardiya ve üzerinde iş kaybı; ölüm ve
+  kalıcı iş göremezlik dâhil.</li>
+  <li><b>Paydaları tanımlayın.</b> Planlanan çalışma süresi nasıl hesaplanıyor, ortalama kadro hangi
+  yöntemle bulunuyor?</li>
+  <li><b>Dokuz kırılım eksenini veri modeline ekleyin.</b> Özellikle olay anındaki eğitim durumu çoğu
+  sistemde eksiktir.</li>
+  <li><b>Eğitim zamanlaması gerekliliklerini yazın.</b> Örneğin yeni başlayanlar için işe başlamadan
+  itibaren üç hafta, tazeleme eğitimleri için belgelenmiş süre.</li>
+  <li><b>Önleme göstergesini seçin.</b> Son olaydan bu yana çalışılan saat ya da gün.</li>
+  <li><b>Karşılaştırma tabanını kurun.</b> Önceki dönem ve geçmiş üç ilâ beş yıl; hedefleri bu tabana
+  göre belirleyin.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kavram</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>A / B / C</b></td><td>Standardın dört formülünde de kullanılan gösterim: A sonuç
+      (yüzde), B pay, C payda</td></tr>
+    <tr><td><b>Kayıp zaman</b></td><td>Ölüm, kalıcı iş göremezlik ya da bir gün veya vardiya ve
+      üzerinde iş kaybıyla sonuçlanan olay nedeniyle kaybedilen çalışma süresi</td></tr>
+    <tr><td><b>Planlanan çalışma süresi</b></td><td>Dönem için öngörülen ya da programlanmış toplam
+      çalışma süresi; saat ya da gün</td></tr>
+    <tr><td><b>Ortalama kadro</b></td><td>Ölçüm dönemi için ortalama çalışan sayısı; üç metriğin
+      paydası</td></tr>
+    <tr><td><b>İşgücü kategorisi</b></td><td>Kadrolu çalışan, geçici çalışan, yüklenici, dış kaynak
+      işgücü gibi kurum tarafından tanımlanan gruplar</td></tr>
+    <tr><td><b>Kazasız süre</b></td><td>Son yaralanma, kaza ya da hastalık tespitinden bu yana
+      çalışılan saat veya gün; önleyici programın göstergesi</td></tr>
+    <tr><td><b>Sıklık oranı</b> <span class="tag lvl">türetilmiş</span></td>
+      <td>Belirli bir çalışma saati tabanı (1.000.000 ya da 200.000) başına olay sayısı</td></tr>
+    <tr><td><b>Ağırlık oranı</b> <span class="tag lvl">türetilmiş</span></td>
+      <td>Belirli bir çalışma saati tabanı başına kayıp gün; olayın ne kadar ağır olduğunu
+      gösterir</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın dört metriğini, kırılım eksenlerini ve bağlam–öngörü etkenlerini
+raporlama bağlamına göre sınıflandırır. Sütunlar standardın raporlama önerisinden gelir: büyük kuruluş
+ve KOBİ, iç ve dış raporlama. Filtreleri değiştirdiğinizde tablo anında daralır.</p>
+
+<div class="filters">
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="i">İç raporlama</option>
+      <option value="d">Dış raporlama</option>
+    </select></div>
+  <div><label for="fSize">Kuruluş büyüklüğü</label>
+    <select id="fSize">
+      <option value="">Tümü</option>
+      <option value="b">Büyük kuruluş</option>
+      <option value="k">KOBİ</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">Kayıp zaman</option>
+      <option value="o">Kaza ve ölüm</option>
+      <option value="e">Eğitim ve önleme</option>
+      <option value="k">Kırılım ve bağlam</option>
+    </select></div>
+  <div><label for="fKind">Kayıt türü</label>
+    <select id="fKind">
+      <option value="">Tümü</option>
+      <option value="temel">Standardın metriği</option>
+      <option value="tur">Türetilmiş metrik</option>
+      <option value="kirilim">Kırılım ekseni</option>
+      <option value="onleme">Önleme ve ön koşul</option>
+      <option value="ctx">Bağlam etkeni</option>
+      <option value="pre">Öngörü etkeni</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. eğitim"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik ya da etken</th>
+    <th class="rot">Büyük<br>iç rapor</th>
+    <th class="rot">Büyük<br>dış rapor</th>
+    <th class="rot">KOBİ<br>iç rapor</th>
+    <th class="rot">KOBİ<br>dış rapor</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+<div class="legend">
+  <span><span class="dot v"></span> kayıp zaman</span>
+  <span><span class="dot o"></span> kaza ve ölüm</span>
+  <span><span class="dot e"></span> eğitim ve önleme</span>
+  <span><span class="dot k"></span> kırılım ve bağlam</span>
+  <span><span class="tag iso">30414</span> ISO 30414'ün de saydığı metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Kırılım ve bağlam satırlarındaki işaret, o raporlamada dikkate alınması gerektiğini gösterir.</span>
+</div>
+
+<h2 id="tablo">Dönem Karşılaştırma Tablosu</h2>
+<p>Standardın örnek tabloları aynı kalıptadır: cari altı ay ve üç karşılaştırma dönemi. Aşağıdaki
+tabloya kendi verinizi girin; toplam kayıp saat, dört metriğin yüzdesi ve sıklık oranı her dönem için
+anında hesaplanır. Girdi satırları koyu, hesaplanan satırlar gri zeminlidir.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+</div>
+
+<table class="pertbl">
+  <thead><tr>
+    <th>Satır</th>
+    <th class="calc">Cari 6 ay</th><th class="calc">Bir yıl önce</th>
+    <th class="calc">İki yıl önce</th><th class="calc">Üç yıl önce</th>
+  </tr></thead>
+  <tbody id="tBody"></tbody>
+</table>
+
+<div class="cards" id="tCards"></div>
+<div class="note" id="tNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Standardın dört metriği de <code>A = B / C × 100</code> biçimindedir; aşağıdaki tabloda her biri
+kendi pay ve paydasıyla açık yazılmıştır. Türetilmiş metrikler notlarında ayrıca işaretlidir.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>İSG Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Oranlar yüzde, süreler saat, tutarlar TL olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso24179_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle
+  aynı sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve
+Pyodide (WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso24179_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+örnek değerlerle doğrulama çıktısı üretir.</p>
+
+<div class="filename">iso24179_metrikler.py (özet)</div>
+<pre><i># --- Standardın ortak biçimi: A = B / C × 100 ---</i>
+
+<b>def</b> <span class="fn">yuzde</span>(b, c):
+    <i>"""Dört metrikte de aynı; değişen yalnızca B ile C'nin ne olduğudur."""</i>
+    <b>return</b> <u>100</u> * b / c
+
+<b>def</b> <span class="fn">kayip_zaman_yuzdesi</span>(kayip_saat, planlanan_saat):
+    <i>"""Payda planlanan çalışma süresidir; saat ya da gün olabilir,
+    ama iki taraf da aynı birimde olmalıdır."""</i>
+    <b>return</b> yuzde(kayip_saat, planlanan_saat)
+
+<b>def</b> <span class="fn">kaza_yuzdesi</span>(kaza_sayisi, ortalama_kadro):
+    <b>return</b> yuzde(kaza_sayisi, ortalama_kadro)
+
+<b>def</b> <span class="fn">olum_yuzdesi</span>(olum_sayisi, ortalama_kadro):
+    <i>"""Standart, mutlak kişi sayısının da verilmesini ister: yalnızca yüzde
+    raporlamak rakamın etkisine karşı duyarsızlaştırır."""</i>
+    <b>return</b> yuzde(olum_sayisi, ortalama_kadro)
+
+<b>def</b> <span class="fn">egitim_yuzdesi</span>(katilimci, ortalama_kadro):
+    <b>return</b> yuzde(katilimci, ortalama_kadro)
+
+<i># --- Önleme göstergesi ---</i>
+
+<b>def</b> <span class="fn">kazasiz_saat</span>(gun, gunluk_calisan_saat):
+    <i>"""Son olaydan bu yana çalışılan toplam saat."""</i>
+    <b>return</b> gun * gunluk_calisan_saat
+
+<i># --- Türetilmiş: standardın parçası değil, İSG uygulamasında yaygın ---</i>
+
+<b>def</b> <span class="fn">siklik_orani</span>(olay, calisilan_saat, taban=<u>1_000_000</u>):
+    <i>"""Payda kadro değil fiilen çalışılan saat olduğu için kadro
+    büyüklüğünden bağımsız karşılaştırmaya izin verir."""</i>
+    <b>return</b> taban * olay / calisilan_saat
+
+<b>def</b> <span class="fn">agirlik_orani</span>(kayip_gun, calisilan_saat, taban=<u>1000</u>):
+    <i>"""Sıklık olayın kaç kez olduğunu, ağırlık ne kadar ağır olduğunu
+    gösterir; ikisi birlikte okunur."""</i>
+    <b>return</b> taban * kayip_gun / calisilan_saat
+
+<b>def</b> <span class="fn">yuz_bin_basina</span>(olay, kadro):
+    <i>"""Ölümlü kaza gibi seyrek olaylarda yüzde okunamayacak kadar küçük
+    çıkar; ulusal istatistikler yüz bin çalışan tabanını kullanır."""</i>
+    <b>return</b> <u>100_000</u> * olay / kadro
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso24179_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso24179_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Sayının düşmesi her zaman güvenliğin arttığı anlamına gelmez.</b> Kayıt disiplini gevşemiş,
+  bildirim caydırılmış ya da kadro küçülmüş olabilir. Standardın bağlam etkenleri tam olarak bunun
+  için vardır.</li>
+  <li><b>Sayının artması her zaman kötüleşme değildir.</b> Raporlamayı artıran farkındalık ve yeni
+  kurulan kayıt süreci, ilk yıllarda sayıları yukarı çeker. Bu, sistemin çalışmaya başladığının
+  göstergesidir.</li>
+  <li><b>Kaza sayısı ile kayıp zaman birlikte okunur.</b> Az sayıda ama ağır olay ile çok sayıda hafif
+  olay aynı kaza oranını verir; ayıran şey kayıp zaman ve ağırlık oranıdır.</li>
+  <li><b>Ölümlü kaza istatistik değildir.</b> Standardın kendisi mutlak sayının verilmesini ister.
+  Yüzde, büyük kadrolarda sıfıra yakın görünür ve olayın ağırlığını gizler; seyrek olaylar için yüz
+  bin çalışan tabanı daha okunabilirdir.</li>
+  <li><b>Eğitim katılım oranı yüksekken olay sayısı da yüksekse</b> soru eğitimin varlığı değil
+  içeriği ve zamanlamasıdır. Olay anındaki eğitim durumu kırılımı bu soruyu yanıtlar.</li>
+  <li><b>Kazasız süre göstergesi dikkatli kullanılır.</b> Rekor kırma isteği, küçük olayların
+  bildirilmemesine yol açabilir. Bu gösterge yalnızca bildirim kültürünün güçlü olduğu yerlerde
+  anlamlıdır ve tek başına ödüllendirme ölçütü yapılmamalıdır.</li>
+  <li><b>Küçük kadrolarda yüzdeler oynaktır.</b> Elli kişilik bir kuruluşta tek bir kaza %2 demektir;
+  mutlak sayıyı her zaman yanına koyun.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Standardın örnek tablolarında bir birim tutarsızlığı vardır.</b> Kaza sayılarını gösteren
+  tablonun üst bilgisinde de "saat cinsinden değerler" ifadesi yer alır; oysa satırlar burkulma,
+  uzuv kaybı ve kırık gibi <i>olay sayılarıdır</i>. Kendi tablonuzda birimi her satır için açıkça
+  yazın.</li>
+  <li><b>Örneklerde payda verilmez.</b> Standardın tabloları kayıp saat, kaza ve ölüm sayılarını
+  gösterir ama ortalama kadroyu ya da planlanan çalışma süresini vermez; dolayısıyla yüzdeler
+  örneklerden hesaplanamaz. Bu sayfadaki paydalar tutarlı bir örnek kurmak için eklenmiştir ve
+  kurgusaldır. Özellikle ölümlü kaza örnek değerleri, buradaki kadro varsayımıyla gerçekçi olmayan
+  yükseklikte bir oran üretir; kendi verinizle çalışın.</li>
+  <li>Metrikler yalnızca <b>kaydedilen</b> olayları sayar. Kayıt süreci yoksa ya da bildirim
+  caydırılıyorsa, düşük sayılar güvenliği değil kaydın eksikliğini gösterir.</li>
+  <li>Kayıp zaman tanımı bir gün veya vardiya eşiğine dayanır; eşiğin altındaki olaylar (ilk yardım
+  müdahaleleri, ramak kalalar) bu metrikte görünmez. Oysa öncü gösterge olarak en değerli veri
+  çoğu zaman oradadır.</li>
+  <li>Payda seçimi sonucu belirler: aynı olay sayısı, kadroya bölündüğünde ve çalışılan saate
+  bölündüğünde farklı eğilimler gösterebilir. Fazla mesainin arttığı dönemlerde kadro tabanlı oran
+  riski olduğundan düşük gösterir.</li>
+  <li>Yüklenici ve dış kaynak işgücü kapsama alınmazsa, riski en yüksek grup ölçümün dışında kalır.
+  Kapsam kararını raporda yazın.</li>
+  <li>Sıklık ve ağırlık oranları standardın parçası değildir; bu sayfada karşılaştırmayı
+  kolaylaştırmak için türetilmiş metrik olarak sunulur ve öyle etiketlenmiştir.</li>
+  <li>Kişisel sağlık verisi hassastır: kırılımlar kişiyi tanınabilir kılacak kadar küçülmemelidir.
+  Asgari grup büyüklüğü kuralı belirleyin.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>İSG birimi ve İK</td>
+      <td>Dört metrik, dokuz eksende kırılım, sıklık ve ağırlık oranı, olay kök nedenleri</td>
+      <td>Analitik rapor, aylık</td></tr>
+    <tr><td>Üst yönetim ve kurul</td>
+      <td>Eğilim, ölümlü kaza mutlak sayısı, kazasız süre, olayın maliyeti, hedefe göre durum</td>
+      <td>Skor kartı, dönemsel</td></tr>
+    <tr><td>Hat yönetimi</td>
+      <td>Kendi biriminin olay sayısı, vardiya ve eğitim durumu kırılımı</td>
+      <td>Birim panosu, aylık</td></tr>
+    <tr><td>Çalışan temsilcileri ve İSG kurulu</td>
+      <td>Olay türleri, alınan önlemler, eğitim katılımı ve zamanlaması</td>
+      <td>Kurul dosyası, mevzuata göre</td></tr>
+    <tr><td>Düzenleyici ve dış paydaş</td>
+      <td>Kaza ve ölüm sayıları ile oranları, büyük kuruluşlarda ayrıca kayıp zaman</td>
+      <td>Yasal bildirim, faaliyet ve sürdürülebilirlik raporu, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> kapsanan işgücü kategorileri, payda tanımı, birim (saat mi
+gün mü), ölçüm noktası, kırılım düzeyi ve karşılaştırma tabanı. Türkiye'de ayrıca 6331 sayılı İş Sağlığı
+ve Güvenliği Kanunu kapsamındaki iş kazası ve meslek hastalığı bildirim yükümlülükleri geçerlidir;
+bu metrikler o bildirimlerin yerine geçmez, onların üzerine kurulur.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması. Bu belgedeki dört metriğin tanımı ve
+  raporlama önerisi oradan gelir; kurumsal sağlık, güvenlik ve iyi olma hâli kümesinin parçasıdır.</li>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü; işgücü tanımı buradan alınır.</li>
+  <li><b>ISO 45001</b> — iş sağlığı ve güvenliği yönetim sistemi. Bu belge ölçer, 45001 sistemi
+  kurar; ikisi birlikte kullanılır.</li>
+  <li><b>ISO/TR 30406</b> — sürdürülebilir istihdam edilebilirlik; sağlık ve canlılık boyutu bu
+  metriklerle kesişir.</li>
+  <li><b>ISO/TS 30421</b> — devir ve elde tutma metrikleri; ağır olayların ardından gelen ayrılmalar
+  ve devamsızlık orada izlenir.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Kayıp zamanı saat mi gün mü olarak raporlamalıyım?</summary>
+<p>Standart ikisine de izin verir; koşul, payın ve paydanın aynı birimde olmasıdır. Vardiyalı
+üretimde saat daha hassastır, beyaz yakada gün daha okunaklıdır. Hangisini seçerseniz dönemler
+boyunca korunmalı ve raporda yazılmalıdır. İkisini aynı tabloda karıştırmayın.</p></details>
+
+<details><summary>Ortalama kadroyu nasıl hesaplamalıyım?</summary>
+<p>Standart yöntemi dayatmaz ama tutarlılık ister. Yaygın yöntem, dönem içindeki aylık kadroların
+ortalamasıdır. Kayıp zaman metriğinde payda kadro değil planlanan çalışma süresidir; bu ikisini
+karıştırmamak önemlidir. Tam zaman eşdeğeri mi yoksa kişi sayısı mı kullandığınızı da belirtin,
+çünkü yarı zamanlı ağırlıklı bir işgücünde ikisi belirgin biçimde ayrışır.</p></details>
+
+<details><summary>Yüklenici ve dış kaynak işgücü sayılmalı mı?</summary>
+<p>Standart, kurumun kendi faaliyetine uygun işgücü kategorilerini belgelemesini ve bunları düzenli
+gözden geçirmesini ister; yüklenici ve dış kaynak işgücü de bu kategoriler arasında sayılır. Uygulamada
+en sağlam yaklaşım iki seri raporlamaktır: yalnızca kadrolu işgücü ve toplam saha işgücü. Riski en
+yüksek işlerin çoğu zaman yüklenicilerde yapıldığını unutmayın.</p></details>
+
+<details><summary>Ramak kala olayları bu metriklerde nerede?</summary>
+<p>Bu dört metrikte yok; hepsi gerçekleşmiş sonuçları sayar, yani gecikmeli göstergelerdir. Ramak kala
+bildirimleri, denetim sayıları, düzeltici faaliyet kapanma süresi ve eğitim zamanlaması ise öncü
+göstergelerdir. Standardın eğitim metriği ve kazasız süre göstergesi bu tarafa en yakın olanlardır;
+kurum içi panonuza ramak kala bildirimlerini de ekleyin.</p></details>
+
+<details><summary>Kazasız gün sayısını hedef yapmalı mıyım?</summary>
+<p>Dikkatli olun. Rekor kırma isteği küçük olayların bildirilmemesine yol açabilir ve bu, metriği
+iyileştirirken güvenliği kötüleştirir. Kazasız süre bir iletişim ve farkındalık aracı olarak
+kullanılabilir; ödül sistemine tek başına bağlanmamalı, mutlaka bildirim sayısı ve ramak kala
+verisiyle birlikte izlenmelidir.</p></details>
+
+<details><summary>Eğitim oranı %100 çıkıyor ama olaylar sürüyor, ne yapmalıyım?</summary>
+<p>Katılım oranı yalnızca kaç kişinin salonda bulunduğunu ölçer. Standardın önerdiği ikinci adım
+zamanlama analizidir: eğitim yeni başlayanlara belgelenmiş süre içinde verildi mi, tazeleme eğitimleri
+zamanında tamamlandı mı? Üçüncü adım, olay anındaki eğitim durumu kırılımıdır. Olayların eğitimli
+kişilerde yoğunlaştığını görüyorsanız sorun içerikte, iş tasarımında ya da tempo baskısındadır.</p></details>
+
+<details><summary>Sıklık ve ağırlık oranı standartta yok, kullanabilir miyim?</summary>
+<p>Kullanabilirsiniz, ama etiketleyin. Bu sayfada da türetilmiş olarak işaretlidirler. Standardın dört
+metriği zorunlu asgari kümedir; sıklık ve ağırlık oranları sektör kıyaslamasında yaygın olduğu için
+yanlarına eklenir. Dış raporlamada hangi göstergenin standarttan, hangisinin kurum uygulamasından
+geldiğini ayırt edilebilir kılın.</p></details>
+
+<footer>
+  ISO/TS 24179:2020 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler, paydalar ve kod özgün olarak yazılmıştır. Türetilmiş
+  metrikler ayrıca işaretlenmiştir. Standardın kendisi telif korumalıdır ve bu sayfa onun yerine
+  geçmez; yasal bildirim yükümlülükleri için ulusal mevzuat esastır.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso24179_metrikler.py
+=====================
+ISO/TS 24179:2020 (Human resource management — Occupational health and safety
+metrics) çerçevesindeki iş sağlığı ve güvenliği (İSG) metriklerinin Python
+karşılığı.
+
+Standart, ISO 30414'ün "kurumsal sağlık, güvenlik ve iyi olma hâli" kümesini
+ayrıntılandırır ve dört metrik tanımlar. Dördü de aynı biçimi kullanır:
+
+    A = B / C × 100
+
+Değişen yalnızca B ile C'nin ne olduğudur:
+
+    1) Kayıp zaman   — B: kayıp çalışma süresi,  C: planlanan çalışma süresi
+    2) Kaza sayısı   — B: iş kazası sayısı,      C: ortalama kadro
+    3) Ölüm sayısı   — B: ölümlü kaza sayısı,    C: ortalama kadro
+    4) Eğitim oranı  — B: eğitim katılımcısı,    C: ortalama kadro
+
+Modül ayrıca standardın "önleyici programların başarısını göstermek" başlığı
+altında andığı kazasız süre göstergesini ve İSG uygulamasında yaygın olan
+sıklık/ağırlık oranlarını türetilmiş metrik olarak içerir.
+
+Kullanım:
+    from iso24179_metrikler import kaza_yuzdesi, siklik_orani
+    kaza_yuzdesi(50, 1200)          ->  4.166...
+    siklik_orani(50, 998_400)       -> 50.08
+
+Doğrudan çalıştırıldığında (python3 iso24179_metrikler.py) tüm fonksiyonlar
+örnek verilerle çalıştırılır ve sonuçlar tablo hâlinde yazdırılır.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 24179:2020'ye dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif
+korumalıdır. Türetilmiş metrikler ayrıca işaretlenmiştir.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Sequence
+
+__all__ = [
+    # standardın dört metriği
+    "yuzde", "kayip_zaman_yuzdesi", "kaza_yuzdesi", "olum_yuzdesi",
+    "egitim_yuzdesi",
+    # önleme ve türetilmiş göstergeler
+    "kazasiz_saat", "siklik_orani", "agirlik_orani", "yuz_bin_basina",
+    "kaza_maliyeti", "donem_degisimi",
+    # yardımcı
+    "Donem", "IsgTablosu", "ornek_tablo", "metrik_denetimi", "hesapla",
+    "METRIK_LISTESI",
+]
+
+
+# ---------------------------------------------------------------------------
+# 1) Standardın ortak formülü
+# ---------------------------------------------------------------------------
+
+def yuzde(b: float, c: float) -> float:
+    """Standardın dört metriğinde de kullanılan ortak biçim: A = B / C × 100."""
+    return 100 * b / c
+
+
+def kayip_zaman_yuzdesi(kayip_saat: float, planlanan_saat: float) -> float:
+    """İşle ilgili yaralanma, kaza ve hastalık nedeniyle kaybedilen çalışma süresi (%).
+
+    Kayıp zaman, ölüm, kalıcı iş göremezlik ya da bir gün veya vardiya ve
+    üzerinde iş kaybıyla sonuçlanan olayları kapsar. Çalışma süresi saat ya da
+    gün olarak ifade edilebilir; iki taraf da aynı birimde olmalıdır.
+    """
+    return yuzde(kayip_saat, planlanan_saat)
+
+
+def kaza_yuzdesi(kaza_sayisi: float, ortalama_kadro: float) -> float:
+    """İş kazasına uğrayan işgücünün payı (%). Payda ortalama kadrodur."""
+    return yuzde(kaza_sayisi, ortalama_kadro)
+
+
+def olum_yuzdesi(olum_sayisi: float, ortalama_kadro: float) -> float:
+    """İş kazası sonucu ölen işgücünün payı (%).
+
+    Standart, bu metriğin yüzdenin yanı sıra mutlak kişi sayısıyla da
+    verilmesini ister: yalnızca yüzde raporlamak, sayının etkisine karşı
+    duyarsızlaştırır.
+    """
+    return yuzde(olum_sayisi, ortalama_kadro)
+
+
+def egitim_yuzdesi(katilimci: float, ortalama_kadro: float) -> float:
+    """İSG eğitimine katılan çalışanların payı (%)."""
+    return yuzde(katilimci, ortalama_kadro)
+
+
+# ---------------------------------------------------------------------------
+# 2) Önleme ve türetilmiş göstergeler
+# ---------------------------------------------------------------------------
+
+def kazasiz_saat(gun: float, gunluk_calisan_saat: float) -> float:
+    """Son olaydan bu yana çalışılan toplam saat.
+
+    Standart, önleyici programların başarısını göstermek için son yaralanma,
+    kaza ya da hastalık tespitinden bu yana çalışılan saat sayısının
+    kullanılabileceğini belirtir.
+    """
+    return gun * gunluk_calisan_saat
+
+
+def siklik_orani(olay: float, calisilan_saat: float,
+                 taban: float = 1_000_000) -> float:
+    """Sıklık oranı (türetilmiş): taban çalışma saati başına olay sayısı.
+
+    Standardın parçası değildir; İSG uygulamasında yaygındır. Taban olarak
+    1.000.000 saat (LTIFR) ya da 200.000 saat kullanılır. Payda kadro değil
+    fiilen çalışılan saat olduğu için, kadro büyüklüğünden ve çalışma
+    süresinden bağımsız karşılaştırmaya izin verir.
+    """
+    return taban * olay / calisilan_saat
+
+
+def agirlik_orani(kayip_gun: float, calisilan_saat: float,
+                  taban: float = 1000) -> float:
+    """Ağırlık oranı (türetilmiş): taban çalışma saati başına kayıp gün.
+
+    Sıklık oranı olayın kaç kez olduğunu, ağırlık oranı ne kadar ağır
+    olduğunu gösterir. İkisi birlikte okunur: az sayıda ama ağır olay ile
+    çok sayıda hafif olay aynı sıklık oranını verebilir.
+    """
+    return taban * kayip_gun / calisilan_saat
+
+
+def yuz_bin_basina(olay: float, kadro: float) -> float:
+    """Yüz bin çalışan başına olay (türetilmiş).
+
+    Ölümlü kaza gibi seyrek olaylarda yüzde çok küçük çıkar ve okunamaz;
+    ulusal ve uluslararası istatistikler bu nedenle yüz bin çalışan tabanını
+    kullanır.
+    """
+    return 100_000 * olay / kadro
+
+
+def kaza_maliyeti(verimlilik_kaybi: float, kaybedilen_is: float,
+                  yedekleme: float, calisana_odeme: float,
+                  onarim: float, sigorta: float, hukuki: float) -> float:
+    """İş kazasının kuruma maliyeti.
+
+    Kalemler standardın kazaların izlenme gerekçesi olarak saydığı olumsuz
+    etkilerden alınmıştır: verimlilik kaybı, kaçan iş fırsatı, yerine
+    çalışanın ücreti ya da fazla mesai, çalışana yapılan geri ödemeler,
+    onarım–kiralama–yenileme giderleri, sigorta priminde değişim ve hukuki
+    giderler.
+    """
+    return (verimlilik_kaybi + kaybedilen_is + yedekleme + calisana_odeme
+            + onarim + sigorta + hukuki)
+
+
+def donem_degisimi(cari: float, onceki: float) -> float:
+    """Önceki döneme göre değişim (%). Negatif değer iyileşmedir."""
+    return 100 * (cari - onceki) / onceki
+
+
+# ---------------------------------------------------------------------------
+# 3) Yardımcı yapılar
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Donem:
+    """Bir ölçüm döneminin İSG verisi."""
+    ad: str
+    yaralanma_saat: float = 0.0
+    kaza_saat: float = 0.0
+    hastalik_saat: float = 0.0
+    kaza_sayisi: float = 0.0
+    olum_sayisi: float = 0.0
+    egitim_katilimci: float = 0.0
+    ortalama_kadro: float = 0.0
+    planlanan_saat: float = 0.0
+
+    @property
+    def toplam_kayip_saat(self) -> float:
+        return self.yaralanma_saat + self.kaza_saat + self.hastalik_saat
+
+    @property
+    def kayip_zaman_yuzde(self) -> float:
+        return kayip_zaman_yuzdesi(self.toplam_kayip_saat, self.planlanan_saat)
+
+    @property
+    def kaza_yuzde(self) -> float:
+        return kaza_yuzdesi(self.kaza_sayisi, self.ortalama_kadro)
+
+    @property
+    def olum_yuzde(self) -> float:
+        return olum_yuzdesi(self.olum_sayisi, self.ortalama_kadro)
+
+    @property
+    def egitim_yuzde(self) -> float:
+        return egitim_yuzdesi(self.egitim_katilimci, self.ortalama_kadro)
+
+    def ozet(self) -> dict:
+        return {
+            "toplam_kayip_saat": round(self.toplam_kayip_saat, 1),
+            "kayip_zaman_yuzde": round(self.kayip_zaman_yuzde, 4),
+            "kaza_yuzde": round(self.kaza_yuzde, 2),
+            "olum_yuzde": round(self.olum_yuzde, 3),
+            "olum_yuz_bin": round(yuz_bin_basina(self.olum_sayisi,
+                                                 self.ortalama_kadro), 1),
+            "egitim_yuzde": round(self.egitim_yuzde, 1),
+            "siklik_orani": round(siklik_orani(self.kaza_sayisi,
+                                               self.planlanan_saat), 2),
+        }
+
+
+@dataclass
+class IsgTablosu:
+    """Cari dönem ve karşılaştırma dönemlerinden oluşan tablo."""
+    donemler: list = field(default_factory=list)
+
+    def ekle(self, donem: Donem) -> "IsgTablosu":
+        self.donemler.append(donem)
+        return self
+
+    def egilim(self, alan: str) -> list:
+        """Bir alanın dönemler boyunca aldığı değerler (cari dönem başta)."""
+        return [getattr(d, alan) for d in self.donemler]
+
+    def karsilastirma(self) -> dict:
+        """Cari dönemin bir önceki dönemle karşılaştırması (% değişim)."""
+        if len(self.donemler) < 2:
+            return {}
+        c, o = self.donemler[0], self.donemler[1]
+        return {
+            "kayip_saat_degisim": round(
+                donem_degisimi(c.toplam_kayip_saat, o.toplam_kayip_saat), 1),
+            "kaza_degisim": round(
+                donem_degisimi(c.kaza_sayisi, o.kaza_sayisi), 1),
+            "olum_degisim": round(
+                donem_degisimi(c.olum_sayisi, o.olum_sayisi), 1),
+            "egitim_degisim": round(
+                donem_degisimi(c.egitim_yuzde, o.egitim_yuzde), 1),
+        }
+
+
+def ornek_tablo() -> IsgTablosu:
+    """Cari altı ay ve üç karşılaştırma dönemi.
+
+    Kayıp saat, kaza ve ölüm satırları standardın örnek tablolarındaki
+    değerlerdir; kadro, planlanan saat ve eğitim satırları tutarlı bir örnek
+    kurmak için eklenmiştir (standart bu paydaları vermez).
+    """
+    t = IsgTablosu()
+    veri = [
+        ("Cari 6 ay", 90, 87, 100, 50, 5, 1040, 1200, 998400),
+        ("Bir yıl önce", 85, 87, 90, 60, 7, 980, 1180, 981760),
+        ("İki yıl önce", 85, 80, 85, 55, 10, 900, 1150, 956800),
+        ("Üç yıl önce", 80, 70, 80, 85, 7, 850, 1200, 998400),
+    ]
+    for ad, yar, kaz, has, ks, os_, eg, kadro, saat in veri:
+        t.ekle(Donem(ad, yar, kaz, has, ks, os_, eg, kadro, saat))
+    return t
+
+
+def metrik_denetimi(kadro_kategorileri_tanimli: bool = False,
+                    kayit_sureci_var: bool = False,
+                    kirilim_var: bool = False,
+                    olum_mutlak_sayi: bool = False,
+                    egitim_zamanlamasi_izleniyor: bool = False,
+                    onceki_donem_var: bool = False) -> list:
+    """Bir İSG raporunun eksiklerini listeler.
+
+    Standardın mantığı: dört metrik toplulaştırılmış hâlde asgari düzeydir;
+    kırılım olmadan kök nedene inilemez ve müdahale tasarlanamaz.
+    """
+    uyarilar = []
+    if not kadro_kategorileri_tanimli:
+        uyarilar.append("İşgücü kategorileri (kadrolu, geçici, yüklenici, dış "
+                        "kaynak) tanımlı değil: metrik kimin kapsandığını "
+                        "söylemiyor.")
+    if not kayit_sureci_var:
+        uyarilar.append("Tüm İSG olaylarını kaydeden bir süreç ve prosedür yok: "
+                        "sayılar eksik toplanır, iyileşme yanılsaması doğar.")
+    if not kirilim_var:
+        uyarilar.append("Kırılım yok (birim, konum, ürün hattı, işlev, olay "
+                        "türü, çalışan kategorisi, günün saati, olay anındaki "
+                        "eğitim durumu): kök nedene inilemez.")
+    if not olum_mutlak_sayi:
+        uyarilar.append("Ölümlü kaza yalnızca yüzdeyle veriliyor: mutlak kişi "
+                        "sayısı olmadan rakam duyarsızlaştırır.")
+    if not egitim_zamanlamasi_izleniyor:
+        uyarilar.append("Eğitimin zamanlaması izlenmiyor: yeni başlayanların ve "
+                        "tazeleme eğitimlerinin belgelenmiş süre içinde "
+                        "tamamlanıp tamamlanmadığı bilinmiyor.")
+    if not onceki_donem_var:
+        uyarilar.append("Önceki dönem ve yıl karşılaştırması yok: standardın "
+                        "önerdiği karşılaştırma aralığı üç ilâ beş yıldır.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 4) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "kayip_zaman", "kayip_zaman_dagilim", "kaza_orani", "olum_orani",
+    "egitim_orani", "egitim_zamanlilik", "kazasiz_sure", "siklik_orani",
+    "agirlik_orani", "kaza_maliyeti", "donem_karsilastirma",
+]
+
+
+def _tl(x: float) -> str:
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "kayip_zaman":
+        d = kayip_zaman_yuzdesi(g["kayip_saat"], g["planlanan_saat"])
+        return {"deger": d, "ondalik": 3, "birim": "% kayıp zaman",
+                "ifade": f"({g['kayip_saat']:g} ÷ {g['planlanan_saat']:g}) × 100",
+                "ayrinti": [["Kayıp gün karşılığı (8 saat)",
+                             round(g["kayip_saat"] / 8, 1)],
+                            ["Çalışan başına kayıp saat",
+                             round(g["kayip_saat"] / g["ortalama_kadro"], 2)],
+                            ["100 çalışan başına kayıp gün",
+                             round(100 * g["kayip_saat"] / 8 / g["ortalama_kadro"], 1)]]}
+
+    if metrik == "kayip_zaman_dagilim":
+        t = g["yaralanma"] + g["kaza"] + g["hastalik"]
+        return {"deger": t, "ondalik": 0, "birim": "saat",
+                "ifade": f"{g['yaralanma']:g} + {g['kaza']:g} + {g['hastalik']:g}",
+                "ayrinti": [["Yaralanmanın payı (%)", round(100 * g["yaralanma"] / t, 1)],
+                            ["Kazanın payı (%)", round(100 * g["kaza"] / t, 1)],
+                            ["Hastalığın payı (%)", round(100 * g["hastalik"] / t, 1)],
+                            ["Planlanan süreye oranı (%)",
+                             round(kayip_zaman_yuzdesi(t, g["planlanan_saat"]), 3)]]}
+
+    if metrik == "kaza_orani":
+        d = kaza_yuzdesi(g["kaza_sayisi"], g["ortalama_kadro"])
+        return {"deger": d, "ondalik": 2, "birim": "% işgücü",
+                "ifade": f"({g['kaza_sayisi']:g} ÷ {g['ortalama_kadro']:g}) × 100",
+                "ayrinti": [["100 çalışan başına kaza", round(d, 2)],
+                            ["Kaza başına ortalama kayıp saat",
+                             round(g["kayip_saat"] / g["kaza_sayisi"], 1)],
+                            ["Sıklık oranı (1.000.000 saat)",
+                             round(siklik_orani(g["kaza_sayisi"], g["calisilan_saat"]), 2)]]}
+
+    if metrik == "olum_orani":
+        d = olum_yuzdesi(g["olum_sayisi"], g["ortalama_kadro"])
+        return {"deger": d, "ondalik": 3, "birim": "% işgücü",
+                "ifade": f"({g['olum_sayisi']:g} ÷ {g['ortalama_kadro']:g}) × 100",
+                "ayrinti": [["Ölen kişi sayısı (mutlak)", g["olum_sayisi"]],
+                            ["100.000 çalışan başına",
+                             round(yuz_bin_basina(g["olum_sayisi"], g["ortalama_kadro"]), 1)],
+                            ["Ölümlü kazanın tüm kazalara oranı (%)",
+                             round(100 * g["olum_sayisi"] / g["kaza_sayisi"], 1)]]}
+
+    if metrik == "egitim_orani":
+        d = egitim_yuzdesi(g["katilimci"], g["ortalama_kadro"])
+        return {"deger": d, "ondalik": 1, "birim": "% çalışan",
+                "ifade": f"({g['katilimci']:g} ÷ {g['ortalama_kadro']:g}) × 100",
+                "ayrinti": [["Eğitim almamış çalışan",
+                             round(g["ortalama_kadro"] - g["katilimci"])],
+                            ["Eğitim almamışların payı (%)", round(100 - d, 1)],
+                            ["Kişi başına eğitim saati",
+                             round(g["toplam_egitim_saati"] / g["ortalama_kadro"], 2)]]}
+
+    if metrik == "egitim_zamanlilik":
+        d = yuzde(g["zamaninda"], g["yeni_calisan"])
+        return {"deger": d, "ondalik": 1, "birim": "% zamanında",
+                "ifade": f"({g['zamaninda']:g} ÷ {g['yeni_calisan']:g}) × 100",
+                "ayrinti": [["Süreyi aşan yeni çalışan",
+                             g["yeni_calisan"] - g["zamaninda"]],
+                            ["Ortalama gecikme (gün)", g["ortalama_gecikme"]],
+                            ["Belgelenmiş süre (gün)", g["hedef_gun"]]]}
+
+    if metrik == "kazasiz_sure":
+        saat = kazasiz_saat(g["gun"], g["gunluk_calisan_saat"])
+        return {"deger": saat, "ondalik": 0, "birim": "çalışma saati",
+                "ifade": f"{g['gun']:g} × {g['gunluk_calisan_saat']:g}",
+                "ayrinti": [["Kazasız gün", g["gun"]],
+                            ["Hafta karşılığı", round(g["gun"] / 7, 1)],
+                            ["Önceki en iyi süreye fark (gün)",
+                             g["gun"] - g["onceki_rekor"]]]}
+
+    if metrik == "siklik_orani":
+        d = siklik_orani(g["olay"], g["calisilan_saat"])
+        return {"deger": d, "ondalik": 2, "birim": "olay / 1.000.000 saat",
+                "ifade": f"(1.000.000 × {g['olay']:g}) ÷ {g['calisilan_saat']:g}",
+                "ayrinti": [["200.000 saat tabanıyla",
+                             round(siklik_orani(g["olay"], g["calisilan_saat"], 200_000), 2)],
+                            ["Kadro başına oran (%)",
+                             round(kaza_yuzdesi(g["olay"], g["ortalama_kadro"]), 2)],
+                            ["Çalışan başına yıllık saat",
+                             round(g["calisilan_saat"] / g["ortalama_kadro"])]]}
+
+    if metrik == "agirlik_orani":
+        d = agirlik_orani(g["kayip_gun"], g["calisilan_saat"])
+        return {"deger": d, "ondalik": 3, "birim": "kayıp gün / 1.000 saat",
+                "ifade": f"(1.000 × {g['kayip_gun']:g}) ÷ {g['calisilan_saat']:g}",
+                "ayrinti": [["Toplam kayıp gün", g["kayip_gun"]],
+                            ["Olay başına ortalama kayıp gün",
+                             round(g["kayip_gun"] / g["olay"], 1)],
+                            ["Sıklık oranı (1.000.000 saat)",
+                             round(siklik_orani(g["olay"], g["calisilan_saat"]), 2)]]}
+
+    if metrik == "kaza_maliyeti":
+        t = kaza_maliyeti(g["verimlilik_kaybi"], g["kaybedilen_is"],
+                          g["yedekleme"], g["calisana_odeme"], g["onarim"],
+                          g["sigorta"], g["hukuki"])
+        return {"deger": t, "ondalik": 0, "birim": "TL",
+                "ifade": (f"{g['verimlilik_kaybi']:g} + {g['kaybedilen_is']:g} + "
+                          f"{g['yedekleme']:g} + {g['calisana_odeme']:g} + "
+                          f"{g['onarim']:g} + {g['sigorta']:g} + {g['hukuki']:g}"),
+                "ayrinti": [["Olay başına maliyet (TL)", round(t / g["olay"])],
+                            ["Doğrudan ödemelerin payı (%)",
+                             round(100 * (g["calisana_odeme"] + g["onarim"]
+                                          + g["hukuki"]) / t, 1)],
+                            ["Verimlilik ve iş kaybının payı (%)",
+                             round(100 * (g["verimlilik_kaybi"]
+                                          + g["kaybedilen_is"]) / t, 1)]]}
+
+    if metrik == "donem_karsilastirma":
+        d = donem_degisimi(g["cari"], g["onceki"])
+        uc = (g["onceki"] + g["iki_yil"] + g["uc_yil"]) / 3
+        return {"deger": d, "ondalik": 1, "birim": "% değişim",
+                "ifade": f"(({g['cari']:g} − {g['onceki']:g}) ÷ {g['onceki']:g}) × 100",
+                "ayrinti": [["Üç dönemlik ortalama", round(uc, 1)],
+                            ["Cari dönemin ortalamadan farkı (%)",
+                             round(donem_degisimi(g["cari"], uc), 1)],
+                            ["Üç yıl öncesine göre değişim (%)",
+                             round(donem_degisimi(g["cari"], g["uc_yil"]), 1)]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 5) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _demo() -> None:
+    cizgi = "-" * 70
+    print("ISO/TS 24179 — doğrulama çıktısı")
+    print(cizgi)
+
+    t = ornek_tablo()
+    print("Altı aylık analiz ve karşılaştırma")
+    print(f"{'Dönem':<15}{'Kayıp saat':>11}{'Kayıp %':>9}{'Kaza':>6}"
+          f"{'Kaza %':>8}{'Ölüm':>6}{'Eğitim %':>10}")
+    for d in t.donemler:
+        print(f"{d.ad:<15}{d.toplam_kayip_saat:>11.0f}{d.kayip_zaman_yuzde:>9.3f}"
+              f"{d.kaza_sayisi:>6.0f}{d.kaza_yuzde:>8.2f}{d.olum_sayisi:>6.0f}"
+              f"{d.egitim_yuzde:>10.1f}")
+    print(cizgi)
+
+    print("Cari dönem özeti")
+    for k, v in t.donemler[0].ozet().items():
+        print(f"  {k:<20}: {v}")
+    print("Önceki döneme göre değişim (%)")
+    for k, v in t.karsilastirma().items():
+        print(f"  {k:<20}: {v:+}")
+    print(cizgi)
+
+    print(f"Sıklık oranı (1.000.000 saat) : {siklik_orani(50, 998_400):.2f}")
+    print(f"  200.000 saat tabanıyla      : {siklik_orani(50, 998_400, 200_000):.2f}")
+    print(f"Ağırlık oranı (1.000 saat)    : {agirlik_orani(35, 998_400):.3f}")
+    print(f"100.000 çalışan başına ölüm   : {yuz_bin_basina(5, 1200):.1f}")
+    print(f"Kazasız sürede çalışılan saat : {_tl(kazasiz_saat(128, 9600))}")
+    maliyet = kaza_maliyeti(180_000, 250_000, 120_000, 60_000, 90_000, 45_000, 75_000)
+    print(f"Bir kazanın maliyeti          : {_tl(maliyet)} TL")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("kaza_orani", kaza_sayisi=50, ortalama_kadro=1200,
+                  kayip_saat=87, calisilan_saat=998_400))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir ön koşulu sağlamayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   c: raporlama bağlamı (bi büyük-iç, bd büyük-dış, ki KOBİ-iç, kd KOBİ-dış)
+   t: aile (v kayıp zaman / o kaza ve ölüm / e eğitim ve önleme / k kırılım ve bağlam)
+   k: kayıt türü (temel, tur, kirilim, onleme, ctx, pre)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   ========================================================= */
+var METRICS = [
+ {g:"Kayıp zaman", t:"v", items:[
+  {n:"Toplam kayıp çalışma süresi", k:"temel", iso:1, calc:"kayip_zaman_dagilim", c:["bi","bd"], d:"Ölüm, kalıcı iş göremezlik ya da bir gün/vardiya ve üzeri iş kaybı"},
+  {n:"Kayıp zaman oranı (%)", k:"temel", iso:1, calc:"kayip_zaman", c:["bi","bd"], d:"A = kayıp süre ÷ planlanan çalışma süresi × 100"},
+  {n:"Yaralanma kaynaklı kayıp saat", k:"kirilim", c:["bi"], d:"Kayıp zamanın üç bileşeninden biri"},
+  {n:"Kaza kaynaklı kayıp saat", k:"kirilim", c:["bi"], d:"Kayıp zamanın üç bileşeninden biri"},
+  {n:"Hastalık kaynaklı kayıp saat", k:"kirilim", c:["bi"], d:"Kayıp zamanın üç bileşeninden biri"},
+  {n:"Ağırlık oranı", k:"tur", calc:"agirlik_orani", c:["bi"], d:"Bin çalışma saati başına kayıp gün; olayın ağırlığını gösterir"},
+  {n:"Kayıp zamanın dönemler arası değişimi", k:"temel", calc:"donem_karsilastirma", c:["bi","bd"], d:"Önceki dönem ve geçmiş üç–beş yılla karşılaştırma"}
+ ]},
+ {g:"Kaza ve ölüm", t:"o", items:[
+  {n:"İş kazası sayısı", k:"temel", iso:1, c:["bi","bd","ki","kd"], d:"Ölçüm döneminde ölçütü karşılayan tüm iş kazaları"},
+  {n:"İş kazası oranı (%)", k:"temel", iso:1, calc:"kaza_orani", c:["bi","bd","ki","kd"], d:"A = kaza sayısı ÷ ortalama kadro × 100"},
+  {n:"Kaza türüne göre kırılım", k:"kirilim", c:["bi","ki"], d:"Burkulma ve zorlanma, uzuv kaybı, kırık gibi türler"},
+  {n:"Ölümlü kaza sayısı (mutlak)", k:"temel", iso:1, c:["bi","bd","ki","kd"], d:"Standart, yüzdenin yanında mutlak kişi sayısını da ister"},
+  {n:"Ölümlü kaza oranı (%)", k:"temel", iso:1, calc:"olum_orani", c:["bi","bd","ki","kd"], d:"A = ölen kişi sayısı ÷ ortalama kadro × 100"},
+  {n:"100.000 çalışan başına ölüm", k:"tur", calc:"olum_orani", c:["bi","bd"], d:"Seyrek olaylarda yüzde okunamaz; ulusal istatistik tabanı"},
+  {n:"Sıklık oranı", k:"tur", calc:"siklik_orani", c:["bi"], d:"Milyon çalışma saati başına olay; kadrodan bağımsız kıyaslama"},
+  {n:"İş kazasının kuruma maliyeti", k:"tur", calc:"kaza_maliyeti", c:["bi","ki"], d:"Verimlilik kaybı, kaçan iş, yedekleme, onarım, sigorta, hukuki gider"}
+ ]},
+ {g:"Eğitim ve önleme", t:"e", items:[
+  {n:"İSG eğitimine katılan çalışan oranı", k:"temel", iso:1, calc:"egitim_orani", c:["bi","ki"], d:"A = eğitim katılımcısı ÷ ortalama kadro × 100"},
+  {n:"Yeni başlayanların eğitim zamanlılığı", k:"onleme", calc:"egitim_zamanlilik", c:["bi","ki"], d:"Belgelenmiş süre içinde eğitim alanların payı"},
+  {n:"Tazeleme eğitiminin süresinde tamamlanması", k:"onleme", c:["bi","ki"], d:"Belgelenmiş gerekliliklere göre izlenir"},
+  {n:"Eğitim zamanlaması gerekliliklerinin belgelenmesi", k:"onleme", c:["bi","ki"], d:"Örneğin yeni başlayanlar için üç hafta kuralı"},
+  {n:"Son olaydan bu yana çalışılan süre", k:"onleme", calc:"kazasiz_sure", c:["bi","bd","ki","kd"], d:"Önleyici programın başarısını gösteren sayaç"},
+  {n:"Olay anındaki eğitim durumu", k:"kirilim", c:["bi","ki"], d:"Kişi eğitimli miydi, tazeleme zamanı geçmiş miydi?"}
+ ]},
+ {g:"Kırılım eksenleri, bağlam ve öngörü", t:"k", items:[
+  {n:"İşgücü kategorileri", k:"kirilim", c:["bi","bd","ki","kd"], d:"Kadrolu, geçici, yüklenici, dış kaynak; belgelenir ve düzenli güncellenir"},
+  {n:"Olay kayıt süreci ve prosedürü", k:"onleme", c:["bi","bd","ki","kd"], d:"Tüm İSG olaylarını yakalayan kayıt ve yönetim düzeni"},
+  {n:"Birim ya da masraf merkezi hiyerarşisi", k:"kirilim", c:["bi","ki"], d:"Hangi organizasyon biriminde?"},
+  {n:"Konum", k:"kirilim", c:["bi","ki"], d:"Hangi tesis, hangi saha?"},
+  {n:"Ürün hattı", k:"kirilim", c:["bi","ki"], d:"Hangi üretim hattı?"},
+  {n:"İşlev", k:"kirilim", c:["bi","ki"], d:"Bakım, lojistik, üretim gibi işlevler"},
+  {n:"Olay türü", k:"kirilim", c:["bi","ki"], d:"Olayın niteliği"},
+  {n:"Olay alt kümesi", k:"kirilim", c:["bi","ki"], d:"Tür içindeki alt kategori"},
+  {n:"Günün saati", k:"kirilim", c:["bi","ki"], d:"Vardiya ve mesainin kaçıncı saati"},
+  {n:"Tam zaman eşdeğeri ve kadro", k:"ctx", c:["bi","bd","ki","kd"], d:"Kadro, metriğin anlamını değiştirecek kadar değişti mi?"},
+  {n:"Üretim artışı ya da ürün genişlemesi", k:"ctx", c:["bi","ki"], d:"Maruziyet ve tempo değişir"},
+  {n:"Yeniden yapılanma", k:"ctx", c:["bi","ki"], d:"Deneyimli işgücü ve rutinler değişir"},
+  {n:"İşgücünün eğitimine yönelik çalışmalar", k:"ctx", c:["bi","ki"], d:"Sayıların iyileşmesinin olası nedeni"},
+  {n:"Kültürel değişim (olumlu ya da olumsuz)", k:"ctx", c:["bi","ki"], d:"Bildirim davranışını doğrudan etkiler"},
+  {n:"Kuşak bakış açıları", k:"ctx", c:["bi","ki"], d:"Risk algısı ve bildirim eğilimi farklılaşır"},
+  {n:"Raporlamayı artıran toplumsal farkındalık", k:"ctx", c:["bi","bd","ki","kd"], d:"Artan sayı, artan riskle aynı şey değildir"},
+  {n:"Sektör beklentisi", k:"ctx", c:["bi","bd","ki","kd"], d:"Kıyaslamanın anlamlı olduğu aralığı belirler"},
+  {n:"Ekonomik döngü (daralma ya da genişleme)", k:"ctx", c:["bi","bd","ki","kd"], d:"Fazla mesai, tempo ve yatırım düzeyi üzerinden etkiler"},
+  {n:"Planlanan yapısal ve kadro değişiklikleri", k:"pre", c:["bi","ki"], d:"Bilinen ve beklenen olaylar üzerinden öngörü"},
+  {n:"Yaklaşan iş, işlev ya da ürün değişiklikleri", k:"pre", c:["bi","ki"], d:"Yeni süreç, yeni risk"},
+  {n:"Satın alma ve birleşmeler", k:"pre", c:["bi","bd","ki","kd"], d:"Farklı güvenlik kültürlerinin birleşmesi"},
+  {n:"İşgücü farkındalığı ve eğitimi", k:"pre", c:["bi","ki"], d:"Gelecek dönemin sayılarını aşağı çeker"},
+  {n:"Siyasi, sosyal, çevresel ve yasal dinamikler", k:"pre", c:["bi","bd","ki","kd"], d:"Mevzuat değişikliği ve denetim yoğunluğu"},
+  {n:"Sektörel etkiler", k:"pre", c:["bi","bd","ki","kd"], d:"Sektöre özgü risk profili değişimi"}
+ ]}
+];
+
+var SUTUN = ["bi","bd","ki","kd"];
+var AILE_AD = {v:"kayıp zaman", o:"kaza ve ölüm", e:"eğitim ve önleme", k:"kırılım ve bağlam"};
+var TUR_AD = {temel:"standardın metriği", tur:"türetilmiş", kirilim:"kırılım ekseni",
+              onleme:"önleme / ön koşul", ctx:"bağlam etkeni", pre:"öngörü etkeni"};
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fr = document.getElementById("fRep").value;    /* i | d */
+  var fs = document.getElementById("fSize").value;   /* b | k */
+  var ft = document.getElementById("fType").value;
+  var fk = document.getElementById("fKind").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fr && !m.c.some(function(x){ return x.charAt(1) === fr; })) return;
+      if(fs && !m.c.some(function(x){ return x.charAt(0) === fs; })) return;
+      if(fk && m.k !== fk) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = SUTUN.map(function(s){
+        if(m.c.indexOf(s) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 ' <span class="tag k">' + TUR_AD[m.k] + '</span>' +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="5">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="5">Bu filtre birleşimiyle eşleşen kayıt yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve etken gösteriliyor.";
+}
+["fRep","fSize","fType","fKind","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) DÖNEM KARŞILAŞTIRMA TABLOSU
+   ========================================================= */
+var DONEM_AD = ["Cari 6 ay","Bir yıl önce","İki yıl önce","Üç yıl önce"];
+var SATIRLAR = [
+  {sep:"Kayıp zaman (saat)"},
+  {k:"yaralanma_saat", l:"Yaralanma kaynaklı kayıp saat"},
+  {k:"kaza_saat",      l:"Kaza kaynaklı kayıp saat"},
+  {k:"hastalik_saat",  l:"Hastalık kaynaklı kayıp saat"},
+  {d:"toplam",         l:"Toplam kayıp saat", dec:0},
+  {sep:"Olay sayısı"},
+  {k:"kaza_sayisi",    l:"İş kazası sayısı"},
+  {k:"olum_sayisi",    l:"Ölümlü kaza (kişi)"},
+  {sep:"Eğitim ve kadro"},
+  {k:"egitim_katilimci", l:"İSG eğitimi katılımcısı"},
+  {k:"ortalama_kadro",   l:"Ortalama kadro"},
+  {k:"planlanan_saat",   l:"Planlanan çalışma saati"},
+  {sep:"Hesaplanan metrikler"},
+  {d:"kayip_yuzde",  l:"Kayıp zaman oranı (%)", dec:3},
+  {d:"kaza_yuzde",   l:"İş kazası oranı (%)", dec:2},
+  {d:"olum_yuzde",   l:"Ölümlü kaza oranı (%)", dec:3},
+  {d:"olum_yuzbin",  l:"100.000 çalışan başına ölüm", dec:1},
+  {d:"egitim_yuzde", l:"Eğitim katılım oranı (%)", dec:1},
+  {d:"siklik",       l:"Sıklık oranı (1.000.000 saat)", dec:2}
+];
+var ORNEK_DONEM = [
+  {yaralanma_saat:90, kaza_saat:87, hastalik_saat:100, kaza_sayisi:50, olum_sayisi:5,
+   egitim_katilimci:1040, ortalama_kadro:1200, planlanan_saat:998400},
+  {yaralanma_saat:85, kaza_saat:87, hastalik_saat:90,  kaza_sayisi:60, olum_sayisi:7,
+   egitim_katilimci:980,  ortalama_kadro:1180, planlanan_saat:981760},
+  {yaralanma_saat:85, kaza_saat:80, hastalik_saat:85,  kaza_sayisi:55, olum_sayisi:10,
+   egitim_katilimci:900,  ortalama_kadro:1150, planlanan_saat:956800},
+  {yaralanma_saat:80, kaza_saat:70, hastalik_saat:80,  kaza_sayisi:85, olum_sayisi:7,
+   egitim_katilimci:850,  ortalama_kadro:1200, planlanan_saat:998400}
+];
+
+function buildPeriodTable(){
+  var html = "";
+  SATIRLAR.forEach(function(r, ri){
+    if(r.sep){
+      html += '<tr class="sep"><td colspan="5">' + r.sep + '</td></tr>';
+      return;
+    }
+    var hucre = "";
+    for(var p=0;p<4;p++){
+      hucre += r.k
+        ? '<td><input type="number" step="any" min="0" id="t_' + r.k + '_' + p + '"></td>'
+        : '<td class="calc" id="t_' + r.d + '_' + p + '">—</td>';
+    }
+    html += '<tr' + (r.d ? ' class="derived"' : '') + '><td>' + r.l + '</td>' + hucre + '</tr>';
+  });
+  document.getElementById("tBody").innerHTML = html;
+  document.getElementById("tBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computePeriods);
+  });
+}
+
+function tVal(k, p){
+  var el = document.getElementById("t_" + k + "_" + p);
+  var x = el && el.value !== "" ? parseFloat(el.value) : NaN;
+  return isNaN(x) ? null : x;
+}
+
+var DONEM = [];
+
+function computePeriods(){
+  DONEM = [];
+  for(var p=0;p<4;p++){
+    var v = {};
+    var dolu = false;
+    SATIRLAR.forEach(function(r){
+      if(!r.k) return;
+      var x = tVal(r.k, p);
+      if(x !== null) dolu = true;
+      v[r.k] = x;
+    });
+    if(!dolu){ DONEM.push(null); continue; }
+
+    var toplam = (v.yaralanma_saat || 0) + (v.kaza_saat || 0) + (v.hastalik_saat || 0);
+    var kadro = v.ortalama_kadro, saat = v.planlanan_saat;
+    v.toplam      = toplam;
+    v.kayip_yuzde = (saat > 0) ? 100 * toplam / saat : null;
+    v.kaza_yuzde  = (kadro > 0 && v.kaza_sayisi !== null) ? 100 * v.kaza_sayisi / kadro : null;
+    v.olum_yuzde  = (kadro > 0 && v.olum_sayisi !== null) ? 100 * v.olum_sayisi / kadro : null;
+    v.olum_yuzbin = (kadro > 0 && v.olum_sayisi !== null) ? 100000 * v.olum_sayisi / kadro : null;
+    v.egitim_yuzde = (kadro > 0 && v.egitim_katilimci !== null)
+      ? 100 * v.egitim_katilimci / kadro : null;
+    v.siklik = (saat > 0 && v.kaza_sayisi !== null) ? 1000000 * v.kaza_sayisi / saat : null;
+    DONEM.push(v);
+  }
+
+  SATIRLAR.forEach(function(r){
+    if(!r.d) return;
+    for(var p=0;p<4;p++){
+      var el = document.getElementById("t_" + r.d + "_" + p);
+      var v = DONEM[p];
+      var x = v ? v[r.d] : null;
+      el.textContent = (x === null || x === undefined || !isFinite(x))
+        ? "—"
+        : x.toLocaleString("tr-TR", {minimumFractionDigits:r.dec, maximumFractionDigits:r.dec});
+    }
+  });
+
+  renderPeriodCards();
+}
+
+function trendEtiket(cari, onceki, tersYonIyi){
+  if(cari === null || onceki === null || !onceki) return "";
+  var d = 100 * (cari - onceki) / onceki;
+  if(Math.abs(d) < 0.05) return '<i>önceki dönemle aynı</i>';
+  var artis = d > 0;
+  var iyi = tersYonIyi ? artis : !artis;
+  return '<i class="' + (iyi ? "down" : "up") + '">' + (artis ? "▲ " : "▼ ") +
+         Math.abs(d).toLocaleString("tr-TR", {maximumFractionDigits:1}) + " % önceki döneme göre</i>";
+}
+
+function renderPeriodCards(){
+  var kart = document.getElementById("tCards");
+  var c = DONEM[0], o = DONEM[1];
+  if(!c){
+    kart.innerHTML = "";
+    document.getElementById("tNot").textContent =
+      "Tabloya veri girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+  var f = function(x, d){
+    return (x === null || !isFinite(x)) ? "—"
+      : x.toLocaleString("tr-TR", {minimumFractionDigits:d, maximumFractionDigits:d});
+  };
+  kart.innerHTML =
+    '<div class="card"><b>' + f(c.toplam, 0) + '</b><span>Toplam kayıp saat</span>' +
+      trendEtiket(c.toplam, o ? o.toplam : null, false) + '</div>' +
+    '<div class="card warn"><b>' + f(c.kaza_yuzde, 2) + ' %</b><span>İş kazası oranı</span>' +
+      trendEtiket(c.kaza_yuzde, o ? o.kaza_yuzde : null, false) + '</div>' +
+    '<div class="card warn"><b>' + f(c.olum_sayisi, 0) + '</b><span>Ölümlü kaza (kişi)</span>' +
+      trendEtiket(c.olum_sayisi, o ? o.olum_sayisi : null, false) + '</div>' +
+    '<div class="card alt"><b>' + f(c.egitim_yuzde, 1) + ' %</b><span>İSG eğitimi katılımı</span>' +
+      trendEtiket(c.egitim_yuzde, o ? o.egitim_yuzde : null, true) + '</div>' +
+    '<div class="card"><b>' + f(c.siklik, 2) + '</b><span>Sıklık oranı (1.000.000 saat)</span>' +
+      trendEtiket(c.siklik, o ? o.siklik : null, false) + '</div>';
+
+  var not = "";
+  if(c.olum_sayisi > 0){
+    not += "Dönemde " + c.olum_sayisi + " ölümlü kaza var; standart bu sayının yüzdeyle birlikte " +
+           "mutlak olarak da raporlanmasını ister. ";
+  }
+  if(o && c.kaza_sayisi !== null && o.kaza_sayisi){
+    var kd = 100 * (c.kaza_sayisi - o.kaza_sayisi) / o.kaza_sayisi;
+    var td = (o.toplam && c.toplam !== null) ? 100 * (c.toplam - o.toplam) / o.toplam : null;
+    if(td !== null && kd < 0 && td > 0){
+      not += "Kaza sayısı düşerken kayıp saat artmış: olaylar azalmış ama ağırlaşmış olabilir; " +
+             "ağırlık oranına bakın. ";
+    }
+  }
+  if(c.egitim_yuzde !== null && c.egitim_yuzde > 80 && c.kaza_yuzde !== null && c.kaza_yuzde > 3){
+    not += "Eğitim katılımı yüksek ama kaza oranı da yüksek: katılım yerine eğitimin zamanlamasını " +
+           "ve olay anındaki eğitim durumunu inceleyin. ";
+  }
+  if(!not) not = "Sayıları bağlam etkenleriyle (kadro değişimi, üretim hacmi, kayıt disiplini) " +
+                 "birlikte yorumlayın.";
+  document.getElementById("tNot").textContent = not;
+}
+
+function loadPeriodExample(){
+  for(var p=0;p<4;p++){
+    SATIRLAR.forEach(function(r){
+      if(!r.k) return;
+      document.getElementById("t_" + r.k + "_" + p).value = ORNEK_DONEM[p][r.k];
+    });
+  }
+  computePeriods();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadPeriodExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  document.getElementById("tBody").querySelectorAll("input").forEach(function(el){ el.value = ""; });
+  computePeriods();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var basliklar = ["Satir"].concat(DONEM_AD).join(";");
+  var satir = [basliklar];
+  SATIRLAR.forEach(function(r){
+    if(r.sep){ satir.push(r.sep + ";;;;"); return; }
+    var hucre = [];
+    for(var p=0;p<4;p++){
+      var v = DONEM[p];
+      var x = r.k ? tVal(r.k, p) : (v ? v[r.d] : null);
+      hucre.push((x === null || x === undefined || !isFinite(x)) ? ""
+                 : (r.d ? (+x).toFixed(r.dec) : x));
+    }
+    satir.push([r.l].concat(hucre).join(";"));
+  });
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso24179_donem_karsilastirma.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+var CALC = [
+ {id:"kayip_zaman", name:"Kayıp zaman oranı", grp:"Kayıp zaman",
+  formula:"A = (Kayıp çalışma süresi &divide; Planlanan çalışma süresi) &times; 100",
+  note:"Kayıp zaman; ölüm, kalıcı iş göremezlik ya da bir gün veya vardiya ve üzerinde iş kaybıyla sonuçlanan olayları kapsar. Pay ve payda aynı birimde olmalıdır (saat ya da gün).",
+  fields:[{k:"kayip_saat",l:"Kayıp çalışma saati",v:277},
+          {k:"planlanan_saat",l:"Planlanan çalışma saati",v:998400},
+          {k:"ortalama_kadro",l:"Ortalama kadro",v:1200}],
+  unit:"% kayıp zaman",
+  py:"kayip_zaman_yuzdesi(kayip_saat=277, planlanan_saat=998_400)",
+  calc:function(v){ var d=100*v.kayip_saat/v.planlanan_saat;
+    return {value:d, dec:3, expl:"(" + v.kayip_saat + " ÷ " + v.planlanan_saat + ") × 100",
+      detail:[["Kayıp gün karşılığı (8 saat)", +(v.kayip_saat/8).toFixed(1)],
+              ["Çalışan başına kayıp saat", +(v.kayip_saat/v.ortalama_kadro).toFixed(2)],
+              ["100 çalışan başına kayıp gün",
+               +(100*v.kayip_saat/8/v.ortalama_kadro).toFixed(1)]]}; },
+  bands:[[1,"bad","Planlanan sürenin yüzde birinden fazlası kayıp; olayların ağırlığını ve kök nedenini inceleyin."],
+         [0.3,"warn","Kayda değer bir kayıp var; üç bileşenin (yaralanma, kaza, hastalık) hangisinin ağır bastığına bakın."],
+         [0,"ok","Kayıp oranı düşük; kayıt sürecinin tüm olayları yakaladığından emin olun."]]},
+
+ {id:"kayip_zaman_dagilim", name:"Kayıp zamanın bileşenleri", grp:"Kayıp zaman",
+  formula:"Toplam kayıp saat = Yaralanma + Kaza + Hastalık",
+  note:"Üç bileşen ayrı izlenir: hastalık kaynaklı kayıp artıyorsa müdahale mühendislik kontrolünde değil, işyeri hekimliği ve maruziyet yönetimindedir.",
+  fields:[{k:"yaralanma",l:"Yaralanma kaynaklı (saat)",v:90},
+          {k:"kaza",l:"Kaza kaynaklı (saat)",v:87},
+          {k:"hastalik",l:"Hastalık kaynaklı (saat)",v:100},
+          {k:"planlanan_saat",l:"Planlanan çalışma saati",v:998400}],
+  unit:"saat",
+  py:'hesapla("kayip_zaman_dagilim", yaralanma=90, kaza=87, hastalik=100, planlanan_saat=998_400)',
+  calc:function(v){ var t=v.yaralanma+v.kaza+v.hastalik;
+    return {value:t, dec:0, expl:v.yaralanma + " + " + v.kaza + " + " + v.hastalik,
+      detail:[["Yaralanmanın payı (%)", +(100*v.yaralanma/t).toFixed(1)],
+              ["Kazanın payı (%)", +(100*v.kaza/t).toFixed(1)],
+              ["Hastalığın payı (%)", +(100*v.hastalik/t).toFixed(1)],
+              ["Planlanan süreye oranı (%)", +(100*t/v.planlanan_saat).toFixed(3)]]}; },
+  bands:[[0,"ok","Bileşen paylarını dönemler boyunca izleyin; eğilim değişimi müdahalenin yerini gösterir."]]},
+
+ {id:"kaza_orani", name:"İş kazası oranı", grp:"Kaza ve ölüm",
+  formula:"A = (İş kazası sayısı &divide; Ortalama kadro) &times; 100",
+  note:"Payda ortalama kadrodur. Fazla mesainin arttığı dönemlerde kadro tabanlı oran riski olduğundan düşük gösterir; sıklık oranıyla birlikte okuyun.",
+  fields:[{k:"kaza_sayisi",l:"İş kazası sayısı",v:50},
+          {k:"ortalama_kadro",l:"Ortalama kadro",v:1200},
+          {k:"kayip_saat",l:"Kaza kaynaklı kayıp saat",v:87},
+          {k:"calisilan_saat",l:"Çalışılan saat",v:998400}],
+  unit:"% işgücü",
+  py:"kaza_yuzdesi(kaza_sayisi=50, ortalama_kadro=1200)",
+  calc:function(v){ var d=100*v.kaza_sayisi/v.ortalama_kadro;
+    return {value:d, dec:2, expl:"(" + v.kaza_sayisi + " ÷ " + v.ortalama_kadro + ") × 100",
+      detail:[["100 çalışan başına kaza", +d.toFixed(2)],
+              ["Kaza başına ortalama kayıp saat", +(v.kayip_saat/v.kaza_sayisi).toFixed(1)],
+              ["Sıklık oranı (1.000.000 saat)",
+               +(1000000*v.kaza_sayisi/v.calisilan_saat).toFixed(2)]]}; },
+  bands:[[5,"bad","Her yirmi çalışandan birinden fazlası kaza geçirmiş; kırılımlı kök neden analizi acil."],
+         [2,"warn","Kayda değer bir kaza yoğunluğu var; konum, vardiya ve işlev kırılımına bakın."],
+         [0,"ok","Oran düşük; bildirim kültürünün olayları eksiksiz yakaladığını doğrulayın."]]},
+
+ {id:"olum_orani", name:"Ölümlü kaza oranı", grp:"Kaza ve ölüm",
+  formula:"A = (Ölen kişi sayısı &divide; Ortalama kadro) &times; 100",
+  note:"Standart, bu metriğin yüzdenin yanı sıra mutlak kişi sayısıyla da verilmesini ister: yalnızca yüzde raporlamak rakamın etkisine karşı duyarsızlaştırır.",
+  fields:[{k:"olum_sayisi",l:"Ölen kişi sayısı",v:5},
+          {k:"ortalama_kadro",l:"Ortalama kadro",v:1200},
+          {k:"kaza_sayisi",l:"Toplam iş kazası sayısı",v:50}],
+  unit:"% işgücü",
+  py:"olum_yuzdesi(olum_sayisi=5, ortalama_kadro=1200)",
+  calc:function(v){ var d=100*v.olum_sayisi/v.ortalama_kadro;
+    return {value:d, dec:3, expl:"(" + v.olum_sayisi + " ÷ " + v.ortalama_kadro + ") × 100",
+      detail:[["Ölen kişi sayısı (mutlak)", v.olum_sayisi],
+              ["100.000 çalışan başına", +(100000*v.olum_sayisi/v.ortalama_kadro).toFixed(1)],
+              ["Ölümlü kazanın tüm kazalara oranı (%)",
+               +(100*v.olum_sayisi/v.kaza_sayisi).toFixed(1)]]}; },
+  bands:[[0.0001,"bad","Dönemde ölümlü kaza var. Bu bir eğilim göstergesi değil, her biri ayrı ayrı incelenmesi gereken olaydır; mutlak sayıyı raporun görünür yerine koyun."],
+         [0,"ok","Dönemde ölümlü kaza kaydı yok. Bu, riskin ortadan kalktığı anlamına gelmez; ramak kala ve ağır yaralanma verisini izlemeye devam edin."]]},
+
+ {id:"egitim_orani", name:"İSG eğitimine katılım oranı", grp:"Eğitim ve önleme",
+  formula:"A = (Eğitim katılımcısı &divide; Ortalama kadro) &times; 100",
+  note:"Katılım oranı yalnızca kaç kişinin eğitimden geçtiğini ölçer; eğitimin zamanlaması ve olay anındaki eğitim durumu ayrıca izlenir.",
+  fields:[{k:"katilimci",l:"Eğitim katılımcısı",v:1040},
+          {k:"ortalama_kadro",l:"Ortalama kadro",v:1200},
+          {k:"toplam_egitim_saati",l:"Toplam eğitim saati",v:8320}],
+  unit:"% çalışan",
+  py:"egitim_yuzdesi(katilimci=1040, ortalama_kadro=1200)",
+  calc:function(v){ var d=100*v.katilimci/v.ortalama_kadro;
+    return {value:d, dec:1, expl:"(" + v.katilimci + " ÷ " + v.ortalama_kadro + ") × 100",
+      detail:[["Eğitim almamış çalışan", Math.round(v.ortalama_kadro-v.katilimci)],
+              ["Eğitim almamışların payı (%)", +(100-d).toFixed(1)],
+              ["Kişi başına eğitim saati",
+               +(v.toplam_egitim_saati/v.ortalama_kadro).toFixed(2)]]}; },
+  bands:[[95,"ok","Kapsama neredeyse tam; sıradaki soru eğitimin zamanlaması ve içeriğidir."],
+         [70,"warn","Kadronun bir bölümü kapsam dışında; kimlerin eksik kaldığını kategori bazında çıkarın."],
+         [0,"bad","Kapsama düşük; yeni başlayanlar ve yüklenici işgücü büyük olasılıkla eksik."]]},
+
+ {id:"egitim_zamanlilik", name:"Eğitimin zamanında verilmesi", grp:"Eğitim ve önleme",
+  formula:"A = (Süresi içinde eğitim alan &divide; Yeni başlayan) &times; 100",
+  note:"Standart, eğitimin zamanlamasına ilişkin gerekliliklerin belgelenmesini ister; örneğin yeni başlayanlar için işe başlamadan itibaren üç hafta.",
+  fields:[{k:"zamaninda",l:"Süresi içinde eğitim alan",v:38},
+          {k:"yeni_calisan",l:"Dönemdeki yeni başlayan",v:45},
+          {k:"ortalama_gecikme",l:"Ortalama gecikme (gün)",v:9},
+          {k:"hedef_gun",l:"Belgelenmiş süre (gün)",v:21}],
+  unit:"% zamanında",
+  py:'hesapla("egitim_zamanlilik", zamaninda=38, yeni_calisan=45, ortalama_gecikme=9, hedef_gun=21)',
+  calc:function(v){ var d=100*v.zamaninda/v.yeni_calisan;
+    return {value:d, dec:1, expl:"(" + v.zamaninda + " ÷ " + v.yeni_calisan + ") × 100",
+      detail:[["Süreyi aşan yeni çalışan", v.yeni_calisan-v.zamaninda],
+              ["Ortalama gecikme (gün)", v.ortalama_gecikme],
+              ["Belgelenmiş süre (gün)", v.hedef_gun]]}; },
+  bands:[[95,"ok","Eğitim zamanında veriliyor; yeni başlayanlar korumasız süre geçirmiyor."],
+         [80,"warn","Bir bölüm yeni çalışan eğitimsiz çalışmaya başlamış; işe alım ve eğitim takvimini eşleyin."],
+         [0,"bad","Yeni başlayanların önemli bölümü belgelenmiş süre içinde eğitim almamış; en yüksek riskli grup korumasız."]]},
+
+ {id:"kazasiz_sure", name:"Son olaydan bu yana çalışılan süre", grp:"Eğitim ve önleme",
+  formula:"Kazasız çalışma saati = Kazasız gün &times; Günlük toplam çalışan saati",
+  note:"Standart bu göstergeyi önleyici programların başarısını göstermek için anar. Rekor kırma isteği küçük olayların bildirilmemesine yol açabileceğinden tek başına ödül ölçütü yapılmamalıdır.",
+  fields:[{k:"gun",l:"Kazasız gün",v:128},
+          {k:"gunluk_calisan_saat",l:"Günlük toplam çalışan saati",v:9600},
+          {k:"onceki_rekor",l:"Önceki en iyi süre (gün)",v:143}],
+  unit:"çalışma saati",
+  py:"kazasiz_saat(gun=128, gunluk_calisan_saat=9600)",
+  calc:function(v){ var s=v.gun*v.gunluk_calisan_saat;
+    return {value:s, dec:0, expl:v.gun + " × " + v.gunluk_calisan_saat,
+      detail:[["Kazasız gün", v.gun],
+              ["Hafta karşılığı", +(v.gun/7).toFixed(1)],
+              ["Önceki en iyi süreye fark (gün)", v.gun-v.onceki_rekor]]}; },
+  bands:[[0,"ok","Bu sayacı bildirim sayısı ve ramak kala verisiyle birlikte gösterin; tek başına güvenlik kanıtı değildir."]]},
+
+ {id:"siklik_orani", name:"Sıklık oranı", grp:"Türetilmiş",
+  formula:"Sıklık = (1.000.000 &times; Olay sayısı) &divide; Çalışılan saat",
+  note:"Standardın parçası değildir; İSG uygulamasında yaygındır. Payda fiilen çalışılan saat olduğu için kadro büyüklüğünden ve çalışma süresinden bağımsız karşılaştırmaya izin verir.",
+  fields:[{k:"olay",l:"Olay sayısı",v:50},
+          {k:"calisilan_saat",l:"Çalışılan saat",v:998400},
+          {k:"ortalama_kadro",l:"Ortalama kadro",v:1200}],
+  unit:"olay / 1.000.000 saat",
+  py:"siklik_orani(olay=50, calisilan_saat=998_400)",
+  calc:function(v){ var d=1000000*v.olay/v.calisilan_saat;
+    return {value:d, dec:2, expl:"(1.000.000 × " + v.olay + ") ÷ " + v.calisilan_saat,
+      detail:[["200.000 saat tabanıyla", +(200000*v.olay/v.calisilan_saat).toFixed(2)],
+              ["Kadro başına oran (%)", +(100*v.olay/v.ortalama_kadro).toFixed(2)],
+              ["Çalışan başına yıllık saat",
+               Math.round(v.calisilan_saat/v.ortalama_kadro)]]}; },
+  bands:[[20,"bad","Sıklık yüksek; sektör kıyaslaması yapıp en çok olay üreten işlev ve vardiyayı ayırın."],
+         [5,"warn","Orta düzey sıklık; ağırlık oranıyla birlikte okuyun."],
+         [0,"ok","Sıklık düşük; kayıt eşiğinizin sektör uygulamasıyla uyumlu olduğunu doğrulayın."]]},
+
+ {id:"agirlik_orani", name:"Ağırlık oranı", grp:"Türetilmiş",
+  formula:"Ağırlık = (1.000 &times; Kayıp gün) &divide; Çalışılan saat",
+  note:"Türetilmiştir. Sıklık olayın kaç kez olduğunu, ağırlık ne kadar ağır olduğunu gösterir; az sayıda ağır olay ile çok sayıda hafif olay aynı sıklığı verebilir.",
+  fields:[{k:"kayip_gun",l:"Toplam kayıp gün",v:35},
+          {k:"calisilan_saat",l:"Çalışılan saat",v:998400},
+          {k:"olay",l:"Olay sayısı",v:50}],
+  unit:"kayıp gün / 1.000 saat",
+  py:"agirlik_orani(kayip_gun=35, calisilan_saat=998_400)",
+  calc:function(v){ var d=1000*v.kayip_gun/v.calisilan_saat;
+    return {value:d, dec:3, expl:"(1.000 × " + v.kayip_gun + ") ÷ " + v.calisilan_saat,
+      detail:[["Toplam kayıp gün", v.kayip_gun],
+              ["Olay başına ortalama kayıp gün", +(v.kayip_gun/v.olay).toFixed(1)],
+              ["Sıklık oranı (1.000.000 saat)",
+               +(1000000*v.olay/v.calisilan_saat).toFixed(2)]]}; },
+  bands:[[0.5,"bad","Olaylar ağır sonuçlanıyor; kontrol hiyerarşisinde kişisel koruyucu donanımın ötesine geçin."],
+         [0.1,"warn","Orta ağırlık; olay başına kayıp gün dağılımına bakın."],
+         [0,"ok","Olayların sonuçları hafif; yine de ağır senaryoların önlenip önlenmediğini ayrıca değerlendirin."]]},
+
+ {id:"kaza_maliyeti", name:"İş kazasının kuruma maliyeti", grp:"Türetilmiş",
+  formula:"Maliyet = Verimlilik kaybı + Kaçan iş + Yedekleme + Çalışana ödeme + Onarım + Sigorta + Hukuki gider",
+  note:"Kalemler, standardın kazaların izlenme gerekçesi olarak saydığı olumsuz etkilerden alınmıştır. Tutar, önleyici yatırımın gerekçesini kurmak için kullanılır; insani boyutun yerine geçmez.",
+  fields:[{k:"verimlilik_kaybi",l:"Verimlilik kaybı (TL)",v:180000},
+          {k:"kaybedilen_is",l:"Kaçan iş fırsatı (TL)",v:250000},
+          {k:"yedekleme",l:"Yedekleme ve fazla mesai (TL)",v:120000},
+          {k:"calisana_odeme",l:"Çalışana yapılan ödemeler (TL)",v:60000},
+          {k:"onarim",l:"Onarım, kiralama, yenileme (TL)",v:90000},
+          {k:"sigorta",l:"Sigorta primi değişimi (TL)",v:45000},
+          {k:"hukuki",l:"Hukuki giderler (TL)",v:75000},
+          {k:"olay",l:"Olay sayısı",v:50}],
+  unit:"TL",
+  py:"kaza_maliyeti(180000, 250000, 120000, 60000, 90000, 45000, 75000)",
+  calc:function(v){
+    var t=v.verimlilik_kaybi+v.kaybedilen_is+v.yedekleme+v.calisana_odeme+v.onarim+v.sigorta+v.hukuki;
+    return {value:t, dec:0,
+      expl:v.verimlilik_kaybi + " + " + v.kaybedilen_is + " + " + v.yedekleme + " + " +
+           v.calisana_odeme + " + " + v.onarim + " + " + v.sigorta + " + " + v.hukuki,
+      detail:[["Olay başına maliyet (TL)", Math.round(t/v.olay)],
+              ["Doğrudan ödemelerin payı (%)",
+               +(100*(v.calisana_odeme+v.onarim+v.hukuki)/t).toFixed(1)],
+              ["Verimlilik ve iş kaybının payı (%)",
+               +(100*(v.verimlilik_kaybi+v.kaybedilen_is)/t).toFixed(1)]]}; },
+  bands:[[0,"ok","Tutarı önleyici yatırımın bütçesiyle karşılaştırın; çoğu durumda önleme, sonucu karşılamaktan ucuzdur."]]},
+
+ {id:"donem_karsilastirma", name:"Dönemler arası değişim", grp:"Kayıp zaman",
+  formula:"Değişim = ((Cari dönem &minus; Önceki dönem) &divide; Önceki dönem) &times; 100",
+  note:"Standart, önceki dönemle cari dönemin ve geçmiş yıllarla cari yılın karşılaştırılmasını ister; tipik karşılaştırma aralığı üç ilâ beş yıldır.",
+  fields:[{k:"cari",l:"Cari dönem",v:277},{k:"onceki",l:"Bir önceki dönem",v:262},
+          {k:"iki_yil",l:"İki dönem önce",v:250},{k:"uc_yil",l:"Üç dönem önce",v:230}],
+  unit:"% değişim",
+  py:"donem_degisimi(cari=277, onceki=262)",
+  calc:function(v){ var d=100*(v.cari-v.onceki)/v.onceki;
+    var uc=(v.onceki+v.iki_yil+v.uc_yil)/3;
+    return {value:d, dec:1,
+      expl:"((" + v.cari + " − " + v.onceki + ") ÷ " + v.onceki + ") × 100",
+      detail:[["Üç dönemlik ortalama", +uc.toFixed(1)],
+              ["Cari dönemin ortalamadan farkı (%)", +(100*(v.cari-uc)/uc).toFixed(1)],
+              ["Üç yıl öncesine göre değişim (%)",
+               +(100*(v.cari-v.uc_yil)/v.uc_yil).toFixed(1)]]}; },
+  bands:[[10,"bad","Belirgin kötüleşme; bağlam etkenlerini yazıp kök nedeni ayrıştırın."],
+         [0,"warn","Sayı artmış; artışın gerçek mi yoksa kayıt disiplininin güçlenmesinden mi kaynaklandığını ayırın."],
+         [-100,"ok","Sayı azalmış; azalmanın bildirim eksikliğinden kaynaklanmadığını doğrulayın."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    var raw = el && el.value !== "" ? parseFloat(el.value) : NaN;
+    if(isNaN(raw)){ missing = true; v[f.k] = f.v; } else { v[f.k] = raw; }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){ return f.k + "=" + r.v[f.k]; }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso24179_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!DONEM[0]){ loadPeriodExample(); }
+  var c = DONEM[0];
+  var idx = CALC.map(function(x){ return x.id; }).indexOf("kayip_zaman");
+  sel.value = idx; buildFields();
+  document.getElementById("in_kayip_saat").value = c.toplam;
+  document.getElementById("in_planlanan_saat").value = c.planlanan_saat;
+  document.getElementById("in_ortalama_kadro").value = c.ortalama_kadro;
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso24179_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso24179_metrikler')\n" +
+      "_m.__file__ = 'iso24179_metrikler.py'\n" +
+      "sys.modules['iso24179_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso24179_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso24179_metrikler import *\n" +
+      "import iso24179_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso24179_metrikler import *\n' +
+  'import iso24179_metrikler as m\n\n' +
+  '# Standardın dört metriği aynı biçimi paylaşır: A = B / C × 100\n' +
+  'print("Kayıp zaman   :", round(kayip_zaman_yuzdesi(277, 998_400), 3), "%")\n' +
+  'print("Kaza oranı    :", round(kaza_yuzdesi(50, 1200), 2), "%")\n' +
+  'print("Ölüm oranı    :", round(olum_yuzdesi(5, 1200), 3), "%")\n' +
+  'print("Eğitim oranı  :", round(egitim_yuzdesi(1040, 1200), 1), "%")\n\n' +
+  '# Seyrek olaylarda yüzde okunmaz; yüz bin çalışan tabanı kullanılır\n' +
+  'print("100.000 çalışan başına ölüm:", round(yuz_bin_basina(5, 1200), 1))\n\n' +
+  '# Dönem karşılaştırması\n' +
+  't = ornek_tablo()\n' +
+  'for d in t.donemler:\n' +
+  '    print(f"{d.ad:<14} kayıp {d.toplam_kayip_saat:>4.0f} saat · "\n' +
+  '          f"kaza {d.kaza_sayisi:>3.0f} · ölüm {d.olum_sayisi:>2.0f}")\n' +
+  'print(t.karsilastirma())\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("kayip_zaman", kayip_saat=277, planlanan_saat=998_400,\n' +
+  '              ortalama_kadro=1200))\n\n' +
+  '# Rapor denetimi: hangi ön koşullar eksik?\n' +
+  'for uyari in metrik_denetimi(kayit_sureci_var=True, onceki_donem_var=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso24179_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso24179_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildPeriodTable();
+loadPeriodExample();
+buildFields();
+run();
+</script>
+</body>
+</html>

@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 30430 İşe Alım Metrikleri Kümesi — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:72px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- pozisyon tablosu --- */
+  .postbl{font-size:13.5px}
+  .postbl input[type=text],.postbl input[type=date],.postbl input[type=number]{
+    width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .postbl input[type=text]{font-family:var(--sans)}
+  .postbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .postbl td.chk{text-align:center}
+  .postbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .postbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tblbar .inline{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-soft)}
+  .tblbar .inline input{width:78px;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--eff-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--efc-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 30430 İşe Alım Metrikleri Kümesi</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 30430:2021 — <i>Human resource management — Recruitment metrics cluster</i></span>
+  <span><b>Kapsam:</b> 5 kullanıcı · 3 metrik ailesi · 39 metrik ve etken</span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 30430, ISO 30414'ün <b>işe alım, hareketlilik ve devir</b> kümesinin işe alım ayağını
+ayrıntılandıran bir teknik şartnamedir. İki ana metriği tanımlar — <b>pozisyon başına nitelikli aday</b>
+ve <b>bir açık pozisyonun doldurulma süresi</b> — ve her biri için tanım, amaç, formül, kullanım biçimi,
+hedef kullanıcılar, bağlam etkenleri ve öngörü etkenlerini verir. Ardından süreyi dört ölçüm noktasıyla
+genişletir; böylece gecikmenin nerede oluştuğu görünür hâle gelir. Bu sayfa, standardın metrik kümesini
+filtrelenebilir bir matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı + Python koduna
+dönüştürür. İlişkili başvuru belgeleri: insan sermayesi raporlaması için ISO 30414, terimler için
+ISO 30400, işe alım başına maliyet için ISO/TS 30407, işe alımın niteliği için ISO/TS 30411.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>İki metrik birlikte okunur.</b> Nitelikli aday sayısı çekim gücünü, doldurma süresi ise
+  sürecin işleyişini ölçer. Süre uzuyorsa önce aday havuzuna bakılır: sorun süreçte mi, yoksa nitelikli
+  aday bulunamamasında mı?</li>
+  <li><b>"Nitelikli" tanımı kurumun kendi işidir.</b> Standart, her kurumun ya da sektörün, her pozisyon
+  kategorisi için adayın nitelikli sayılma ölçütünü tanımlamasını, belgelemesini ve düzenli olarak
+  güncellemesini ister. Ölçüt yazılı değilse metrik kıyaslanamaz.</li>
+  <li><b>Süre iki tarih arasında ölçülür:</b> onaylı kadro talebinin verildiği tarih (D1) ile adayın
+  teklifi kabul ettiği tarih (D2). Aynı formül hem tüm pozisyonlar hem de kritik pozisyonlar için
+  kullanılır.</li>
+  <li><b>Doldurulamayan talepler ayrı satırdır.</b> Ortalama süre yalnızca kapanan süreçleri sayar;
+  dönem sonunda hâlâ açık olan onaylı talepler ayrıca raporlanmazsa tablo iyimser görünür.</li>
+  <li><b>Asıl gecikme çoğu zaman ölçülmeyen yerdedir.</b> Boşluğun bilindiği an ile talebin açıldığı an
+  arasındaki süre çoğu kurumda hiç izlenmez; oysa bu gecikme işgücü maliyeti, performans düşüşü,
+  bağlılık kaybı ve devamsızlık olarak geri döner.</li>
+  <li><b>Karşılaştırma aralığı üç ilâ beş yıldır.</b> Tek dönem verisi eğilim göstermez; ölçüm noktası
+  (ay sonu, çeyrek sonu, yıl sonu) bir kez seçilir ve değiştirilmez.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik seçim adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Doldurulan pozisyon tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Çekim stratejisi değerlendirilirken:</b> nitelikli aday sayısı, ilan kanallarının, yan hak
+  paketinin ve tercih edilen işveren konumlandırmasının etkililiğini gösterir.</li>
+  <li><b>İşe alım süreci sorgulandığında:</b> doldurma süresi, sürecin ve kullanılan sistemlerin
+  işleyişini ölçer; kök neden analizine giriş kapısıdır.</li>
+  <li><b>İşgücü planı ile gerçekleşme karşılaştırılırken:</b> planlanan işe alım takvimine göre fiilen
+  yapılan alım izlenir.</li>
+  <li><b>Kritik kadro riski değerlendirilirken:</b> kritik pozisyonların doldurulma süresi ayrı
+  raporlanır.</li>
+  <li><b>Dış raporlamada:</b> yatırımcı, analist, sektör grubu ve medya için karşılaştırılabilir işe
+  alım göstergesi üretilir (ISO 30414 ile birlikte).</li>
+</ul>
+<div class="note">Bu belge <b>ölçme</b> belgesidir. Standardın kendi ifadesiyle nitelikli aday metriği,
+daha ileri bir kök neden analizine ihtiyaç olduğunu gösteren bir metriktir; nedeni kendisi söylemez.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Her metrik için yedi bileşen</h3>
+<p>Standart, ele aldığı her metriği aynı yedi başlıkla tanımlar. Kendi kurum içi metrik kartlarınızı da
+bu yapıda hazırlamak, metriğin sonradan tartışılmasını önler.</p>
+<table>
+  <thead><tr><th>Bileşen</th><th>Yanıtladığı soru</th></tr></thead>
+  <tbody>
+    <tr><td>Tanım</td><td>Metrik neyi sayar?</td></tr>
+    <tr><td>Amaç</td><td>Hangi kurumsal soruya hizmet eder?</td></tr>
+    <tr><td>Formül</td><td>Nasıl hesaplanır, ölçüm noktası nedir?</td></tr>
+    <tr><td>Kullanım biçimi</td><td>Sonuçla ne yapılır, hangi metrikle birlikte okunur?</td></tr>
+    <tr><td>Hedef kullanıcılar</td><td>Kime raporlanır (iç ve dış)?</td></tr>
+    <tr><td>Bağlam etkenleri</td><td>Sonucu bugün ne etkiliyor olabilir?</td></tr>
+    <tr><td>Öngörü etkenleri</td><td>Bilinen ve beklenen olaylar sonucu nasıl değiştirecek?</td></tr>
+  </tbody>
+</table>
+
+<h3>Zaman çizgisi: gecikme nerede oluşuyor?</h3>
+<p>Standardın ek metrikleri aynı formülü kullanır (toplam gün ÷ vaka sayısı); değişen tek şey ölçümün
+başladığı ve bittiği noktadır. Bu noktalar bir zaman çizgisi olarak düşünüldüğünde gecikmenin hangi
+halkada oluştuğu ayrışır.</p>
+<table>
+  <thead><tr><th>Ölçüm aralığı</th><th>Başlangıç</th><th>Bitiş</th><th>Neyi görünür kılar</th></tr></thead>
+  <tbody>
+    <tr><td><b>Boşluk → onaylı talep</b></td><td>İstifa ya da fesihle boşluğun kayda geçtiği tarih</td>
+      <td>Onaylı kadro talebinin açıldığı tarih</td>
+      <td>Yetkili kişilerin talep açmadaki gecikmesi; çoğu kurumda gizli kalan maliyet</td></tr>
+    <tr><td><b>Doldurma süresi (D1→D2)</b></td><td>Onaylı kadro talebi</td>
+      <td>Adayın teklifi kabul etmesi</td><td>İşe alım sürecinin ve sistemlerinin işleyişi</td></tr>
+    <tr><td><b>Boşluk → teklif kabulü</b></td><td>Boşluğun bilindiği tarih</td>
+      <td>Adayın teklifi kabul etmesi</td><td>İlk iki aralığın toplamı; kapsayıcı ölçü</td></tr>
+    <tr><td><b>Ayrılış → işe başlama</b></td><td>Çalışanın ayrıldığı tarih</td>
+      <td>Yerine gelenin işe başladığı tarih</td><td>Pozisyonun fiilen boş kaldığı iş günü</td></tr>
+    <tr><td><b>Ayrılış → uyumun bitişi</b></td><td>Çalışanın ayrıldığı tarih</td>
+      <td>Yeni çalışanın uyum sürecini bitirdiği tarih</td>
+      <td>Pozisyonun tam verimle çalışmadığı toplam süre</td></tr>
+  </tbody>
+</table>
+<div class="note">Son iki metrik <b>iş günü</b> üzerinden tanımlıdır; ilk üçü örneklerde takvim
+tarihleriyle verilir. İki seriyi yan yana koyarken birim farkını belirtin. Perakende, itfaiye, emniyet
+ve saha işleri gibi belirli bir eğitim tamamlanmadan göreve başlanamayan mesleklerde uyum süresi
+metriği asıl belirleyici olandır.</div>
+
+<h3>Ölçüm noktası ve karşılaştırma</h3>
+<ul>
+  <li>Hesaplama noktası her ölçüm döneminin sonudur: ay sonu, çeyrek sonu ya da yıl sonu toplamları.</li>
+  <li>Ölçüm dönemi mali yıl, yıllık bütçe döngüsü ya da her ikisiyle hizalanabilir.</li>
+  <li>Farklı bir ölçüm noktası seçilirse tercih tutarlı biçimde uygulanır ve raporda açıkça yazılır.</li>
+  <li>Raporlama, önceki dönemle cari dönemi ve geçmiş yıllarla cari yılı karşılaştırır; tipik
+  karşılaştırma aralığı üç ilâ beş yıldır.</li>
+  <li>Kurumun büyüklüğüne ve karmaşıklığına göre tablolar alt kırılımlarla genişletilir: satış,
+  pazarlama, idari işler, üretim, mühendislik.</li>
+</ul>
+
+<h2 id="adimlar">Metrik Seçim Adımları</h2>
+<ol>
+  <li><b>Nitelik ölçütünü yazın.</b> Her pozisyon kategorisi için adayın hangi koşullarda nitelikli
+  sayılacağını tanımlayın, belgeleyin ve düzenli olarak güncelleyin.</li>
+  <li><b>Ölçüm noktasını sabitleyin.</b> Dönem sonu kesiti seçilir ve dönemler boyunca korunur.</li>
+  <li><b>Tarih alanlarını sisteme ekleyin.</b> Boşluğun bilindiği tarih, onaylı talep tarihi, teklifin
+  kabul tarihi, işe başlama tarihi, uyumun bitiş tarihi.</li>
+  <li><b>Kritik pozisyonları işaretleyin.</b> Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi
+  olan roller, kurumsal stratejinin parçası olarak belirlenir.</li>
+  <li><b>Doldurulamayan onaylı talepleri sayın.</b> Dönem sonunda açık kalan talepler ayrı satır
+  olarak raporlanır.</li>
+  <li><b>Kırılımları seçin.</b> Pozisyon türü, iş ailesi, bölge, kanal, kritiklik.</li>
+  <li><b>Karşılaştırma tabanını kurun.</b> Önceki dönem, geçmiş üç ilâ beş yıl, plan ve varsa sektör
+  verisi.</li>
+  <li><b>Bağlam ve öngörü etkenlerini yazın.</b> Sayının yanına, o dönemde kadro büyüklüğünde,
+  ekonomide, ücret düzeyinde ve çekim stratejisinde ne değiştiğini not edin.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kısaltma</th><th>Kavram</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>TP</b></td><td>Toplam açık pozisyon</td>
+      <td>Ölçüm döneminde ilan edilmiş açık pozisyon sayısı</td></tr>
+    <tr><td><b>TC</b></td><td>Toplam aday</td><td>Bu pozisyonlara başvuran tüm kişiler</td></tr>
+    <tr><td><b>QC</b></td><td>Nitelikli aday</td>
+      <td>Başvuranlar arasından işin gereklerini karşılayanlar</td></tr>
+    <tr><td><b>AQC</b></td><td>Pozisyon başına nitelikli aday</td><td>QC ÷ TP</td></tr>
+    <tr><td><b>D1</b></td><td>Onaylı kadro talebi tarihi</td>
+      <td>Talebin açılıp onaylandığı ve işe alıma iletildiği tarih</td></tr>
+    <tr><td><b>D2</b></td><td>Teklifin kabul tarihi</td><td>Adayın iş teklifini kabul ettiği tarih</td></tr>
+    <tr><td><b>TD</b></td><td>Toplam doldurma günü</td>
+      <td>Dönemde doldurulan tüm pozisyonlar için D2 − D1 günlerinin toplamı</td></tr>
+    <tr><td><b>Kritik pozisyon</b></td><td>—</td>
+      <td>Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan, değer yaratma ya da değer
+      katmadaki etkisi yüksek rol</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın tanımladığı ve türettiği metrikler ile bağlam–öngörü etkenlerinin
+kullanıcı × süreç aşaması × raporlama sınıflandırmasıdır. Filtreleri değiştirdiğinizde tablo anında
+daralır.</p>
+
+<div class="filters">
+  <div><label for="fUser">Kullanıcı</label>
+    <select id="fUser">
+      <option value="">Tümü</option>
+      <option value="hr">İK hizmet birimleri</option>
+      <option value="exec">Üst yönetim</option>
+      <option value="line">Hat yönetimi</option>
+      <option value="fin">Finans ve hukuk</option>
+      <option value="ext">Dış paydaş</option>
+    </select></div>
+  <div><label for="fStage">Süreç aşaması</label>
+    <select id="fStage">
+      <option value="">Tümü</option>
+      <option value="havuz">Aday havuzu</option>
+      <option value="talep">Boşluk ve talep</option>
+      <option value="sure">Seçme ve teklif</option>
+      <option value="baslangic">İşe başlama ve uyum</option>
+      <option value="plan">Plan ve bağlam</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">Aday havuzu</option>
+      <option value="e">Süre</option>
+      <option value="o">Plan ve bağlam</option>
+    </select></div>
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="ic">İç raporlama</option>
+      <option value="dis">Dış raporlama</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. kritik"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">İK</th>
+    <th class="rot">Üst yönetim</th>
+    <th class="rot">Hat yönetimi</th>
+    <th class="rot">Finans / hukuk</th>
+    <th class="rot">Dış paydaş</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+<div class="legend">
+  <span><span class="dot v"></span> aday havuzu</span>
+  <span><span class="dot e"></span> süre</span>
+  <span><span class="dot o"></span> plan ve bağlam</span>
+  <span><span class="tag iso">30414</span> insan sermayesi raporlamasında da yer alan metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Doldurulan Pozisyon Tablosu</h2>
+<p>Doldurma süresi, dönemde kapanan her pozisyon için iki tarihten hesaplanır: onaylı kadro talebi (D1)
+ve teklifin kabulü (D2). Aşağıdaki tabloya kendi tarihlerinizi girin; gün farkı, ortalama, ortanca ve
+kritik pozisyon ortalaması anında güncellenir. Dönem sonunda açık kalan onaylı talep sayısını da
+girerseniz açık talep oranı hesaplanır.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+  <span class="inline"><label for="acikTalep">Doldurulamayan onaylı talep</label>
+    <input type="number" id="acikTalep" min="0" step="1" value="2"></span>
+</div>
+
+<table class="postbl">
+  <thead><tr>
+    <th style="width:80px">Pozisyon</th>
+    <th>Onaylı talep (D1)</th><th>Teklif kabulü (D2)</th>
+    <th class="num">Kritik</th><th class="calc" style="width:90px">Gün (D2−D1)</th>
+  </tr></thead>
+  <tbody id="pBody"></tbody>
+  <tfoot><tr>
+    <td>Toplam</td>
+    <td class="calc" colspan="2">Doldurulan pozisyon (TP): <span id="tTP">—</span></td>
+    <td class="calc" id="tKritik">—</td>
+    <td class="calc" id="tTD">—</td>
+  </tr></tfoot>
+</table>
+
+<div class="cards" id="pCards"></div>
+<div class="note" id="pNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü sayımdır (açık pozisyon, aday, doldurulamayan talep) ve formül gerektirmez.
+Hesaplanabilir olanların tamamı aşağıdadır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>İşe Alım Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Süreler gün, oranlar yüzde, tutarlar TL olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30430_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle
+  aynı sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve
+Pyodide (WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30430_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+örnek değerlerle doğrulama çıktısı üretir.</p>
+
+<div class="filename">iso30430_metrikler.py (özet)</div>
+<pre><i># --- Aday havuzu ---</i>
+
+<b>def</b> <span class="fn">aqc</span>(nitelikli, pozisyon):
+    <i>"""Pozisyon başına ortalama nitelikli aday: QC / TP."""</i>
+    <b>return</b> nitelikli / pozisyon
+
+<b>def</b> <span class="fn">nitelik_orani</span>(nitelikli, toplam_aday):
+    <i>"""QC / TC: ilanın hedefi mi, havuz mu daralıyor?"""</i>
+    <b>return</b> <u>100</u> * nitelikli / toplam_aday
+
+<i># --- Süre ---</i>
+
+<b>def</b> <span class="fn">gun_farki</span>(baslangic, bitis):
+    <i>"""D2 − D1; tarihler ISO biçimindedir (YYYY-AA-GG)."""</i>
+    <b>return</b> (date.fromisoformat(bitis) - date.fromisoformat(baslangic)).days
+
+<b>def</b> <span class="fn">ortalama_doldurma</span>(toplam_gun, pozisyon):
+    <i>"""TD / TP. Aynı formül kritik pozisyonlar için de kullanılır."""</i>
+    <b>return</b> toplam_gun / pozisyon
+
+<b>def</b> <span class="fn">sure_ozeti</span>(gunler):
+    <i>"""Ortalama tek başına yanıltır; ortanca ve uç değerlerle verilir."""</i>
+    <b>return</b> {<u>"ortalama"</u>: mean(gunler), <u>"ortanca"</u>: median(gunler),
+            <u>"en_kisa"</u>: min(gunler), <u>"en_uzun"</u>: max(gunler)}
+
+<b>def</b> <span class="fn">acik_talep_orani</span>(doldurulamayan, onaylanan):
+    <i>"""Dönem sonunda kapanmayan onaylı talepler ayrı satırdır."""</i>
+    <b>return</b> <u>100</u> * doldurulamayan / onaylanan
+
+<b>def</b> <span class="fn">ortalama_sure</span>(toplam_gun, vaka):
+    <i>"""Genişletilmiş süre metriklerinin ortak formülü; değişen yalnızca
+    ölçümün başladığı ve bittiği noktadır."""</i>
+    <b>return</b> toplam_gun / vaka
+
+<b>def</b> <span class="fn">toplam_bosluk_suresi</span>(bosluk_talep_gun, talep_kabul_gun):
+    <i>"""Boşluğun bilinmesinden teklifin kabulüne: iki bileşenin toplamı."""</i>
+    <b>return</b> bosluk_talep_gun + talep_kabul_gun
+
+<i># --- Plan ---</i>
+
+<b>def</b> <span class="fn">plan_gerceklesme</span>(gerceklesen, planlanan):
+    <b>return</b> <u>100</u> * gerceklesen / planlanan
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30430_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30430_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Yüksek aday sayısı, düşük nitelikli oran</b> ilanın ya da kanalın hedefinin gözden geçirilmesi
+  gerektiğini gösterir: doğru yere değil, geniş yere ilan veriliyor olabilir.</li>
+  <li><b>Düşük nitelikli aday oranı</b> yararlanılan yetenek havuzunun daraldığına işaret eder. Bu
+  durumda ücret ve yan hak düzeyi, konum esnekliği ve yetkinlik gereklerinin gerçekçiliği birlikte
+  ele alınır.</li>
+  <li><b>Pozisyon başına bir civarında nitelikli aday</b> süreci kırılgan kılar: tek adayın çekilmesi
+  süreci başa döndürür. Kritik pozisyonlarda bu eşik ayrıca izlenir.</li>
+  <li><b>Doldurma süresi uzuyor ama aday havuzu iyi ise</b> sorun süreçtedir: onay adımları, mülakat
+  takvimi, karar gecikmesi, aday deneyimi ya da kullanılan sistemler.</li>
+  <li><b>Ortalama ile ortancanın arası açıksa</b> birkaç uzun süreç ortalamayı yukarı çekiyordur;
+  kırılımı açın ve uç süreçleri ayrı inceleyin.</li>
+  <li><b>Kritik pozisyon süresi genel ortalamanın belirgin üstündeyse</b> kritik kadro riski büyüyor
+  demektir; halefiyet planı ve önceden aday havuzu oluşturma gündeme gelir.</li>
+  <li><b>Boşluk → talep süresi uzunsa</b> gecikme İK sürecinde değil, talebin açılmasındadır. Bu ayrım
+  yapılmadan yapılan iyileştirme yanlış yeri hedefler.</li>
+  <li><b>Sonuç beklenenin altındaysa hemen olumsuz yorumlamayın.</b> Standart, sonucun kötü göründüğü
+  durumlarda daha ileri incelemenin olumlu göstergeler ortaya çıkarabileceğini söyler: kadro büyümesi,
+  yeniden yapılanma ya da genişleyen üretim, metriğin anlamını değiştirebilir.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Standardın yayımlanmış örneğinde bir aritmetik tutarsızlık vardır.</b> Doldurma süresi
+  tablosunda altıncı pozisyon için 20/01/2019–06/03/2019 aralığı 46 gün olarak yazılır; iki tarih
+  arasındaki fark 45 gündür. Buna bağlı olarak toplam 225 yerine 224, ortalama da 37,5 yerine 37,33
+  gün olur. Bu sayfadaki tablo tarihlerden hesapladığı için 37,33 üretir; hesaplayıcıda ise
+  standardın verdiği 225/6 değeri örnek olarak yüklüdür.</li>
+  <li>Metrik yalnızca <b>doldurulan</b> pozisyonları sayar. Kapanmayan süreçler ortalamaya girmediği
+  için, en zor pozisyonlar tabloda hiç görünmez; doldurulamayan onaylı talep sayısı ayrı
+  raporlanmazsa süre olduğundan iyi görünür.</li>
+  <li>"Nitelikli aday" ölçütü kuruma özgüdür; kurumlar arası kıyaslama ancak ölçütler açıklandığında
+  anlamlıdır. Aynı kurum içinde bile ölçüt değiştirilirse seri kırılır.</li>
+  <li>Ölçüm noktası (D1) kurumdan kuruma değişebilir: talebin açıldığı tarih mi, onaylandığı tarih mi,
+  işe alıma iletildiği tarih mi? Standart onaylı talebi esas alır; kurum içi tanımı yazılı yapın.</li>
+  <li>Ayrılış sonrası metrikler iş günü, diğerleri takvim günü üzerinden ilerler; birim karıştırılırsa
+  karşılaştırma bozulur.</li>
+  <li>Küçük paydalarda oran oynaktır: dönemde üç pozisyon dolduysa bir uzun süreç ortalamayı ikiye
+  katlar. Az sayıda vakada mutlak sayıları da verin.</li>
+  <li>Boş pozisyonun parasal karşılığı standardın parçası değildir; bu sayfada süreyi tartışılabilir
+  bir tutara çevirmek için türetilmiş bir hesap olarak sunulur ve varsayıma dayanır.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>İK hizmet birimleri</td>
+      <td>Tüm metrikler, kanal ve iş ailesi kırılımı, uç süreçler, açık talepler</td>
+      <td>Analitik rapor, aylık</td></tr>
+    <tr><td>Üst yönetim</td>
+      <td>AQC ve doldurma süresi eğilimi, kritik pozisyonlar, plana göre gerçekleşme</td>
+      <td>Skor kartı, dönemsel</td></tr>
+    <tr><td>Hat yönetimi</td>
+      <td>Kendi kadrolarının süresi, aday havuzunun durumu, kendi onay gecikmesi</td>
+      <td>Birim panosu, aylık</td></tr>
+    <tr><td>Finans ve hukuk</td>
+      <td>Boş pozisyonun maliyeti, bütçelenen kadroya göre gerçekleşme, süreç kayıtları</td>
+      <td>Bütçe ekli rapor, çeyreklik</td></tr>
+    <tr><td>Dış paydaş (yatırımcı, analist, sektör grubu, medya)</td>
+      <td>Karşılaştırılabilir toplam göstergeler ve yöntem dipnotu</td>
+      <td>Faaliyet ve sürdürülebilirlik raporu, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> nitelik ölçütünün tanımı, ölçüm noktası, dönem, kırılım
+düzeyi, doldurulamayan talep sayısı ve karşılaştırma tabanı. Sendika temsilcilerinin de iç kullanıcılar
+arasında sayıldığını unutmayın; işgücü verisi paylaşımı kurum içi mutabakatın parçasıdır.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması. Bu belgedeki iki ana metriğin tanımı
+  oradan gelir; işe alım, hareketlilik ve devir kümesinin parçasıdır.</li>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü.</li>
+  <li><b>ISO 30405</b> — işe alım rehberi; sürecin kendisini tanımlar, bu belge o sürecin ölçümünü.</li>
+  <li><b>ISO/TS 30407</b> — işe alım başına maliyet; süre metrikleriyle birlikte okunduğunda hız ve
+  maliyet dengesi görünür olur.</li>
+  <li><b>ISO/TS 30410</b> ve <b>ISO/TS 30411</b> — işe alımın etkisi ve niteliği; hızlı doldurulan bir
+  pozisyonun iyi doldurulup doldurulmadığını bu metrikler gösterir.</li>
+  <li><b>ISO/TS 30421</b> — devir ve elde tutma metrikleri; boşluğun oluşma hızı buradan gelir, işe
+  alım o hıza yetişmek zorundadır.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Bir adayın "nitelikli" olduğuna kim karar verir?</summary>
+<p>Kurum. Standart, her kurumun ya da sektörün, her pozisyon kategorisi için nitelikli sayılma
+ölçütünü tanımlamasını, belgelemesini ve düzenli olarak güncellemesini ister. Uygulamada en sağlam
+yöntem, ölçütü ilan metnindeki zorunlu gereklerle birebir eşlemek ve ön eleme aşamasını buna göre
+kaydetmektir. Ölçüt değişirse dönem karşılaştırmasında bunu dipnot olarak belirtin.</p></details>
+
+<details><summary>Süre neden teklifin kabulünde bitiyor, işe başlamada değil?</summary>
+<p>Çünkü ihbar süresi işe alım biriminin denetiminde değildir. D2'yi teklifin kabulü olarak almak,
+sürecin kendi performansını ölçer. Pozisyonun fiilen ne kadar boş kaldığını görmek içinse standart
+ayrı metrikler tanımlar: ayrılıştan işe başlamaya ve ayrılıştan uyumun bitişine. İkisi birlikte
+raporlanır.</p></details>
+
+<details><summary>Kritik pozisyonları nasıl belirlerim?</summary>
+<p>Kurumsal stratejinin bir parçası olarak. Ölçüt, rolün kurumsal sonuçlar üzerindeki doğrudan ve
+belirgin etkisi ile değer yaratma ya da değer katmadaki payıdır. Kritik pozisyon üst düzey olmak
+zorunda değildir. Liste yılda bir gözden geçirilir ve doldurma süresi bu grup için ayrıca
+hesaplanır.</p></details>
+
+<details><summary>Ortalama mı ortanca mı raporlamalıyım?</summary>
+<p>Standart ortalamayı (TD/TP) tanımlar; kurum içi analizde ortancayı da eklemek yerinde olur. Birkaç
+çok uzun süreç ortalamayı belirgin biçimde yukarı çeker ve tipik süreci temsil etmez. Dış raporlamada
+standarda uygun olması için ortalamayı verin, yanına dağılımı (en kısa, ortanca, en uzun)
+koyun.</p></details>
+
+<details><summary>Doldurulamayan talepleri ortalamaya katabilir miyim?</summary>
+<p>Hayır; ortalama yalnızca dönemde kapanan süreçleri kapsar. Ancak açık talepler ayrı bir satır
+olarak raporlanmalıdır, çünkü asıl gecikme çoğu zaman oradadır. Kurum içi analizde açık taleplerin o
+ana kadar geçen sürelerini "hâlihazırda beklenen gün" olarak ayrı bir gösterge yapmak da
+yararlıdır.</p></details>
+
+<details><summary>Bu metrikler işe alımın kalitesini gösterir mi?</summary>
+<p>Hayır. Nitelikli aday sayısı çekim gücünü, süre ise sürecin hızını ölçer. Hızlı doldurulan bir
+pozisyonun iyi doldurulup doldurulmadığı ayrı bir sorudur ve ISO/TS 30411'in konusudur. Yalnızca
+süreye odaklanan bir işe alım birimi hızlanır, ama işe alım niteliği ve ilk yıl devri bozulabilir;
+üç metriği birlikte izleyin.</p></details>
+
+<details><summary>Kadro büyüdüğünde metrikler bozuluyor, ne yapmalıyım?</summary>
+<p>Standardın bağlam etkenleri tam olarak bunu söyler: her ölçüm noktasındaki kadro ve tam zaman
+eşdeğeri sayısı, metriğin anlamını değiştirecek kadar büyümüş ya da küçülmüş olabilir. Sayının yanına
+o dönemdeki kadro büyüklüğünü, yürütülen genişleme ya da yeniden yapılanma çalışmalarını ve ekonomik
+koşulları yazın. Bağlam yazılmadan yapılan dönem karşılaştırması yanıltıcıdır.</p></details>
+
+<footer>
+  ISO/TS 30430:2021 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın kendisi
+  telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30430_metrikler.py
+=====================
+ISO/TS 30430:2021 (Human resource management — Recruitment metrics cluster)
+çerçevesindeki işe alım metriklerinin Python karşılığı.
+
+Standart, ISO 30414'ün "işe alım, hareketlilik ve devir" kümesinin işe alım
+ayağını iki ana metrik üzerinden tanımlar ve bunları dört ek süre metriğiyle
+genişletir. Modül üç bölüme ayrılmıştır:
+
+    1) Aday havuzu — pozisyon başına nitelikli aday (AQC), nitelik oranı
+    2) Süre        — ortalama doldurma süresi (TD/TP) ve genişletilmiş süreler
+    3) Plan        — plana göre gerçekleşen işe alım, boş pozisyonun karşılığı
+
+Kullanım:
+    from iso30430_metrikler import aqc, ortalama_doldurma
+    aqc(420, 300)              ->  1.4
+    ortalama_doldurma(225, 6)  ->  37.5
+
+Doğrudan çalıştırıldığında (python3 iso30430_metrikler.py) tüm fonksiyonlar
+örnek verilerle çalıştırılır ve sonuçlar tablo hâlinde yazdırılır.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 30430:2021'e dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif korumalıdır.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from datetime import date
+from statistics import mean, median
+from typing import Sequence
+
+__all__ = [
+    # aday havuzu
+    "aqc", "nitelik_orani", "aday_yogunlugu",
+    # süre
+    "gun_farki", "ortalama_doldurma", "sure_ozeti", "acik_talep_orani",
+    "ortalama_sure", "toplam_bosluk_suresi", "isgunu_takvim",
+    # plan ve karşılık
+    "plan_gerceklesme", "bosluk_maliyeti",
+    # yardımcı
+    "Pozisyon", "DoldurmaTablosu", "ornek_tablo", "metrik_denetimi",
+    "hesapla", "METRIK_LISTESI",
+]
+
+
+# ---------------------------------------------------------------------------
+# 1) Aday havuzu metrikleri
+# ---------------------------------------------------------------------------
+
+def aqc(nitelikli: float, pozisyon: float) -> float:
+    """Pozisyon başına ortalama nitelikli aday (AQC) = QC / TP.
+
+    Nitelikli aday, ölçüm döneminde ilan edilen açık pozisyonlara başvuran ve
+    işin gereklerini karşılayan adaydır. Hangi adayın nitelikli sayılacağına
+    ilişkin ölçütü her kurum kendi pozisyon kategorileri için tanımlar,
+    belgeler ve düzenli olarak günceller.
+    """
+    return nitelikli / pozisyon
+
+
+def nitelik_orani(nitelikli: float, toplam_aday: float) -> float:
+    """Nitelikli aday oranı (%) = QC / TC.
+
+    Uygun olmayan aday payının yüksek olması ilanın hedefinin gözden
+    geçirilmesi gerektiğine; nitelikli aday payının düşük olması ise
+    yararlanılan yetenek havuzunun daraldığına işaret eder.
+    """
+    return 100 * nitelikli / toplam_aday
+
+
+def aday_yogunlugu(toplam_aday: float, pozisyon: float) -> float:
+    """Pozisyon başına toplam aday (TC / TP).
+
+    AQC ile birlikte okunur: yüksek aday yoğunluğu ama düşük AQC, çekim
+    stratejisinin çok geniş hedeflediğini gösterir.
+    """
+    return toplam_aday / pozisyon
+
+
+# ---------------------------------------------------------------------------
+# 2) Süre metrikleri
+# ---------------------------------------------------------------------------
+
+def gun_farki(baslangic: str, bitis: str) -> int:
+    """İki tarih arasındaki gün sayısı. Tarihler ISO biçimindedir (YYYY-AA-GG)."""
+    return (date.fromisoformat(bitis) - date.fromisoformat(baslangic)).days
+
+
+def ortalama_doldurma(toplam_gun: float, pozisyon: float) -> float:
+    """Ortalama doldurma süresi (gün) = TD / TP.
+
+    TD, dönemde doldurulan tüm pozisyonlar için D1 ile D2 arasındaki günlerin
+    toplamıdır: D1 onaylı kadro talebinin verildiği tarih, D2 adayın teklifi
+    kabul ettiği tarihtir. Aynı formül hem tüm pozisyonlar hem de yalnızca
+    kritik pozisyonlar için kullanılır.
+    """
+    return toplam_gun / pozisyon
+
+
+def sure_ozeti(gunler: Sequence[float]) -> dict:
+    """Doldurma sürelerinin dağılımı: ortalama, ortanca, en kısa, en uzun.
+
+    Ortalama tek başına yanıltır: birkaç çok uzun süreç ortalamayı yukarı
+    çeker. Ortanca ile birlikte raporlanması önerilir.
+    """
+    return {
+        "adet": len(gunler),
+        "toplam": float(sum(gunler)),
+        "ortalama": float(mean(gunler)),
+        "ortanca": float(median(gunler)),
+        "en_kisa": float(min(gunler)),
+        "en_uzun": float(max(gunler)),
+    }
+
+
+def acik_talep_orani(doldurulamayan: float, onaylanan: float) -> float:
+    """Doldurulamayan onaylı kadro talebi oranı (%).
+
+    Standart, dönem sonunda hâlâ açık olan onaylı taleplerin sayısının ayrı
+    bir satır olarak raporlanmasını ister: ortalama süre yalnızca doldurulan
+    pozisyonları sayar ve kapanmayan süreçleri görünmez kılar.
+    """
+    return 100 * doldurulamayan / onaylanan
+
+
+def ortalama_sure(toplam_gun: float, vaka: float) -> float:
+    """Genişletilmiş süre metriklerinin ortak formülü: toplam gün / vaka sayısı.
+
+    Ölçüm noktaları değişir, formül değişmez:
+      - boşluğun bilinmesinden onaylı kadro talebine
+      - boşluğun bilinmesinden teklifin kabulüne
+      - ayrılıştan yeni çalışanın işe başlamasına
+      - ayrılıştan uyum sürecinin bitişine
+    """
+    return toplam_gun / vaka
+
+
+def toplam_bosluk_suresi(bosluk_talep_gun: float, talep_kabul_gun: float) -> float:
+    """Boşluğun bilinmesinden teklifin kabulüne kadar geçen toplam süre.
+
+    Bu metrik kapsayıcıdır: gecikmenin İK sürecinden mi yoksa talebin geç
+    açılmasından mı kaynaklandığını görmek için iki bileşen ayrı ayrı da
+    raporlanır.
+    """
+    return bosluk_talep_gun + talep_kabul_gun
+
+
+def isgunu_takvim(isgunu: float, haftalik_calisma_gunu: float = 5) -> float:
+    """İş gününü yaklaşık takvim gününe çevirir.
+
+    Ayrılış sonrası metrikler iş günü üzerinden tanımlıdır; boşluk ve talep
+    metrikleri örneklerde takvim tarihleriyle verilir. İki seriyi yan yana
+    koyarken birim farkı açıkça belirtilmelidir.
+    """
+    return isgunu * 7 / haftalik_calisma_gunu
+
+
+# ---------------------------------------------------------------------------
+# 3) Plan ve boş pozisyonun karşılığı
+# ---------------------------------------------------------------------------
+
+def plan_gerceklesme(gerceklesen: float, planlanan: float) -> float:
+    """Plana göre gerçekleşen işe alım (%).
+
+    Onaylı işgücü planı ya da bütçelenmiş işe alım takvimi ile fiilen yapılan
+    işe alımın karşılaştırılmasıdır.
+    """
+    return 100 * gerceklesen / planlanan
+
+
+def bosluk_maliyeti(gun: float, gunluk_katki: float, pozisyon: float = 1) -> float:
+    """Boş geçen sürenin parasal karşılığı (türetilmiş).
+
+    Standart bu hesabı formül olarak vermez; gecikmelerin gizli maliyet ve
+    verimlilik kaybı ürettiğini belirtir. Buradaki hesap, süreyi tartışılabilir
+    bir tutara çevirmek için eklenmiştir: günlük katkı, pozisyonun bir günlük
+    net katkısına ilişkin kurum varsayımıdır.
+    """
+    return gun * gunluk_katki * pozisyon
+
+
+# ---------------------------------------------------------------------------
+# 4) Yardımcı yapılar
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Pozisyon:
+    """Doldurulan tek bir pozisyonun süre verisi."""
+    kod: str
+    d1: str = ""          # onaylı kadro talebi tarihi
+    d2: str = ""          # adayın teklifi kabul ettiği tarih
+    kritik: bool = False
+
+    @property
+    def gun(self) -> int:
+        return gun_farki(self.d1, self.d2)
+
+
+@dataclass
+class DoldurmaTablosu:
+    """Dönemde doldurulan pozisyonların tablosu."""
+    pozisyonlar: list = field(default_factory=list)
+    doldurulamayan: int = 0
+
+    def ekle(self, kod: str, d1: str, d2: str, kritik: bool = False) -> "DoldurmaTablosu":
+        self.pozisyonlar.append(Pozisyon(kod, d1, d2, kritik))
+        return self
+
+    @property
+    def gunler(self) -> list:
+        return [p.gun for p in self.pozisyonlar]
+
+    @property
+    def kritik_gunler(self) -> list:
+        return [p.gun for p in self.pozisyonlar if p.kritik]
+
+    def ozet(self) -> dict:
+        o = sure_ozeti(self.gunler)
+        kritik = self.kritik_gunler
+        o["kritik_adet"] = len(kritik)
+        o["kritik_ortalama"] = round(mean(kritik), 2) if kritik else None
+        o["doldurulamayan"] = self.doldurulamayan
+        o["acik_talep_orani"] = round(
+            acik_talep_orani(self.doldurulamayan,
+                             len(self.pozisyonlar) + self.doldurulamayan), 1)
+        for k in ("toplam", "ortalama", "ortanca", "en_kisa", "en_uzun"):
+            o[k] = round(o[k], 2)
+        return o
+
+
+def ornek_tablo() -> DoldurmaTablosu:
+    """Altı pozisyonluk örnek ölçüm dönemi."""
+    t = DoldurmaTablosu(doldurulamayan=2)
+    veri = [
+        ("V1", "2019-01-20", "2019-02-28", True),
+        ("V2", "2019-01-20", "2019-02-21", False),
+        ("V3", "2019-01-20", "2019-02-21", False),
+        ("V4", "2019-01-20", "2019-02-27", True),
+        ("V5", "2019-01-20", "2019-02-27", False),
+        ("V6", "2019-01-20", "2019-03-06", False),
+    ]
+    for kod, d1, d2, kritik in veri:
+        t.ekle(kod, d1, d2, kritik)
+    return t
+
+
+def metrik_denetimi(nitelik_olcutu_tanimli: bool = False,
+                    olcum_noktasi_sabit: bool = False,
+                    kritik_ayri: bool = False,
+                    acik_talep_raporlaniyor: bool = False,
+                    onceki_donem_var: bool = False,
+                    bosluk_suresi_olculuyor: bool = False) -> list:
+    """Bir işe alım raporunun eksiklerini listeler.
+
+    Standardın mantığı: iki metrik (AQC ve doldurma süresi) tek başına
+    yorumlanamaz; ölçütün tanımı, ölçüm noktası, kırılım ve karşılaştırma
+    tabanı olmadan sayı kıyaslanabilir değildir.
+    """
+    uyarilar = []
+    if not nitelik_olcutu_tanimli:
+        uyarilar.append("Nitelikli adayın ölçütü yazılı değil: AQC kurumlar ve "
+                        "dönemler arasında karşılaştırılamaz.")
+    if not olcum_noktasi_sabit:
+        uyarilar.append("Ölçüm noktası sabitlenmemiş: dönem sonu yerine farklı "
+                        "kesitler kullanılırsa eğilim kırılır.")
+    if not kritik_ayri:
+        uyarilar.append("Kritik pozisyonlar ayrı ölçülmüyor: genel ortalama, "
+                        "kritik kadrodaki gecikmeyi gizler.")
+    if not acik_talep_raporlaniyor:
+        uyarilar.append("Doldurulamayan onaylı talepler raporlanmıyor: ortalama "
+                        "süre yalnızca kapanan süreçleri sayar.")
+    if not onceki_donem_var:
+        uyarilar.append("Önceki dönem ve yıl karşılaştırması yok: standardın "
+                        "önerdiği karşılaştırma aralığı üç ilâ beş yıldır.")
+    if not bosluk_suresi_olculuyor:
+        uyarilar.append("Boşluğun bilinmesinden talebe geçen süre ölçülmüyor: "
+                        "gecikmenin İK sürecinde mi yoksa talep açmada mı "
+                        "olduğu ayrılamaz.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 5) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "aqc", "nitelik_orani", "aday_yogunlugu", "time_to_fill",
+    "kritik_time_to_fill", "acik_talep", "bosluk_talep", "bosluk_kabul",
+    "ayrilis_baslangic", "ayrilis_uyum", "plan_gerceklesme", "bosluk_maliyeti",
+]
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "aqc":
+        d = aqc(g["nitelikli"], g["pozisyon"])
+        return {"deger": d, "ondalik": 2, "birim": "nitelikli aday / pozisyon",
+                "ifade": f"{g['nitelikli']:g} ÷ {g['pozisyon']:g}",
+                "ayrinti": [["Pozisyon başına toplam aday",
+                             round(aday_yogunlugu(g["toplam_aday"], g["pozisyon"]), 2)],
+                            ["Nitelikli aday oranı (%)",
+                             round(nitelik_orani(g["nitelikli"], g["toplam_aday"]), 1)],
+                            ["Ölçütü karşılamayan aday", g["toplam_aday"] - g["nitelikli"]]]}
+
+    if metrik == "nitelik_orani":
+        d = nitelik_orani(g["nitelikli"], g["toplam_aday"])
+        return {"deger": d, "ondalik": 1, "birim": "% nitelikli",
+                "ifade": f"({g['nitelikli']:g} ÷ {g['toplam_aday']:g}) × 100",
+                "ayrinti": [["Ölçütü karşılamayan aday", g["toplam_aday"] - g["nitelikli"]],
+                            ["Pozisyon başına nitelikli aday",
+                             round(aqc(g["nitelikli"], g["pozisyon"]), 2)],
+                            ["Pozisyon başına elenen aday",
+                             round((g["toplam_aday"] - g["nitelikli"]) / g["pozisyon"], 2)]]}
+
+    if metrik == "aday_yogunlugu":
+        d = aday_yogunlugu(g["toplam_aday"], g["pozisyon"])
+        return {"deger": d, "ondalik": 2, "birim": "aday / pozisyon",
+                "ifade": f"{g['toplam_aday']:g} ÷ {g['pozisyon']:g}",
+                "ayrinti": [["Pozisyon başına nitelikli aday",
+                             round(aqc(g["nitelikli"], g["pozisyon"]), 2)],
+                            ["Nitelikli aday oranı (%)",
+                             round(nitelik_orani(g["nitelikli"], g["toplam_aday"]), 1)]]}
+
+    if metrik == "time_to_fill":
+        d = ortalama_doldurma(g["toplam_gun"], g["pozisyon"])
+        return {"deger": d, "ondalik": 1, "birim": "gün",
+                "ifade": f"{g['toplam_gun']:g} ÷ {g['pozisyon']:g}",
+                "ayrinti": [["Hafta karşılığı", round(d / 7, 1)],
+                            ["Doldurulamayan onaylı talep", g["doldurulamayan"]],
+                            ["Doldurulamayan talep oranı (%)",
+                             round(acik_talep_orani(g["doldurulamayan"],
+                                                    g["pozisyon"] + g["doldurulamayan"]), 1)]]}
+
+    if metrik == "kritik_time_to_fill":
+        kritik = ortalama_doldurma(g["kritik_gun"], g["kritik_pozisyon"])
+        genel = ortalama_doldurma(g["genel_gun"], g["genel_pozisyon"])
+        return {"deger": kritik, "ondalik": 1, "birim": "gün (kritik)",
+                "ifade": f"{g['kritik_gun']:g} ÷ {g['kritik_pozisyon']:g}",
+                "ayrinti": [["Tüm pozisyonlarda ortalama (gün)", round(genel, 1)],
+                            ["Kritik pozisyonların farkı (gün)", round(kritik - genel, 1)],
+                            ["Kritik pozisyonların payı (%)",
+                             round(100 * g["kritik_pozisyon"] / g["genel_pozisyon"], 1)]]}
+
+    if metrik == "acik_talep":
+        d = acik_talep_orani(g["doldurulamayan"], g["onaylanan"])
+        return {"deger": d, "ondalik": 1, "birim": "% açık talep",
+                "ifade": f"({g['doldurulamayan']:g} ÷ {g['onaylanan']:g}) × 100",
+                "ayrinti": [["Doldurulan talep", g["onaylanan"] - g["doldurulamayan"]],
+                            ["Açık talebin taşıdığı boş gün",
+                             round(g["doldurulamayan"] * g["ortalama_acik_gun"])],
+                            ["Doldurulan talep oranı (%)",
+                             round(100 - d, 1)]]}
+
+    if metrik == "bosluk_talep":
+        d = ortalama_sure(g["toplam_gun"], g["vaka"])
+        return {"deger": d, "ondalik": 1, "birim": "gün",
+                "ifade": f"{g['toplam_gun']:g} ÷ {g['vaka']:g}",
+                "ayrinti": [["Hafta karşılığı", round(d / 7, 1)],
+                            ["Doldurma süresine oranı (%)",
+                             round(100 * d / g["doldurma_suresi"], 1)],
+                            ["Toplam süreye katkısı (gün)", round(d, 1)]]}
+
+    if metrik == "bosluk_kabul":
+        d = toplam_bosluk_suresi(g["bosluk_talep_gun"], g["talep_kabul_gun"])
+        return {"deger": d, "ondalik": 1, "birim": "gün (toplam)",
+                "ifade": f"{g['bosluk_talep_gun']:g} + {g['talep_kabul_gun']:g}",
+                "ayrinti": [["Talep açma gecikmesinin payı (%)",
+                             round(100 * g["bosluk_talep_gun"] / d, 1)],
+                            ["İşe alım sürecinin payı (%)",
+                             round(100 * g["talep_kabul_gun"] / d, 1)],
+                            ["Hafta karşılığı", round(d / 7, 1)]]}
+
+    if metrik == "ayrilis_baslangic":
+        d = ortalama_sure(g["toplam_isgunu"], g["vaka"])
+        return {"deger": d, "ondalik": 1, "birim": "iş günü",
+                "ifade": f"{g['toplam_isgunu']:g} ÷ {g['vaka']:g}",
+                "ayrinti": [["Yaklaşık takvim günü", round(isgunu_takvim(d), 1)],
+                            ["Ay karşılığı (takvim)", round(isgunu_takvim(d) / 30, 1)],
+                            ["Kişi başı boş geçen iş günü", round(d, 1)]]}
+
+    if metrik == "ayrilis_uyum":
+        d = g["ayrilis_baslangic_gun"] + g["uyum_gun"]
+        return {"deger": d, "ondalik": 1, "birim": "iş günü (toplam)",
+                "ifade": f"{g['ayrilis_baslangic_gun']:g} + {g['uyum_gun']:g}",
+                "ayrinti": [["Boşluk döneminin payı (%)",
+                             round(100 * g["ayrilis_baslangic_gun"] / d, 1)],
+                            ["Uyum döneminin payı (%)", round(100 * g["uyum_gun"] / d, 1)],
+                            ["Yaklaşık takvim günü", round(isgunu_takvim(d), 1)]]}
+
+    if metrik == "plan_gerceklesme":
+        d = plan_gerceklesme(g["gerceklesen"], g["planlanan"])
+        return {"deger": d, "ondalik": 1, "birim": "% plana göre",
+                "ifade": f"({g['gerceklesen']:g} ÷ {g['planlanan']:g}) × 100",
+                "ayrinti": [["Plandan sapma (pozisyon)", g["gerceklesen"] - g["planlanan"]],
+                            ["Kalan işe alım hedefi",
+                             max(g["planlanan"] - g["gerceklesen"], 0)],
+                            ["Dönem sonuna kalan ay", g["kalan_ay"]]]}
+
+    if metrik == "bosluk_maliyeti":
+        d = bosluk_maliyeti(g["gun"], g["gunluk_katki"], g["pozisyon"])
+        return {"deger": d, "ondalik": 0, "birim": "TL",
+                "ifade": f"{g['gun']:g} × {g['gunluk_katki']:g} × {g['pozisyon']:g}",
+                "ayrinti": [["Pozisyon başına (TL)",
+                             round(bosluk_maliyeti(g["gun"], g["gunluk_katki"]))],
+                            ["Süre bir hafta kısalırsa kazanç (TL)",
+                             round(bosluk_maliyeti(7, g["gunluk_katki"], g["pozisyon"]))],
+                            ["Toplam boş gün", round(g["gun"] * g["pozisyon"])]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 6) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _tl(x: float) -> str:
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def _demo() -> None:
+    cizgi = "-" * 64
+    print("ISO/TS 30430 — doğrulama çıktısı")
+    print(cizgi)
+
+    print("Aday havuzu (dört dönemlik karşılaştırma)")
+    print(f"{'Dönem':<10}{'TP':>6}{'TC':>7}{'QC':>7}{'AQC':>7}{'QC/TC %':>10}")
+    donemler = [("Cari", 300, 600, 420), ("Önceki", 280, 560, 364),
+                ("2 yıl", 400, 600, 440), ("3 yıl", 200, 400, 300)]
+    for ad, tp, tc, qc in donemler:
+        print(f"{ad:<10}{tp:>6}{tc:>7}{qc:>7}{aqc(qc, tp):>7.2f}"
+              f"{nitelik_orani(qc, tc):>10.1f}")
+    print(cizgi)
+
+    t = ornek_tablo()
+    print("Doldurulan pozisyonlar")
+    print(f"{'Kod':<6}{'D1':<12}{'D2':<12}{'Gün':>5}{'Kritik':>8}")
+    for p in t.pozisyonlar:
+        print(f"{p.kod:<6}{p.d1:<12}{p.d2:<12}{p.gun:>5}{'evet' if p.kritik else '—':>8}")
+    print(cizgi)
+    for k, v in t.ozet().items():
+        print(f"{k:<20}: {v}")
+    print(cizgi)
+
+    print(f"Boşluk → onaylı talep    : {ortalama_sure(122, 2):.1f} gün")
+    print(f"Boşluk → teklif kabulü   : {toplam_bosluk_suresi(61, 37.5):.1f} gün")
+    print(f"Ayrılış → işe başlama    : {ortalama_sure(240, 3):.1f} iş günü "
+          f"(≈ {isgunu_takvim(ortalama_sure(240, 3)):.0f} takvim günü)")
+    print(f"Ayrılış → uyumun bitişi  : {80 + 15:.1f} iş günü")
+    print(f"Plana göre gerçekleşme   : {plan_gerceklesme(42, 60):.1f} %")
+    print(f"Boş pozisyonun karşılığı : {_tl(bosluk_maliyeti(37.5, 4500, 6))} TL")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("aqc", nitelikli=420, pozisyon=300, toplam_aday=600))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir ön koşulu sağlamayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   u: kullanıcılar (hr İK / exec üst yönetim / line hat yönetimi /
+      fin finans ve hukuk / ext dış paydaş)
+   st: süreç aşaması (havuz, talep, sure, baslangic, plan)
+   r: raporlama (ic, dis)
+   t: aile (v aday havuzu / e süre / o plan ve bağlam)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   k: ek etiket (ctx bağlam etkeni, pre öngörü etkeni, onk ön koşul, tur türetilmiş)
+   ========================================================= */
+var METRICS = [
+ {g:"Aday havuzu", t:"v", items:[
+  {n:"Toplam açık pozisyon (TP)", st:"havuz", r:["ic"], d:"Ölçüm döneminde ilan edilen açık pozisyon sayısı", u:["hr","exec","line","fin"]},
+  {n:"Toplam aday (TC)", st:"havuz", r:["ic"], d:"Bu pozisyonlara başvuran tüm kişiler", u:["hr","line"]},
+  {n:"Nitelikli aday sayısı (QC)", st:"havuz", r:["ic"], d:"Başvuranlar arasından işin gereklerini karşılayanlar", u:["hr","exec","line"]},
+  {n:"Pozisyon başına nitelikli aday (AQC)", st:"havuz", r:["ic","dis"], iso:1, calc:"aqc", d:"QC ÷ TP; standardın iki ana metriğinden biri", u:["hr","exec","line","fin","ext"]},
+  {n:"Nitelikli aday oranı (QC/TC)", st:"havuz", r:["ic"], calc:"nitelik_orani", d:"İlanın hedefi mi, yetenek havuzu mu daralıyor", u:["hr","exec","line"]},
+  {n:"Pozisyon başına toplam aday (TC/TP)", st:"havuz", r:["ic"], calc:"aday_yogunlugu", d:"Çekim hacmi; AQC ile birlikte okunur", u:["hr","line"]},
+  {n:"Nitelik ölçütünün tanımlı ve güncel olması", st:"havuz", r:["ic"], k:"onk", d:"Her pozisyon kategorisi için yazılı, belgelenmiş ve düzenli güncellenen ölçüt", u:["hr","line","fin"]},
+  {n:"İş ailesine göre AQC kırılımı", st:"havuz", r:["ic"], d:"Satış, pazarlama, idari işler, üretim, mühendislik", u:["hr","exec","line"]},
+  {n:"Kanal bazında aday ve nitelikli aday", st:"havuz", r:["ic"], d:"İlan kanalının verimini gösterir", u:["hr"]},
+  {n:"Önceki dönem ve üç–beş yıl karşılaştırması", st:"havuz", r:["ic","dis"], d:"Eğilim ve hedef belirleme tabanı", u:["hr","exec","ext"]}
+ ]},
+ {g:"Süre — açık pozisyonun doldurulması", t:"e", items:[
+  {n:"Ortalama doldurma süresi (TD/TP)", st:"sure", r:["ic","dis"], iso:1, calc:"time_to_fill", d:"Onaylı kadro talebinden (D1) teklifin kabulüne (D2)", u:["hr","exec","line","fin","ext"]},
+  {n:"Kritik pozisyonlarda doldurma süresi", st:"sure", r:["ic","dis"], iso:1, calc:"kritik_time_to_fill", d:"Aynı formül, yalnızca kritik roller için", u:["hr","exec","line"]},
+  {n:"Doldurulamayan onaylı talep", st:"sure", r:["ic"], calc:"acik_talep", d:"Dönem sonunda açık kalan talepler; ayrı satır olarak raporlanır", u:["hr","exec","line","fin"]},
+  {n:"Pozisyon türüne göre süre kırılımı", st:"sure", r:["ic"], d:"Finans, üretim, satış gibi alt kırılımlar", u:["hr","exec","line"]},
+  {n:"Süre dağılımı (en kısa, ortanca, en uzun)", st:"sure", r:["ic"], k:"tur", d:"Ortalamayı yukarı çeken uç süreçleri görünür kılar", u:["hr","line"]},
+  {n:"Onay adımlarının sayısı ve süresi", st:"sure", r:["ic"], k:"tur", d:"Sürecin içindeki gecikmenin yerini bulmak için", u:["hr","line"]},
+  {n:"Teklif kabulünden işe başlamaya", st:"baslangic", r:["ic"], k:"tur", d:"İhbar süresi; işe alım biriminin denetimi dışındadır", u:["hr","line"]}
+ ]},
+ {g:"Süre — genişletilmiş ölçüm noktaları", t:"e", items:[
+  {n:"Boşluğun bilinmesinden onaylı talebe", st:"talep", r:["ic"], calc:"bosluk_talep", d:"Talep açmadaki gecikme; çoğu kurumda hiç ölçülmez", u:["hr","exec","line","fin"]},
+  {n:"Boşluğun bilinmesinden teklifin kabulüne", st:"talep", r:["ic"], calc:"bosluk_kabul", d:"İki bileşenin toplamı; kapsayıcı ölçü", u:["hr","exec","fin"]},
+  {n:"Ayrılıştan yeni çalışanın işe başlamasına", st:"baslangic", r:["ic"], calc:"ayrilis_baslangic", d:"Pozisyonun fiilen boş kaldığı iş günü", u:["hr","exec","line","fin"]},
+  {n:"Ayrılıştan uyum sürecinin bitişine", st:"baslangic", r:["ic"], calc:"ayrilis_uyum", d:"Tam verimle çalışılmayan toplam süre", u:["hr","line"]},
+  {n:"Zorunlu eğitim süresi olan roller", st:"baslangic", r:["ic"], d:"Perakende, itfaiye, emniyet, saha işleri gibi göreve başlama koşulu olan meslekler", u:["hr","line"]}
+ ]},
+ {g:"Plan ve karşılık", t:"o", items:[
+  {n:"Plana göre gerçekleşen işe alım", st:"plan", r:["ic"], calc:"plan_gerceklesme", d:"Onaylı işgücü planı ya da bütçelenmiş takvim ile gerçekleşenin karşılaştırması", u:["hr","exec","fin"]},
+  {n:"Boş pozisyon süresinin maliyeti", st:"plan", r:["ic"], k:"tur", calc:"bosluk_maliyeti", d:"Süreyi tartışılabilir bir tutara çevirir; standartta formül olarak yoktur", u:["hr","exec","fin"]},
+  {n:"Kadro ve tam zaman eşdeğeri (ölçüm noktasında)", st:"plan", r:["ic"], k:"ctx", d:"Kadro, metriğin anlamını değiştirecek kadar büyüdü mü, küçüldü mü", u:["hr","exec","fin"]},
+  {n:"Üretim artışı ya da ürün genişlemesi", st:"plan", r:["ic"], k:"ctx", d:"Talep hacmini ve aciliyeti değiştirir", u:["hr","exec"]},
+  {n:"Yeniden yapılanma", st:"plan", r:["ic"], k:"ctx", d:"Hem talep hem aday algısı üzerinde etkili", u:["hr","exec","line"]},
+  {n:"İşgücünün eğitimine yönelik çalışmalar", st:"plan", r:["ic"], k:"ctx", d:"İç aday havuzunu büyütür", u:["hr","line"]},
+  {n:"Kültürel değişim (olumlu ya da olumsuz)", st:"plan", r:["ic"], k:"ctx", d:"İşveren markası üzerinden aday sayısına yansır", u:["hr","exec"]},
+  {n:"Kuşak bakış açıları", st:"plan", r:["ic"], k:"ctx", d:"Beklenti ve başvuru davranışı farklılaşır", u:["hr"]},
+  {n:"Sektör beklentisi", st:"plan", r:["ic","dis"], k:"ctx", d:"Kıyaslamanın anlamlı olduğu aralığı belirler", u:["hr","exec","ext"]},
+  {n:"Ekonomik döngü (daralma ya da genişleme)", st:"plan", r:["ic","dis"], k:"ctx", d:"Aday arzını ve rekabeti doğrudan etkiler", u:["hr","exec","fin","ext"]},
+  {n:"Ücret ve yan hak düzeyi", st:"plan", r:["ic"], k:"ctx", d:"Beceri ve deneyimin kıt olduğu daralan piyasada belirleyici", u:["hr","exec","fin"]},
+  {n:"Çekim stratejisi ve ilan kanalı sayısı", st:"plan", r:["ic"], k:"ctx", d:"Tek kanal mı, çok kanal mı kullanılıyor", u:["hr","line"]},
+  {n:"Planlanan yapısal ve kadro değişiklikleri", st:"plan", r:["ic"], k:"pre", d:"Bilinen ve beklenen olaylar üzerinden öngörü", u:["hr","exec","fin"]},
+  {n:"Yaklaşan iş, işlev ya da ürün değişiklikleri", st:"plan", r:["ic"], k:"pre", d:"Gelecek dönemin talep profilini değiştirir", u:["hr","exec","line"]},
+  {n:"Satın alma ve birleşmeler", st:"plan", r:["ic","dis"], k:"pre", d:"Kadro ve iç aday havuzunu ani biçimde değiştirir", u:["hr","exec","fin","ext"]},
+  {n:"Siyasi, sosyal, çevresel ve yasal dinamikler", st:"plan", r:["ic","dis"], k:"pre", d:"Mevzuat ve toplumsal beklenti kaynaklı değişim", u:["hr","exec","fin","ext"]},
+  {n:"Sektörel etkiler", st:"plan", r:["ic","dis"], k:"pre", d:"Sektöre özgü daralma, büyüme ve beceri kıtlığı", u:["hr","exec","ext"]}
+ ]}
+];
+
+var USERS = ["hr","exec","line","fin","ext"];
+var AILE_AD = {v:"aday havuzu", e:"süre", o:"plan ve bağlam"};
+var EK_AD = {ctx:"bağlam etkeni", pre:"öngörü etkeni", onk:"ön koşul", tur:"türetilmiş"};
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fu = document.getElementById("fUser").value;
+  var fs = document.getElementById("fStage").value;
+  var ft = document.getElementById("fType").value;
+  var fr = document.getElementById("fRep").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fu && m.u.indexOf(fu) === -1) return;
+      if(fs && m.st !== fs) return;
+      if(fr && m.r.indexOf(fr) === -1) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = USERS.map(function(u){
+        if(m.u.indexOf(u) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 (m.k ? ' <span class="tag lvl">' + EK_AD[m.k] + '</span>' : "") +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "") +
+                 (m.r.indexOf("dis") !== -1 ? ' <span class="tag iso">dış rapor</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="6">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="6">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve etken gösteriliyor.";
+}
+["fUser","fStage","fType","fRep","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) DOLDURULAN POZİSYON TABLOSU
+   ========================================================= */
+var SATIR = 8;
+var ORNEK_POZ = [
+  ["V1","2019-01-20","2019-02-28",true],
+  ["V2","2019-01-20","2019-02-21",false],
+  ["V3","2019-01-20","2019-02-21",false],
+  ["V4","2019-01-20","2019-02-27",true],
+  ["V5","2019-01-20","2019-02-27",false],
+  ["V6","2019-01-20","2019-03-06",false],
+  ["","","",false],
+  ["","","",false]
+];
+
+function buildPosTable(){
+  var html = "";
+  for(var i=0;i<SATIR;i++){
+    html += '<tr>' +
+      '<td><input type="text" id="p_kod_' + i + '" placeholder="V' + (i+1) + '"></td>' +
+      '<td><input type="date" id="p_d1_' + i + '"></td>' +
+      '<td><input type="date" id="p_d2_' + i + '"></td>' +
+      '<td class="chk"><input type="checkbox" id="p_kr_' + i + '"></td>' +
+      '<td class="calc" id="p_gun_' + i + '">—</td></tr>';
+  }
+  document.getElementById("pBody").innerHTML = html;
+  document.getElementById("pBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computePos);
+    el.addEventListener("change", computePos);
+  });
+  document.getElementById("acikTalep").addEventListener("input", computePos);
+}
+
+function pDate(k, i){
+  var el = document.getElementById("p_" + k + "_" + i);
+  return el && el.value ? el.value : null;
+}
+
+var POZ = {tp:0, td:0, ortalama:null, ortanca:null, kritik:null, acik:0};
+
+function gunFarki(d1, d2){
+  return Math.round((new Date(d2) - new Date(d1)) / 86400000);
+}
+
+function computePos(){
+  var gunler = [], kritikGunler = [], hata = false;
+
+  for(var i=0;i<SATIR;i++){
+    var d1 = pDate("d1", i), d2 = pDate("d2", i);
+    var hucre = document.getElementById("p_gun_" + i);
+    if(!d1 || !d2){ hucre.textContent = "—"; continue; }
+    var g = gunFarki(d1, d2);
+    if(g < 0){ hucre.textContent = "D2 < D1"; hata = true; continue; }
+    hucre.textContent = g;
+    gunler.push(g);
+    if(document.getElementById("p_kr_" + i).checked) kritikGunler.push(g);
+  }
+
+  var acik = parseFloat(document.getElementById("acikTalep").value);
+  if(isNaN(acik) || acik < 0) acik = 0;
+
+  var tp = gunler.length;
+  var td = gunler.reduce(function(a,b){ return a+b; }, 0);
+  document.getElementById("tTP").textContent = tp || "—";
+  document.getElementById("tTD").textContent = tp ? td + " gün" : "—";
+  document.getElementById("tKritik").textContent = kritikGunler.length
+    ? kritikGunler.length + " kritik" : "—";
+
+  var kart = document.getElementById("pCards");
+  if(!tp){
+    POZ = {tp:0, td:0, ortalama:null, ortanca:null, kritik:null, acik:acik};
+    kart.innerHTML = "";
+    document.getElementById("pNot").textContent =
+      "Tabloya D1 ve D2 tarihlerini girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+
+  var sirali = gunler.slice().sort(function(a,b){ return a-b; });
+  var orta = sirali.length % 2
+    ? sirali[(sirali.length-1)/2]
+    : (sirali[sirali.length/2 - 1] + sirali[sirali.length/2]) / 2;
+  var ortalama = td / tp;
+  var kritikOrt = kritikGunler.length
+    ? kritikGunler.reduce(function(a,b){ return a+b; }, 0) / kritikGunler.length : null;
+  var acikOran = 100 * acik / (tp + acik);
+
+  POZ = {tp:tp, td:td, ortalama:ortalama, ortanca:orta, kritik:kritikOrt, acik:acik};
+
+  var f1 = function(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:1, maximumFractionDigits:1}); };
+  kart.innerHTML =
+    '<div class="card"><b>' + f1(ortalama) + '</b><span>Ortalama doldurma süresi (gün)</span></div>' +
+    '<div class="card"><b>' + f1(orta) + '</b><span>Ortanca süre (gün)</span></div>' +
+    '<div class="card alt"><b>' + sirali[0] + '–' + sirali[sirali.length-1] + '</b><span>En kısa – en uzun (gün)</span></div>' +
+    '<div class="card warn"><b>' + (kritikOrt === null ? "—" : f1(kritikOrt)) + '</b><span>Kritik pozisyon ortalaması</span></div>' +
+    '<div class="card warn"><b>' + f1(acikOran) + ' %</b><span>Doldurulamayan onaylı talep</span></div>';
+
+  var not = "TD = " + td + " gün, TP = " + tp + " pozisyon → TD/TP = " + f1(ortalama) + " gün. ";
+  if(kritikOrt !== null){
+    not += "Kritik pozisyonlar genel ortalamadan " +
+           f1(Math.abs(kritikOrt - ortalama)) + " gün " +
+           (kritikOrt > ortalama ? "daha uzun" : "daha kısa") + " sürede dolmuş. ";
+  }
+  if(Math.abs(ortalama - orta) >= 2){
+    not += "Ortalama ile ortanca arasında " + f1(Math.abs(ortalama - orta)) +
+           " gün fark var; uç süreçleri ayrı inceleyin. ";
+  }
+  if(hata) not += "Bazı satırlarda teklif kabul tarihi talep tarihinden önce; kontrol edin.";
+  document.getElementById("pNot").textContent = not;
+}
+
+function loadPosExample(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("p_kod_" + i).value = ORNEK_POZ[i][0];
+    document.getElementById("p_d1_" + i).value  = ORNEK_POZ[i][1];
+    document.getElementById("p_d2_" + i).value  = ORNEK_POZ[i][2];
+    document.getElementById("p_kr_" + i).checked = ORNEK_POZ[i][3];
+  }
+  document.getElementById("acikTalep").value = 2;
+  computePos();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadPosExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("p_kod_" + i).value = "";
+    document.getElementById("p_d1_" + i).value = "";
+    document.getElementById("p_d2_" + i).value = "";
+    document.getElementById("p_kr_" + i).checked = false;
+  }
+  computePos();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Pozisyon;D1;D2;Kritik;Gun"];
+  for(var i=0;i<SATIR;i++){
+    var d1 = pDate("d1", i), d2 = pDate("d2", i);
+    if(!d1 || !d2) continue;
+    satir.push([document.getElementById("p_kod_" + i).value || ("V" + (i+1)),
+                d1, d2,
+                document.getElementById("p_kr_" + i).checked ? "evet" : "hayir",
+                gunFarki(d1, d2)].join(";"));
+  }
+  if(POZ.tp){
+    satir.push(["Toplam", "", "", POZ.acik + " acik talep", POZ.td].join(";"));
+    satir.push(["Ortalama", "", "", "", POZ.ortalama.toFixed(2)].join(";"));
+  }
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30430_doldurma_suresi.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+var CALC = [
+ {id:"aqc", name:"Pozisyon başına nitelikli aday (AQC)", grp:"Aday havuzu",
+  formula:"AQC = Nitelikli aday (QC) &divide; Açık pozisyon (TP)",
+  note:"Nitelikli sayılma ölçütü her pozisyon kategorisi için kurum tarafından tanımlanır, belgelenir ve düzenli güncellenir. Ölçüt yazılı değilse metrik kıyaslanamaz.",
+  fields:[{k:"nitelikli",l:"Nitelikli aday (QC)",v:420},{k:"pozisyon",l:"Açık pozisyon (TP)",v:300},
+          {k:"toplam_aday",l:"Toplam aday (TC)",v:600}],
+  unit:"nitelikli aday / pozisyon",
+  py:"aqc(nitelikli=420, pozisyon=300)",
+  calc:function(v){ return {value:v.nitelikli/v.pozisyon, dec:2,
+    expl:v.nitelikli + " ÷ " + v.pozisyon,
+    detail:[["Pozisyon başına toplam aday", +(v.toplam_aday/v.pozisyon).toFixed(2)],
+            ["Nitelikli aday oranı (%)", +(100*v.nitelikli/v.toplam_aday).toFixed(1)],
+            ["Ölçütü karşılamayan aday", v.toplam_aday-v.nitelikli]]}; },
+  bands:[[3,"ok","Havuz güçlü; seçme sürecinin gerçek bir tercih alanı var."],
+         [1.5,"warn","Pozisyon başına iki adaydan az nitelikli aday; süreç kırılgan."],
+         [0,"bad","Pozisyon başına neredeyse tek nitelikli aday; bir çekilme süreci başa döndürür."]]},
+
+ {id:"nitelik_orani", name:"Nitelikli aday oranı (QC/TC)", grp:"Aday havuzu",
+  formula:"Nitelik oranı = (Nitelikli aday &divide; Toplam aday) &times; 100",
+  note:"Uygun olmayan aday payının yüksekliği ilanın hedefini, nitelikli aday payının düşüklüğü ise yetenek havuzunun daraldığını gösterir.",
+  fields:[{k:"nitelikli",l:"Nitelikli aday (QC)",v:420},{k:"toplam_aday",l:"Toplam aday (TC)",v:600},
+          {k:"pozisyon",l:"Açık pozisyon (TP)",v:300}],
+  unit:"% nitelikli",
+  py:"nitelik_orani(nitelikli=420, toplam_aday=600)",
+  calc:function(v){ return {value:100*v.nitelikli/v.toplam_aday, dec:1,
+    expl:"(" + v.nitelikli + " ÷ " + v.toplam_aday + ") × 100",
+    detail:[["Ölçütü karşılamayan aday", v.toplam_aday-v.nitelikli],
+            ["Pozisyon başına nitelikli aday", +(v.nitelikli/v.pozisyon).toFixed(2)],
+            ["Pozisyon başına elenen aday", +((v.toplam_aday-v.nitelikli)/v.pozisyon).toFixed(2)]]}; },
+  bands:[[70,"ok","Başvuruların çoğu hedefe uygun; ilan ve kanal seçimi çalışıyor."],
+         [40,"warn","Elenen aday payı yüksek; ilan metni ve kanal odağı gözden geçirilmeli."],
+         [0,"bad","Başvuruların çoğu ölçütü karşılamıyor; çekim stratejisi hedefini kaçırıyor."]]},
+
+ {id:"aday_yogunlugu", name:"Pozisyon başına toplam aday (TC/TP)", grp:"Aday havuzu",
+  formula:"Aday yoğunluğu = Toplam aday (TC) &divide; Açık pozisyon (TP)",
+  note:"Tek başına yön göstermez: yüksek yoğunluk ama düşük AQC, çekim stratejisinin çok geniş hedeflediğini gösterir.",
+  fields:[{k:"toplam_aday",l:"Toplam aday (TC)",v:600},{k:"pozisyon",l:"Açık pozisyon (TP)",v:300},
+          {k:"nitelikli",l:"Nitelikli aday (QC)",v:420}],
+  unit:"aday / pozisyon",
+  py:"aday_yogunlugu(toplam_aday=600, pozisyon=300)",
+  calc:function(v){ return {value:v.toplam_aday/v.pozisyon, dec:2,
+    expl:v.toplam_aday + " ÷ " + v.pozisyon,
+    detail:[["Pozisyon başına nitelikli aday", +(v.nitelikli/v.pozisyon).toFixed(2)],
+            ["Nitelikli aday oranı (%)", +(100*v.nitelikli/v.toplam_aday).toFixed(1)]]}; },
+  bands:[[0,"ok","Bu sayıyı her zaman nitelikli aday oranıyla birlikte okuyun; hacim tek başına başarı değildir."]]},
+
+ {id:"time_to_fill", name:"Ortalama doldurma süresi (TD/TP)", grp:"Süre",
+  formula:"Doldurma süresi = Toplam gün (TD) &divide; Doldurulan pozisyon (TP)",
+  note:"TD, her pozisyon için onaylı kadro talebi (D1) ile teklifin kabulü (D2) arasındaki günlerin toplamıdır. Aynı formül kritik pozisyonlar için de kullanılır.",
+  fields:[{k:"toplam_gun",l:"Toplam gün (TD)",v:225},{k:"pozisyon",l:"Doldurulan pozisyon (TP)",v:6},
+          {k:"doldurulamayan",l:"Doldurulamayan onaylı talep",v:2}],
+  unit:"gün",
+  py:"ortalama_doldurma(toplam_gun=225, pozisyon=6)",
+  calc:function(v){ var d=v.toplam_gun/v.pozisyon;
+    return {value:d, dec:1, expl:v.toplam_gun + " ÷ " + v.pozisyon,
+      detail:[["Hafta karşılığı", +(d/7).toFixed(1)],
+              ["Doldurulamayan onaylı talep", v.doldurulamayan],
+              ["Doldurulamayan talep oranı (%)",
+               +(100*v.doldurulamayan/(v.pozisyon+v.doldurulamayan)).toFixed(1)]]}; },
+  bands:[[60,"bad","Süre uzun; onay adımlarını, mülakat takvimini ve karar gecikmesini ayrı ölçün."],
+         [35,"warn","Orta düzey; aday havuzu iyiyse sorun süreçtedir."],
+         [0,"ok","Süreç hızlı çalışıyor; işe alım niteliğinden ödün verilip verilmediğini ayrıca kontrol edin."]]},
+
+ {id:"kritik_time_to_fill", name:"Kritik pozisyonlarda doldurma süresi", grp:"Süre",
+  formula:"Kritik süre = Kritik pozisyonların toplam günü &divide; Kritik pozisyon sayısı",
+  note:"Kritik pozisyon, kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan roldür; üst düzey olması gerekmez ve liste kurumsal stratejinin parçası olarak belirlenir.",
+  fields:[{k:"kritik_gun",l:"Kritik pozisyonların toplam günü",v:77},
+          {k:"kritik_pozisyon",l:"Kritik pozisyon sayısı",v:2},
+          {k:"genel_gun",l:"Tüm pozisyonların toplam günü",v:225},
+          {k:"genel_pozisyon",l:"Toplam doldurulan pozisyon",v:6}],
+  unit:"gün (kritik)",
+  py:'hesapla("kritik_time_to_fill", kritik_gun=77, kritik_pozisyon=2, genel_gun=225, genel_pozisyon=6)',
+  calc:function(v){ var k=v.kritik_gun/v.kritik_pozisyon, g=v.genel_gun/v.genel_pozisyon;
+    return {value:k, dec:1, expl:v.kritik_gun + " ÷ " + v.kritik_pozisyon,
+      detail:[["Tüm pozisyonlarda ortalama (gün)", +g.toFixed(1)],
+              ["Kritik pozisyonların farkı (gün)", +(k-g).toFixed(1)],
+              ["Kritik pozisyonların payı (%)", +(100*v.kritik_pozisyon/v.genel_pozisyon).toFixed(1)]]}; },
+  bands:[[60,"bad","Kritik kadro uzun süre boş kalıyor; halefiyet planı ve önceden aday havuzu gerekli."],
+         [35,"warn","Kritik süre genel ortalamaya yakın; farkı dönemler boyunca izleyin."],
+         [0,"ok","Kritik pozisyonlar hızlı dolduruluyor."]]},
+
+ {id:"acik_talep", name:"Doldurulamayan onaylı talep", grp:"Süre",
+  formula:"Açık talep oranı = (Doldurulamayan &divide; Onaylanan toplam talep) &times; 100",
+  note:"Ortalama süre yalnızca kapanan süreçleri sayar. Dönem sonunda açık kalan onaylı talepler ayrı satır olarak raporlanmazsa tablo iyimser görünür.",
+  fields:[{k:"doldurulamayan",l:"Dönem sonunda açık talep",v:2},
+          {k:"onaylanan",l:"Onaylanan toplam talep",v:8},
+          {k:"ortalama_acik_gun",l:"Açık taleplerin ortalama bekleme günü",v:52}],
+  unit:"% açık talep",
+  py:"acik_talep_orani(doldurulamayan=2, onaylanan=8)",
+  calc:function(v){ var d=100*v.doldurulamayan/v.onaylanan;
+    return {value:d, dec:1, expl:"(" + v.doldurulamayan + " ÷ " + v.onaylanan + ") × 100",
+      detail:[["Doldurulan talep", v.onaylanan-v.doldurulamayan],
+              ["Açık talebin taşıdığı boş gün", Math.round(v.doldurulamayan*v.ortalama_acik_gun)],
+              ["Doldurulan talep oranı (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[25,"bad","Onaylı taleplerin dörtte biri kapanmamış; ortalama süre gerçeği yansıtmıyor."],
+         [10,"warn","Kayda değer bir açık talep yığını var; en eski talepleri ayrı listeleyin."],
+         [0,"ok","Talepler büyük ölçüde kapanıyor; ortalama süre temsil edici."]]},
+
+ {id:"bosluk_talep", name:"Boşluğun bilinmesinden onaylı talebe", grp:"Genişletilmiş süre",
+  formula:"Ortalama süre = Toplam gün &divide; Vaka sayısı",
+  note:"Ölçüm, istifa ya da feshin kayda geçtiği tarihte başlar, onaylı kadro talebinin açıldığı tarihte biter. Bu gecikme işgücü maliyeti, performans düşüşü, bağlılık kaybı ve devamsızlık olarak geri döner; çoğu kurumda gizli kalır.",
+  fields:[{k:"toplam_gun",l:"Toplam gün",v:122},{k:"vaka",l:"Vaka sayısı",v:2},
+          {k:"doldurma_suresi",l:"Ortalama doldurma süresi (gün)",v:37.5,step:0.5}],
+  unit:"gün",
+  py:"ortalama_sure(toplam_gun=122, vaka=2)",
+  calc:function(v){ var d=v.toplam_gun/v.vaka;
+    return {value:d, dec:1, expl:v.toplam_gun + " ÷ " + v.vaka,
+      detail:[["Hafta karşılığı", +(d/7).toFixed(1)],
+              ["Doldurma süresine oranı (%)", +(100*d/v.doldurma_suresi).toFixed(1)],
+              ["Toplam süreye katkısı (gün)", +d.toFixed(1)]]}; },
+  bands:[[30,"bad","Talep açma gecikmesi işe alım sürecinden uzun; iyileştirme İK'da değil onay hattında."],
+         [10,"warn","Talep açmada kayda değer gecikme var; yetki ve onay adımlarını gözden geçirin."],
+         [0,"ok","Boşluk hızla talebe dönüşüyor."]]},
+
+ {id:"bosluk_kabul", name:"Boşluğun bilinmesinden teklifin kabulüne", grp:"Genişletilmiş süre",
+  formula:"Toplam süre = (Boşluk → talep) + (Talep → teklifin kabulü)",
+  note:"Kapsayıcı metriktir: iki bileşeni de içerir. Yönetime toplam gecikmenin nerede oluştuğunu gösterir.",
+  fields:[{k:"bosluk_talep_gun",l:"Boşluk → onaylı talep (gün)",v:61},
+          {k:"talep_kabul_gun",l:"Talep → teklifin kabulü (gün)",v:37.5,step:0.5}],
+  unit:"gün (toplam)",
+  py:"toplam_bosluk_suresi(bosluk_talep_gun=61, talep_kabul_gun=37.5)",
+  calc:function(v){ var d=v.bosluk_talep_gun+v.talep_kabul_gun;
+    return {value:d, dec:1, expl:v.bosluk_talep_gun + " + " + v.talep_kabul_gun,
+      detail:[["Talep açma gecikmesinin payı (%)", +(100*v.bosluk_talep_gun/d).toFixed(1)],
+              ["İşe alım sürecinin payı (%)", +(100*v.talep_kabul_gun/d).toFixed(1)],
+              ["Hafta karşılığı", +(d/7).toFixed(1)]]}; },
+  bands:[[90,"bad","Boşluğun bilinmesinden kabule üç aya yakın süre geçiyor; iki bileşeni ayrı hedefleyin."],
+         [45,"warn","Toplam süre orta düzeyde; hangi bileşenin baskın olduğuna bakın."],
+         [0,"ok","Boşluktan kabule geçen toplam süre kısa."]]},
+
+ {id:"ayrilis_baslangic", name:"Ayrılıştan yeni çalışanın işe başlamasına", grp:"Genişletilmiş süre",
+  formula:"Ortalama süre = Toplam iş günü &divide; Vaka sayısı",
+  note:"Bu metrik iş günü üzerinden tanımlıdır; takvim günü üzerinden raporlanan metriklerle yan yana konurken birim farkı belirtilmelidir.",
+  fields:[{k:"toplam_isgunu",l:"Toplam iş günü",v:240},{k:"vaka",l:"Vaka sayısı",v:3}],
+  unit:"iş günü",
+  py:"ortalama_sure(toplam_gun=240, vaka=3)",
+  calc:function(v){ var d=v.toplam_isgunu/v.vaka;
+    return {value:d, dec:1, expl:v.toplam_isgunu + " ÷ " + v.vaka,
+      detail:[["Yaklaşık takvim günü", +(d*7/5).toFixed(1)],
+              ["Ay karşılığı (takvim)", +(d*7/5/30).toFixed(1)],
+              ["Kişi başı boş geçen iş günü", +d.toFixed(1)]]}; },
+  bands:[[60,"bad","Pozisyon üç aya yakın fiilen boş; yedekleme maliyeti ve iş yükü devri ayrıca ölçülmeli."],
+         [25,"warn","Boş geçen süre kayda değer; ihbar süresi ve başlangıç tarihi planlamasına bakın."],
+         [0,"ok","Devir teslim büyük ölçüde kesintisiz."]]},
+
+ {id:"ayrilis_uyum", name:"Ayrılıştan uyum sürecinin bitişine", grp:"Genişletilmiş süre",
+  formula:"Toplam süre = (Ayrılış → işe başlama) + (Uyum süreci)",
+  note:"Perakende, itfaiye, emniyet ve saha işleri gibi belirli bir eğitim tamamlanmadan göreve başlanamayan mesleklerde asıl belirleyici metrik budur. Gerekli belge ve deneyime sahip adaylar uyumun bazı adımlarını atlayabilir.",
+  fields:[{k:"ayrilis_baslangic_gun",l:"Ayrılış → işe başlama (iş günü)",v:80},
+          {k:"uyum_gun",l:"Uyum süreci (iş günü)",v:15}],
+  unit:"iş günü (toplam)",
+  py:'hesapla("ayrilis_uyum", ayrilis_baslangic_gun=80, uyum_gun=15)',
+  calc:function(v){ var d=v.ayrilis_baslangic_gun+v.uyum_gun;
+    return {value:d, dec:1, expl:v.ayrilis_baslangic_gun + " + " + v.uyum_gun,
+      detail:[["Boşluk döneminin payı (%)", +(100*v.ayrilis_baslangic_gun/d).toFixed(1)],
+              ["Uyum döneminin payı (%)", +(100*v.uyum_gun/d).toFixed(1)],
+              ["Yaklaşık takvim günü", +(d*7/5).toFixed(1)]]}; },
+  bands:[[75,"bad","Pozisyon çok uzun süre tam verimle çalışmıyor; yedekleme planı zorunlu."],
+         [35,"warn","Kayda değer bir verim boşluğu var; uyum programının süresini gözden geçirin."],
+         [0,"ok","Yeni çalışan kısa sürede tam göreve geçiyor."]]},
+
+ {id:"plan_gerceklesme", name:"Plana göre gerçekleşen işe alım", grp:"Plan",
+  formula:"Gerçekleşme = (Gerçekleşen işe alım &divide; Planlanan işe alım) &times; 100",
+  note:"Onaylı işgücü planı ya da bütçelenmiş işe alım takvimi ile fiilen yapılan alımın karşılaştırılmasıdır; standardın değerli bulduğu ek göstergedir.",
+  fields:[{k:"gerceklesen",l:"Gerçekleşen işe alım",v:42},{k:"planlanan",l:"Planlanan işe alım",v:60},
+          {k:"kalan_ay",l:"Dönem sonuna kalan ay",v:4}],
+  unit:"% plana göre",
+  py:"plan_gerceklesme(gerceklesen=42, planlanan=60)",
+  calc:function(v){ var d=100*v.gerceklesen/v.planlanan;
+    return {value:d, dec:1, expl:"(" + v.gerceklesen + " ÷ " + v.planlanan + ") × 100",
+      detail:[["Plandan sapma (pozisyon)", v.gerceklesen-v.planlanan],
+              ["Kalan işe alım hedefi", Math.max(v.planlanan-v.gerceklesen, 0)],
+              ["Dönem sonuna kalan ay", v.kalan_ay]]}; },
+  bands:[[90,"ok","Plan büyük ölçüde tutmuş; sapma varsa nedenini dipnot olarak yazın."],
+         [70,"warn","Plandan sapma var; kalan sürede yetişip yetişmeyeceğini kapasiteyle birlikte değerlendirin."],
+         [0,"bad","Gerçekleşme plandan belirgin geride; işgücü planının varsayımları da gözden geçirilmeli."]]},
+
+ {id:"bosluk_maliyeti", name:"Boş pozisyon süresinin maliyeti", grp:"Plan",
+  formula:"Karşılık = Boş gün &times; Günlük katkı &times; Pozisyon sayısı",
+  note:"Standart bu hesabı formül olarak vermez; gecikmelerin gizli maliyet ve verimlilik kaybı ürettiğini belirtir. Buradaki hesap türetilmiştir ve günlük katkı varsayımına dayanır.",
+  fields:[{k:"gun",l:"Pozisyon başına boş gün",v:37.5,step:0.5},
+          {k:"gunluk_katki",l:"Pozisyonun günlük net katkısı (TL)",v:4500},
+          {k:"pozisyon",l:"Pozisyon sayısı",v:6}],
+  unit:"TL",
+  py:"bosluk_maliyeti(gun=37.5, gunluk_katki=4500, pozisyon=6)",
+  calc:function(v){ var t=v.gun*v.gunluk_katki*v.pozisyon;
+    return {value:t, dec:0, expl:v.gun + " × " + v.gunluk_katki + " × " + v.pozisyon,
+      detail:[["Pozisyon başına (TL)", Math.round(v.gun*v.gunluk_katki)],
+              ["Süre bir hafta kısalırsa kazanç (TL)", Math.round(7*v.gunluk_katki*v.pozisyon)],
+              ["Toplam boş gün", Math.round(v.gun*v.pozisyon)]]}; },
+  bands:[[0,"ok","Tutarı süre hedefiyle birlikte sunun: bir haftalık kısalmanın karşılığı, iyileştirme bütçesinin gerekçesidir."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    var raw = el && el.value !== "" ? parseFloat(el.value) : NaN;
+    if(isNaN(raw)){ missing = true; v[f.k] = f.v; } else { v[f.k] = raw; }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){ return f.k + "=" + r.v[f.k]; }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30430_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!POZ.tp){ loadPosExample(); }
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("time_to_fill");
+  sel.value = idx; buildFields();
+  document.getElementById("in_toplam_gun").value = POZ.td;
+  document.getElementById("in_pozisyon").value = POZ.tp;
+  document.getElementById("in_doldurulamayan").value = POZ.acik;
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso30430_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30430_metrikler')\n" +
+      "_m.__file__ = 'iso30430_metrikler.py'\n" +
+      "sys.modules['iso30430_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30430_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30430_metrikler import *\n" +
+      "import iso30430_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30430_metrikler import *\n' +
+  'import iso30430_metrikler as m\n\n' +
+  '# Aday havuzu\n' +
+  'print("AQC              :", round(aqc(420, 300), 2))\n' +
+  'print("Nitelik oranı    :", round(nitelik_orani(420, 600), 1), "%")\n\n' +
+  '# Süre: tarihlerden hesap\n' +
+  'print("V1 gün farkı     :", gun_farki("2019-01-20", "2019-02-28"))\n' +
+  't = ornek_tablo()\n' +
+  'for anahtar, deger in t.ozet().items():\n' +
+  '    print(f"{anahtar:<18}: {deger}")\n\n' +
+  '# Genişletilmiş ölçüm noktaları\n' +
+  'print("Boşluk → talep   :", ortalama_sure(122, 2), "gün")\n' +
+  'print("Boşluk → kabul   :", toplam_bosluk_suresi(61, 37.5), "gün")\n' +
+  'print("Ayrılış → başlama:", ortalama_sure(240, 3), "iş günü")\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("time_to_fill", toplam_gun=225, pozisyon=6, doldurulamayan=2))\n\n' +
+  '# Rapor denetimi: hangi ön koşullar eksik?\n' +
+  'for uyari in metrik_denetimi(nitelik_olcutu_tanimli=True, olcum_noktasi_sabit=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30430_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30430_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildPosTable();
+loadPosExample();
+buildFields();
+run();
+</script>
+</body>
+</html>
