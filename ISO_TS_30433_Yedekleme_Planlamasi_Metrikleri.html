@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 30433 Yedekleme Planlaması Metrikleri Kümesi — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:72px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- pozisyon tablosu --- */
+  .postbl{font-size:13.5px}
+  .postbl input[type=text],.postbl input[type=date],.postbl input[type=number]{
+    width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .postbl input[type=text]{font-family:var(--sans)}
+  .postbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .postbl td.chk{text-align:center}
+  .postbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .postbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tblbar .inline{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-soft)}
+  .tblbar .inline input{width:78px;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--eff-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--efc-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+  .tblwrap{overflow-x:auto;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 30433 Yedekleme Planlaması Metrikleri Kümesi</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 30433:2021 — <i>Human resource management — Succession planning metrics cluster</i></span>
+  <span><b>Kapsam:</b> 5 kullanıcı · 3 metrik ailesi · <span id="srcCount">—</span></span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 30433, ISO 30414'ün <b>yedekleme planlaması</b> kümesini ayrıntılandıran bir teknik
+şartnamedir. Yedekleme planlamasını, kurumun gelecekteki kritik pozisyonlarını doldurma potansiyeli
+taşıyan mevcut çalışanların belirlenmesi ve geliştirilmesi süreci olarak ele alır ve bunu kurumsal
+dayanıklılığın insan tarafındaki temel göstergesi sayar. Üç ana metrik tanımlar — <b>yedekleme
+etkililiği</b>, <b>yedek kapsama oranı</b> ve üç düzeyli <b>yedekleme hazırlık (derinlik) oranı</b> —
+ardından bunları dört ek ölçütle genişletir: yetkinlik değerlendirmesi, çalışan yedek gücü, havuz büyüme
+oranı ve hazır adayı olmayan pozisyon oranı. Bu sayfa, standardın metrik kümesini filtrelenebilir bir
+matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı + Python koduna dönüştürür.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>Genişlik ile derinlik ayrı şeylerdir.</b> Kapsama oranı havuzun genişliğini ölçer; geniş bir
+  havuz, gerektiğinde hazır yedek bulunacağının garantisi değildir. Derinliği hazırlık oranı gösterir ve
+  ikisi birlikte okunur.</li>
+  <li><b>Tek metrik yanıltır.</b> Standart, yedekleme ölçümünün bir metrik panosu olarak kurulmasını
+  ister; tek başına kullanılan bir gösterge süreç hakkında sınırlı ya da çarpık bir görüntü verir.</li>
+  <li><b>Etkililik oranı için anılan aralık %70–80'dir.</b> Kritik pozisyonların bu oranda içeriden
+  doldurulması, güçlü bir yedekleme hattının işareti sayılır.</li>
+  <li><b>Hazırlık üç ufukta ölçülür:</b> şimdi hazır, 1–3 yılda hazır, 4–5 yılda hazır. Rekabetin sert
+  ve rakip avlanmasının yaygın olduğu sektörlerde standart, bu ufukların 3–6 aylık döngülere
+  kısaltılabileceğini belirtir.</li>
+  <li><b>Hazır adayı olmayan pozisyon oranının hedefi sıfıra yakındır.</b> Bu metrik, kapsama ya da
+  etkililik oranının tersi değildir; ortalamalar üzerinden çalıştıkları için üçü ayrı sorulara yanıt
+  verir.</li>
+  <li><b>Her pozisyon yedek havuzu gerektirmez.</b> Alt düzey yöneticiler ya da yaygın beceri
+  setindeki roller için yedekleme planı zorunlu değildir; kaynak, kritik pozisyonlara ayrılır.</li>
+  <li><b>Kıyas grubuyla karşılaştırma bu kümede işe yaramaz.</b> Liderlik nüfusları ve yedekleme
+  uygulamaları kurumdan kuruma çok farklı olduğu için hedefler, kurumun kendi tahminine dayanır:
+  pozisyon başına kaç hazır yedek gerektiği, hazırlık düzeyi ve beklenen devir.</li>
+  <li><b>Metrik geriye dönük bir göstergedir.</b> Standart açıkça söyler: etkililik oranı yetenek
+  süreçlerinin çalıştığını ancak olaydan sonra gösterir; sorunun ya da kırılganlığın nerede olduğunu
+  söylemez ve piyasa koşulları değiştiğinde gelecekteki başarıyı garanti etmez.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik seçim adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Kritik pozisyon ve havuz tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Yedekleme hattının gücü sorgulandığında:</b> etkililik oranı, kritik pozisyonların ne kadarının
+  içeriden doldurulduğunu gösterir.</li>
+  <li><b>Liderlik riskinin ölçülmesinde:</b> hazır adayı olmayan pozisyon oranı, ani bir ayrılışta
+  kurumun ne kadar açıkta kalacağını sayısallaştırır.</li>
+  <li><b>Yetenek yatırımının önceliklendirilmesinde:</b> yedek gücü ölçümü, kritik yetkinlik açıklarının
+  hangi alanlarda olduğunu gösterir ve geliştirme kaynağını oraya yönlendirir.</li>
+  <li><b>İçeriden mi dışarıdan mı sorusunda:</b> hazırlık oranı, üst düzey pozisyonlarda dış alım
+  kararına veri sağlar; dış alım uzun sürer, maliyeti yüksektir ve kurumsal hafıza kaybı yaratabilir.</li>
+  <li><b>İşgücü planı ve büyüme senaryolarında:</b> havuz büyüme oranı, gelecek liderlerin
+  yetiştirilmesinde geçen yılın başarısını gösterir.</li>
+  <li><b>Dış raporlamada:</b> yatırımcı ve hissedarlar için, kilit liderlik ayrılışlarına karşı hazırlık
+  düzeyinin göstergesi olarak kullanılır (ISO 30414 ile birlikte).</li>
+</ul>
+<div class="note">Standart, yedekleme planlamasında geçirilen zaman konusunda daha fazla şeffaflığın
+yatırımcılara, analistlere ve her düzeydeki çalışana yarar sağladığını belirtir. Metrikler yalnız
+başına değil, kurumsal öncelikler, stratejik hedefler ve diğer İK verileriyle birlikte analiz edilir.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Her metrik için altı bileşen</h3>
+<p>Standart, ele aldığı her metriği aynı başlıklarla tanımlar. Kurum içi metrik kartlarınızı da bu
+yapıda hazırlamak, metriğin sonradan tartışılmasını önler.</p>
+<table>
+  <thead><tr><th>Bileşen</th><th>Yanıtladığı soru</th></tr></thead>
+  <tbody>
+    <tr><td>Genel tanım</td><td>Metrik neyi sayar?</td></tr>
+    <tr><td>Amaç</td><td>Hangi kurumsal soruya hizmet eder?</td></tr>
+    <tr><td>Formül</td><td>Nasıl hesaplanır, pay ve payda nedir?</td></tr>
+    <tr><td>Kullanım biçimi</td><td>İç kullanım ve dış kullanım nasıl ayrışır?</td></tr>
+    <tr><td>Bağlam etkenleri</td><td>Sonucu bugün ne etkiliyor olabilir?</td></tr>
+    <tr><td>Öngörü etkenleri</td><td>Bilinen ve beklenen olaylar sonucu nasıl değiştirecek?</td></tr>
+  </tbody>
+</table>
+
+<h3>Genişlik, derinlik ve sonuç: üç ayrı soru</h3>
+<p>Kümedeki metrikler aynı veriden beslenir ama farklı sorulara yanıt verir. Hangi metriğin hangi soruyu
+yanıtladığı ayrılmadan yapılan yorum, doğru sayıdan yanlış sonuç üretir.</p>
+<table>
+  <thead><tr><th>Soru</th><th>Metrik</th><th>Neyi görünür kılar</th></tr></thead>
+  <tbody>
+    <tr><td><b>Havuz ne kadar geniş?</b></td><td>Halef kapsama oranı, havuz büyüme oranı</td>
+      <td>Belirlenmiş yedek sayısının liderlik pozisyonlarına oranı; havuzun yıldan yıla değişimi</td></tr>
+    <tr><td><b>Havuz ne kadar derin?</b></td><td>Hazırlık oranı (şimdi / 1–3 yıl / 4–5 yıl), yedek gücü</td>
+      <td>Adayların gerçekten devralmaya hazır olup olmadığı ve yetkinlik düzeyi</td></tr>
+    <tr><td><b>Açık nerede?</b></td><td>Hazır adayı olmayan pozisyon oranı, yetkinlik eşleşme yüzdesi</td>
+      <td>Hangi pozisyonların ve hangi yetkinlik alanlarının korumasız olduğu</td></tr>
+    <tr><td><b>Sonuç ne oldu?</b></td><td>Yedekleme etkililiği</td>
+      <td>Kritik pozisyonların fiilen ne kadarının içeriden doldurulduğu</td></tr>
+  </tbody>
+</table>
+<div class="note">Hazır adayı olmayan pozisyon oranı, kapsama ya da etkililik oranının doğrudan tersi
+<b>değildir</b>: bu metrik pozisyonlar ve nüfuslar genelinde ortalamalarla çalışır. Üçü aynı panoda,
+ayrı satırlar olarak durur.</div>
+
+<h3>Hazırlık ufukları ve ölçüm noktası</h3>
+<ul>
+  <li>Standart üç ufuk tanımlar: şimdi hazır, 1–3 yılda hazır, 4–5 yılda hazır. Büyük kurumların iç
+  raporlamada üçünü birden kullanması önerilir.</li>
+  <li>Rakip avlanmasının yoğun olduğu ve önemli değişimin yakın göründüğü durumlarda ufuklar 3–6 aya ya
+  da 3–6 aylık döngülere (3–6 ay, 9–12 ay, 12–15 ay gibi) çekilebilir.</li>
+  <li>Hazır adayı olmayan pozisyon oranı, ölçüm döneminin sonundaki kadro verisiyle hesaplanır.</li>
+  <li>Hazırlık, mevcut pozisyon sahibi ya da doğrudan yöneticisi tarafından belirlenebilir; adayların
+  gerçek ya da senaryo temelli durumlarda güvenli biçimde sınanmasına dayanır.</li>
+  <li>Değerlendirmede birden çok araç kullanmak (pozisyonda geçen süre, performans ve geri bildirim
+  puanları, gelişimde geçirilen zaman) önyargıyı azaltır ve kararı sağlamlaştırır.</li>
+</ul>
+
+<h2 id="adimlar">Metrik Seçim Adımları</h2>
+<ol>
+  <li><b>Kritik pozisyonları tanımlayın.</b> Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan
+  roller; yetki, kapsam ya da piyasa sorumluluğu taşıyan, yerine koyması güç liderlik ve yöneticilik
+  pozisyonları.</li>
+  <li><b>Lider tanımını yazın.</b> Kapsama oranının paydasını hangi unvanların oluşturduğu (kıdemli
+  müdür, direktör, üst düzey yönetici) açıkça belirtilir.</li>
+  <li><b>Havuza girme ölçütünü belirleyin.</b> Halef adaylarının doğru belirlenmesi, kümenin tamamının
+  güvenilirliğinin ön koşuludur.</li>
+  <li><b>Hazırlık ufuklarını seçin</b> ve sektörün hızına göre gerekiyorsa kısaltın.</li>
+  <li><b>Yetkinlik çerçevesini kurun.</b> Görev, insan ve liderlik yetkinlik alanları; her alan için
+  mevcut ağırlıklı ortalama puan ve mutabık kalınan gelecek gereklilik.</li>
+  <li><b>Yedek gücü eşiklerini belirleyin.</b> Her yetkinlik alanı için asgari eşik, dengeli skor kartı
+  yaklaşımıyla kurumun kendisi tarafından tanımlanır.</li>
+  <li><b>Kırılımları seçin.</b> Unvan düzeyi, işlev, iş ailesi, örgütsel birim ve coğrafya.</li>
+  <li><b>Gelişim kaynağını ayırın.</b> Çalışma zamanı, eğitim izni, koçluk, gölge çalışma ve gelişim
+  görevleri için bütçe; kaynak yoksa özel proje çalışması gibi iç araçlar kullanılır.</li>
+  <li><b>Panoyu kurun.</b> Metrikler tek tek değil, birlikte raporlanır; yanına bağlam ve öngörü
+  etkenleri yazılır.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kısaltma</th><th>Kavram</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>KP</b></td><td>Kritik pozisyon</td>
+      <td>Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan iş rolü (ISO/TS 30410'dan uyarlanan
+      tanım)</td></tr>
+    <tr><td><b>Havuz</b></td><td>Halef havuzu</td>
+      <td>Liderlik yedekleme havuzunda yer alan çalışanlar; potansiyel yedek olarak belirlenmiş kişiler</td></tr>
+    <tr><td><b>Lider</b></td><td>Liderlik pozisyonu</td>
+      <td>Kapsama oranının paydası; kurumun tanımladığı unvan grubu (kıdemli müdür, direktör, üst düzey
+      yönetici gibi)</td></tr>
+    <tr><td><b>Hazır şimdi</b></td><td>Ready now</td>
+      <td>Gerekirse pozisyonu hemen devralabilecek durumda belirlenmiş aday</td></tr>
+    <tr><td><b>1–3 / 4–5 yıl</b></td><td>Hazırlık ufukları</td>
+      <td>Adayın belirtilen süre içinde devralmaya hazır hâle geleceğinin öngörüldüğü düzeyler</td></tr>
+    <tr><td><b>Yedek gücü</b></td><td>Bench strength</td>
+      <td>Havuzda, birden çok performans ve değerlendirme alanında asgari yetkinlik eşiklerini karşılayan
+      toplam kişi sayısı</td></tr>
+    <tr><td><b>Eşleşme %</b></td><td>Yetkinlik eşleşme yüzdesi</td>
+      <td>Mevcut ağırlıklı ortalama puanın, mutabık kalınan gelecek gerekliliğe oranı</td></tr>
+    <tr><td><b>Havuz büyümesi</b></td><td>Talent pool growth rate</td>
+      <td>Havuz mevcudunun bir önceki yıla göre yüzde değişimi; havuzdan ayrılanları da hesaba katar</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın tanımladığı ve türettiği metrikler ile bağlam–öngörü etkenlerinin
+kullanıcı × süreç aşaması × raporlama sınıflandırmasıdır. Filtreleri değiştirdiğinizde tablo anında
+daralır.</p>
+
+<div class="filters">
+  <div><label for="fUser">Kullanıcı</label>
+    <select id="fUser">
+      <option value="">Tümü</option>
+      <option value="hr">İK ve yetenek birimi</option>
+      <option value="exec">Üst yönetim</option>
+      <option value="line">Hat yönetimi</option>
+      <option value="fin">Finans ve yatırımcı ilişkileri</option>
+      <option value="ext">Dış paydaş</option>
+    </select></div>
+  <div><label for="fStage">Süreç aşaması</label>
+    <select id="fStage">
+      <option value="">Tümü</option>
+      <option value="belirleme">Kritik pozisyon ve aday belirleme</option>
+      <option value="havuz">Havuz ve kapsama</option>
+      <option value="gelistirme">Geliştirme ve değerlendirme</option>
+      <option value="atama">Atama ve sonuç</option>
+      <option value="plan">Plan ve bağlam</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">Genişlik (kapsama ve büyüme)</option>
+      <option value="e">Derinlik (hazırlık ve yetkinlik)</option>
+      <option value="o">Bağlam ve öngörü</option>
+    </select></div>
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="ic">İç raporlama</option>
+      <option value="dis">Dış raporlama</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. hazır"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<div class="tblwrap">
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">İK / yetenek</th>
+    <th class="rot">Üst yönetim</th>
+    <th class="rot">Hat yönetimi</th>
+    <th class="rot">Finans / yatırımcı</th>
+    <th class="rot">Dış paydaş</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+</div>
+<div class="legend">
+  <span><span class="dot v"></span> genişlik: kapsama ve büyüme</span>
+  <span><span class="dot e"></span> derinlik: hazırlık ve yetkinlik</span>
+  <span><span class="dot o"></span> bağlam ve öngörü</span>
+  <span><span class="tag iso">30414</span> insan sermayesi raporlamasında da yer alan metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Kritik Pozisyon ve Havuz Tablosu</h2>
+<p>Kümenin çoğu metriği tek bir tablodan üretilebilir. Aşağıya her pozisyon grubu için kritik pozisyon
+sayısını, havuzdaki aday sayısını, üç hazırlık ufkundaki aday sayılarını ve hazır adayı olmayan pozisyon
+sayısını girin; kapsama ve hazırlık oranları satır satır, küme özeti ise altta hesaplanır.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+  <span class="inline"><label for="hedefDerinlik">Hedef derinlik (hazır aday / pozisyon)</label>
+    <input type="number" id="hedefDerinlik" min="0" step="0.5" value="1"></span>
+</div>
+
+<div class="tblwrap">
+<table class="postbl">
+  <thead><tr>
+    <th style="width:150px">Pozisyon grubu</th>
+    <th class="num">Kritik pozisyon</th><th class="num">Havuzdaki aday</th>
+    <th class="num">Hazır şimdi</th><th class="num">1–3 yıl</th><th class="num">4–5 yıl</th>
+    <th class="num">Hazır adayı yok</th>
+    <th class="calc" style="width:90px">Kapsama</th>
+    <th class="calc" style="width:90px">Hazır şimdi</th>
+  </tr></thead>
+  <tbody id="pBody"></tbody>
+  <tfoot><tr>
+    <td>Toplam</td>
+    <td class="calc" id="tKP">—</td>
+    <td class="calc" id="tHavuz">—</td>
+    <td class="calc" id="tR0">—</td>
+    <td class="calc" id="tR13">—</td>
+    <td class="calc" id="tR45">—</td>
+    <td class="calc" id="tYok">—</td>
+    <td class="calc" id="tKapsama">—</td>
+    <td class="calc" id="tHazir">—</td>
+  </tr></tfoot>
+</table>
+</div>
+
+<div class="cards" id="pCards"></div>
+<div class="note" id="pNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü sayımdır (kritik pozisyon sayısı, havuz mevcudu, yedek gücü kişi sayısı) ve
+formül gerektirmez. Hesaplanabilir olanların tamamı aşağıdadır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>Yedekleme Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Oranlar yüzde, tutarlar TL olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30433_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle aynı
+  sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve Pyodide
+(WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30433_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+örnek verilerle doğrulama çıktısı üretir.</p>
+
+<div class="filename">iso30433_metrikler.py (özet)</div>
+<pre><i># --- Sonuç ve genişlik ---</i>
+
+<b>def</b> <span class="fn">etkililik_orani</span>(ic_yedekleme, toplam_yedekleme):
+    <i>"""Kritik pozisyonların içeriden doldurulma yüzdesi.
+    Standart, %70–80 aralığını iyi yedekleme etkililiğinin işareti sayar."""</i>
+    <b>return</b> <u>100</u> * ic_yedekleme / toplam_yedekleme
+
+<b>def</b> <span class="fn">kapsama_orani</span>(havuz, lider):
+    <i>"""Havuzdaki aday sayısının liderlik pozisyonlarına oranı.
+    %100, pozisyon sayısı kadar potansiyel yedek bulunduğu anlamına gelir."""</i>
+    <b>return</b> <u>100</u> * havuz / lider
+
+<i># --- Derinlik ---</i>
+
+<b>def</b> <span class="fn">hazirlik_orani</span>(hazir_aday, kritik_pozisyon):
+    <i>"""Aynı formül üç ufuk için de kullanılır: şimdi, 1–3 yıl, 4–5 yıl."""</i>
+    <b>return</b> <u>100</u> * hazir_aday / kritik_pozisyon
+
+<b>def</b> <span class="fn">derinlik</span>(hazir_aday, kritik_pozisyon):
+    <i>"""Pozisyon başına hazır aday (türetilmiş): oran değil, derinlik ölçüsü."""</i>
+    <b>return</b> hazir_aday / kritik_pozisyon
+
+<b>def</b> <span class="fn">eslesme_yuzdesi</span>(mevcut_puan, gelecek_gereklilik):
+    <i>"""Yetkinlik eşleşmesi: mevcut ağırlıklı ortalama / gelecek gereklilik."""</i>
+    <b>return</b> <u>100</u> * mevcut_puan / gelecek_gereklilik
+
+<b>def</b> <span class="fn">yedek_gucu_orani</span>(esigi_karsilayan, havuz):
+    <i>"""Yedek gücü bir sayımdır; oran, havuzun ne kadarının eşiği
+    karşıladığını gösterir."""</i>
+    <b>return</b> <u>100</u> * esigi_karsilayan / havuz
+
+<i># --- Değişim ve açık ---</i>
+
+<b>def</b> <span class="fn">havuz_buyume</span>(cari, onceki):
+    <i>"""Havuz mevcudunun bir önceki yıla göre yüzde değişimi."""</i>
+    <b>return</b> <u>100</u> * (cari - onceki) / onceki
+
+<b>def</b> <span class="fn">hazir_adayi_yok_orani</span>(pozisyon_sayisi, toplam_pozisyon):
+    <i>"""Hedefi sıfıra yakın olan tek metrik."""</i>
+    <b>return</b> <u>100</u> * pozisyon_sayisi / toplam_pozisyon
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30433_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30433_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Kapsama yüksek ama hazırlık düşükse</b> havuz geniş, derinlik yoktur: adaylar belirlenmiş ama
+  devralmaya hazır değildir. Standardın ifadesiyle geniş havuz genişliğin ölçüsüdür, derinliğin değil.</li>
+  <li><b>Kapsama çok düşükse</b> bu, yedekleme sürecinde bir sorunun işaretidir: hat fazla kısıtlı
+  tanımlanmış ya da mevcut işgücünde kritik liderlik pozisyonlarını doldurmaya yetecek beceri, bilgi ve
+  deneyim yoktur. Bu durumdaki kurumlar dışarı yönelir; bu da maliyeti artırır, kilit pozisyonlarda
+  kurumsal hafızayı zayıflatır ve kültürde belirgin bir kayma yaratabilir.</li>
+  <li><b>Etkililik oranı düşerken kritik pozisyon sayısı artıyorsa</b> sorun hattın zayıflaması değil,
+  kurumun büyümesi olabilir; oranın yanına iki mutlak sayıyı da (iç yedekleme ve toplam kritik pozisyon)
+  koyun.</li>
+  <li><b>Hazır adayı olmayan pozisyon oranı yükseliyorsa</b> nedeni yalnızca havuz değildir: havuzdan
+  artan devir, yavaşlayan gelişim çalışmaları ya da günlük işe odaklanmayı zorunlu kılan bir kurumsal
+  sarsıntı da aynı sonucu üretir. Hazırlık değerlendirmesinde paydaşlar arasında anlaşmazlık varsa,
+  sorun sistemin kendisindedir.</li>
+  <li><b>Havuz büyüme oranı pozitif olsun diye</b> havuza katılanların, havuzdan çıkanları (ayrılan ya da
+  listeden çıkarılanları) aşması gerekir; bu nedenle iki hareket de ayrı izlenir.</li>
+  <li><b>Yetkinlik eşleşmesi düşük olan alanlar</b> geliştirme kaynağının önceliğini belirler; yedek gücü
+  ölçümünün asıl işlevi budur.</li>
+  <li><b>Yaşam döngüsü evresini hesaba katın.</b> Yeni kurulan bir şirkette büyük bir havuz kurmak çoğu
+  zaman mümkün değildir; bu evrede lider ayrılışının operasyonel ve stratejik riski, olgunluk evresine
+  göre daha yüksektir. Pozisyonlar yeni doldurulmuşsa büyük bir havuzu sürdürmek de gerçekçi olmayabilir.</li>
+  <li><b>Sonuç beklenenin altındaysa hemen olumsuz yorumlamayın.</b> Kadro büyümesi, yeniden yapılanma,
+  yeni ürün ve hizmetler ya da hızlanan iş temposu, havuzdaki adayların yeni beceri geliştirme
+  imkânını daraltarak metrikleri geçici olarak bozabilir.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Standardın yayımlanmış örneklerinde iki aritmetik tutarsızlık vardır.</b> Havuz büyüme oranı
+  tablosunda 2019 mevcudu 210, 2020 mevcudu 234 verilir; ancak örnek hesap (234 − 201) ÷ 201 × 100 = %16
+  biçiminde yürütülür. Tablodaki iki sayıyla hesaplanırsa sonuç %11,4'tür. Aynı biçimde yetkinlik
+  eşleşmesi örneği "3,6 × 5/100 = %72" olarak yazılmıştır; formülün kendisi bölmedir ve doğru işlem
+  (3,6 ÷ 5) × 100 = %72'dir. Bu sayfadaki hesaplayıcı her iki durumda da formülü uygular.</li>
+  <li><b>Metrikler geriye dönüktür.</b> Etkililik oranı yetenek süreçlerinin çalıştığını olaydan sonra
+  gösterir; kırılganlığın nerede olduğunu söylemez ve piyasa koşulları değiştiğinde ya da sektörde
+  büyük bir kırılma yaşandığında gelecekteki başarıyı garanti etmez.</li>
+  <li><b>Kümenin tamamı, yedek adaylarının doğru belirlenmesine bağlıdır.</b> Yanlış kişiler havuza
+  alınmışsa kapsama, büyüme ve hazırlık oranlarının hepsi aynı anda yanıltıcı olur.</li>
+  <li><b>Hazır adayı olmayan pozisyon oranı yalnızca sayıları verir.</b> Bağlamı, hattın hangi
+  halkasında sorun olduğunu ve hangi düzeltici eylemin gerektiğini göstermez; bunun için ek analiz ve
+  yerel işgücü piyasasının iyi bilinmesi gerekir.</li>
+  <li><b>Kıyas grubu hedefleri işe yaramaz.</b> Liderlik nüfusları ve yedekleme uygulamaları kurumlar
+  arasında çok farklı olduğu için dışarıdan alınan bir hedef bu kümede anlam taşımaz.</li>
+  <li><b>Yetkinlik değerlendirmesi önyargıya açıktır.</b> Standart, değerlendirme süreçlerinin adil
+  olmasını ve önyargının en aza indirilmesini açıkça şart koşar; tek kaynaklı değerlendirme bu ölçütü
+  karşılamaz.</li>
+  <li><b>Küçük paydalarda oran oynaktır.</b> On kritik pozisyonu olan bir birimde tek bir ayrılış,
+  hazır adayı olmayan pozisyon oranını on puan birden değiştirir; az sayıda vakada mutlak sayıları da
+  verin.</li>
+  <li><b>Gelişim yatırımı ve dış alım maliyeti standardın parçası değildir.</b> Bu sayfada, kaynak
+  ayrımını tartışılabilir kılmak için türetilmiş hesaplar olarak sunulur ve varsayıma dayanır.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>İK ve yetenek birimi</td>
+      <td>Tüm metrikler, yetkinlik alanı kırılımı, havuz hareketleri, eşiği karşılamayan adaylar</td>
+      <td>Analitik rapor, çeyreklik</td></tr>
+    <tr><td>Üst yönetim</td>
+      <td>Etkililik, kapsama ve üç ufuklu hazırlık oranının eğilimi; hazır adayı olmayan kritik pozisyonlar</td>
+      <td>Yedekleme panosu, dönemsel</td></tr>
+    <tr><td>Hat yönetimi</td>
+      <td>Kendi biriminin kritik pozisyonları, adaylarının hazırlık düzeyi, gelişim planı durumu</td>
+      <td>Birim panosu, çeyreklik</td></tr>
+    <tr><td>Finans ve yatırımcı ilişkileri</td>
+      <td>Dış alım maliyeti, gelişim bütçesinin dağılımı, liderlik riski</td>
+      <td>Bütçe ekli rapor, çeyreklik</td></tr>
+    <tr><td>Dış paydaş (yatırımcı, analist, hissedar)</td>
+      <td>Kilit liderlik ayrılışlarına karşı hazırlık düzeyi ve iç adayla doldurma kabiliyeti</td>
+      <td>Faaliyet ve sürdürülebilirlik raporu, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> kritik pozisyon ve lider tanımı, havuza girme ölçütü,
+hazırlık ufuklarının süresi, ölçüm noktası, kırılım düzeyi ve karşılaştırma tabanı. Dış raporlamada
+hazır adayı olmayan pozisyon oranı, kurumun iç adayla doldurma kabiliyetini gösterir; kurumun bu
+pozisyonları <i>dışarıdan</i> doldurma kabiliyeti hakkında bir şey söylemediği de belirtilmelidir.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması; yedekleme planlaması kümesinin tanımı
+  oradan gelir (2018 sürümünde 4.7.11).</li>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü; bu belgenin normatif atfı.</li>
+  <li><b>ISO/TS 30410</b> — kritik pozisyonun etkisi; kritik pozisyon tanımı buradan uyarlanmıştır.</li>
+  <li><b>ISO/TS 30421</b> — devir ve elde tutma metrikleri; havuzdan devir ve lider ayrılışları buradan
+  izlenir.</li>
+  <li><b>ISO/TS 30430</b> — işe alım metrikleri; hazır adayı olmayan pozisyonların dışarıdan doldurulma
+  süresi ve maliyeti oradaki metriklerle ölçülür.</li>
+  <li><b>ISO/TS 30437</b> — öğrenme ve gelişim metrikleri; havuzun geliştirilmesine ayrılan kaynağın
+  ölçümü.</li>
+  <li><b>ISO/TS 30432</b> — işgücü üretkenliği metrikleri; yedeklemenin kesintisizliği üretkenlik
+  serisinin bağlam etkenlerinden biridir.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Kapsama oranı %300 çıktı; bu iyi mi?</summary>
+<p>Standardın kendi örneklerinden biri tam olarak bu sonucu verir: 44 liderlik pozisyonuna karşılık 132
+kişilik bir havuz %300 kapsama demektir. Bu, her pozisyon için ortalama üç aday belirlendiği anlamına
+gelir; iyi ya da kötü olduğunu tek başına söylemez. Kapsama bir <b>genişlik</b> ölçüsüdür. Havuzun bu
+kadar geniş olması adayların hazır olduğunu göstermez ve geliştirme kaynağını da seyreltebilir. Yanıtı
+hazırlık oranı ve yedek gücü verir.</p></details>
+
+<details><summary>Etkililik oranı ne kadar olmalı?</summary>
+<p>Standart, örnek olarak %70 ile %80 arasındaki bir oranı iyi yedekleme etkililiğinin işareti sayar.
+Bunun üstü her zaman daha iyi değildir: üst düzey pozisyonlarda dış alım, dışarıdan uzmanlık ve rakip
+bilgisi getirmesi bakımından yararlı olabilir. Altı ise hattın zayıfladığına ya da kritik pozisyon
+sayısının hızla arttığına işaret eder; iki ihtimali ayırmak için mutlak sayılara bakın.</p></details>
+
+<details><summary>Hazırlık ufuklarını 1–3 ve 4–5 yıl olarak mı tutmalıyım?</summary>
+<p>Varsayılan budur ve büyük kurumlarda üç düzeyin birden iç raporlamada kullanılması önerilir. Ancak
+rakiplerin yoğun biçimde çalışan avladığı ve önemli bir değişimin yakın göründüğü sektörlerde standart,
+ufukların 3–6 aya ya da 3–6 aylık döngülere çekilebileceğini söyler. Ufku değiştirdiğinizde seri
+kırılır; dönem karşılaştırmasında bunu dipnot olarak belirtin.</p></details>
+
+<details><summary>Yedek gücü ile hazırlık oranı arasındaki fark ne?</summary>
+<p>Hazırlık oranı <b>ne zaman</b> sorusunu, yedek gücü <b>ne kadar iyi</b> sorusunu yanıtlar. Yedek
+gücü, havuzda birden çok performans ve değerlendirme alanında asgari yetkinlik eşiklerini karşılayan
+kişi sayısıdır; eşikleri kurum kendisi belirler ve veriyi performans verisi, çoklu paydaş geri
+bildirimi, proje çalışmaları ve gözlemler gibi birden çok güvenilir kaynaktan toplar.</p></details>
+
+<details><summary>Her yönetici pozisyonu için yedek havuzu kurmalı mıyım?</summary>
+<p>Hayır. Standart, tüm pozisyonların yedek havuzu gerektirmediğini açıkça söyler; alt düzey yönetici
+pozisyonları ya da yaygın beceri setine sahip yöneticiler için yedekleme değerlendirmesi zorunlu
+değildir. Havuz, işin kritikliği, yerine koymanın güçlüğü, yetki ve piyasa sorumluluğu ölçütleriyle
+belirlenen kritik pozisyonlar için kurulur.</p></details>
+
+<details><summary>Gelişim için ayrı bütçe şart mı?</summary>
+<p>Standart, kurumun gelişim faaliyetleri için kaynak (bütçe dâhil) ayırmasını ister: çalışma zamanı,
+eğitim izni, koçluk, gölge çalışma ve rutin işin üstüne gelen gelişim görevleri. Amaç, tüm potansiyel
+yedeklerin eşit gelişme fırsatına ve çeşitli gelişim imkânlarına erişmesidir. Kaynağı sınırlı kurumlar
+için özel proje çalışması ya da başka birimlerin sorunlarını çözmek gibi iç araçlar önerilir.</p></details>
+
+<details><summary>Bu metrikleri yatırımcıya açıklamalı mıyım?</summary>
+<p>Standart iki yerde dış kullanımı özellikle anar. Etkililik oranı, işgücü planlama stratejisinin gücü
+ve iç adayı terfiye hazırlama kabiliyeti hakkında iyi bir göstergedir ve işveren değer önerisinin
+parçası olabilir. Hazır adayı olmayan pozisyon oranı ise kilit liderlik ayrılışları karşısındaki
+hazırlık ve risk düzeyini gösterir. Bilginin ve becerinin kıt olduğu sektörlerde yatırımcılar için
+özellikle anlamlıdır.</p></details>
+
+<footer>
+  ISO/TS 30433:2021 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın kendisi
+  telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30433_metrikler.py
+=====================
+ISO/TS 30433:2021 (Human resource management — Succession planning metrics
+cluster) çerçevesindeki yedekleme planlaması metriklerinin Python karşılığı.
+
+Standart, ISO 30414'ün "yedekleme planlaması" kümesini üç ana metrik üzerinden
+tanımlar ve dört ek ölçütle genişletir. Modül dört bölüme ayrılmıştır:
+
+    1) Sonuç ve genişlik — yedekleme etkililiği, yedek kapsama oranı,
+       havuz büyüme oranı, havuzdan devir
+    2) Derinlik          — üç ufuklu hazırlık oranı, pozisyon başına hazır aday,
+       yetkinlik eşleşme yüzdesi, çalışan yedek gücü
+    3) Açık              — hazır adayı olmayan pozisyon oranı, risk endeksi
+    4) Tablo             — pozisyon grubu bazlı küme özeti
+
+Kullanım:
+    from iso30433_metrikler import etkililik_orani, kapsama_orani
+    etkililik_orani(25, 40)     ->  62.5
+    kapsama_orani(24, 44)       ->  54.5454...
+
+Doğrudan çalıştırıldığında (python3 iso30433_metrikler.py) tüm fonksiyonlar
+örnek verilerle çalıştırılır ve sonuçlar tablo hâlinde yazdırılır.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 30433:2021'e dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif korumalıdır.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Optional
+
+__all__ = [
+    # sonuç ve genişlik
+    "etkililik_orani", "dis_alim_payi", "kapsama_orani", "havuz_buyume",
+    "havuz_devir",
+    # derinlik
+    "hazirlik_orani", "derinlik", "eslesme_yuzdesi", "yedek_gucu_orani",
+    # açık ve kaynak
+    "hazir_adayi_yok_orani", "risk_endeksi", "gelisim_yatirimi",
+    # tablo
+    "PozisyonGrubu", "YedeklemeTablosu", "ornek_tablo", "metrik_denetimi",
+    # dağıtıcı
+    "hesapla", "METRIK_LISTESI",
+]
+
+
+# ---------------------------------------------------------------------------
+# 1) Sonuç ve genişlik
+# ---------------------------------------------------------------------------
+
+def etkililik_orani(ic_yedekleme: float, toplam_yedekleme: float) -> float:
+    """Yedekleme etkililiği (%) = iç yedekleme / toplam kritik pozisyon yedeklemesi.
+
+    Kritik pozisyonların, dışarıdan alım yerine içeriden terfiyle doldurulma
+    yüzdesidir. Standart, örnek olarak %70 ile %80 arasındaki bir oranı iyi
+    yedekleme etkililiğinin işareti sayar. Kritik pozisyon, kurumsal sonuçlar
+    üzerinde doğrudan ve belirgin etkisi olan iş rolüdür.
+    """
+    return 100 * ic_yedekleme / toplam_yedekleme
+
+
+def dis_alim_payi(dis_alim: float, toplam_yedekleme: float) -> float:
+    """Kritik pozisyonların dışarıdan doldurulma payı (%).
+
+    Dış alım üst düzey pozisyonlarda dışarıdan uzmanlık ve rakip bilgisi
+    getirmesi bakımından yararlı olabilir; buna karşılık işe alım süresi ve
+    maliyeti yüksektir ve kurumsal bilginin uygulanmasında boşluk yaratır.
+    """
+    return 100 * dis_alim / toplam_yedekleme
+
+
+def kapsama_orani(havuz: float, lider: float) -> float:
+    """Halef kapsama oranı (%) = havuzdaki çalışan / toplam lider sayısı.
+
+    Sonucun %100 olması, yedek bekleyen liderlik pozisyonu sayısı kadar
+    potansiyel yedek bulunduğu anlamına gelir. Bu bir genişlik ölçüsüdür:
+    geniş bir havuz, adayların gerektiğinde devralmaya hazır olacağını
+    garanti etmez.
+    """
+    return 100 * havuz / lider
+
+
+def havuz_buyume(cari: float, onceki: float) -> float:
+    """Havuz büyüme oranı (%) = (cari mevcut − önceki mevcut) / önceki mevcut.
+
+    Oranın pozitif olması için havuza katılanların, havuzdan çıkanları
+    (ayrılanlar ya da listeden çıkarılanlar) aşması gerekir; bu nedenle iki
+    hareket de tutarlı biçimde izlenir.
+    """
+    return 100 * (cari - onceki) / onceki
+
+
+def havuz_devir(ayrilan: float, havuz: float) -> float:
+    """Havuzdan devir oranı (%) — türetilmiş.
+
+    Yüksek potansiyellilerin devri ve elde tutulması, havuzun büyüme oranını
+    doğrudan etkiler. Standart bu oranı ayrı bir formül olarak vermez;
+    büyüme oranının bileşenini görünür kılmak için eklenmiştir.
+    """
+    return 100 * ayrilan / havuz
+
+
+# ---------------------------------------------------------------------------
+# 2) Derinlik
+# ---------------------------------------------------------------------------
+
+def hazirlik_orani(hazir_aday: float, kritik_pozisyon: float) -> float:
+    """Yedekleme hazırlık (derinlik) oranı (%).
+
+    Aynı formül üç ufuk için de kullanılır: şimdi hazır, 1–3 yılda hazır,
+    4–5 yılda hazır. Büyük kurumlarda üç düzeyin birden iç raporlamada
+    kullanılması önerilir. Rakip avlanmasının yoğun olduğu sektörlerde
+    ufuklar 3–6 aya ya da 3–6 aylık döngülere çekilebilir.
+    """
+    return 100 * hazir_aday / kritik_pozisyon
+
+
+def derinlik(hazir_aday: float, kritik_pozisyon: float) -> float:
+    """Pozisyon başına hazır aday — türetilmiş.
+
+    Oran değil, derinlik ölçüsüdür: kaç hazır yedekin gerekli olduğu kurumun
+    kendi tahminine dayanır (pozisyonun kritikliği, adayların hazırlık düzeyi
+    ve beklenen devir).
+    """
+    return hazir_aday / kritik_pozisyon
+
+
+def eslesme_yuzdesi(mevcut_puan: float, gelecek_gereklilik: float) -> float:
+    """Yetkinlik eşleşme yüzdesi = mevcut ağırlıklı ortalama / gelecek gereklilik.
+
+    Görev, insan ve liderlik yetkinlik alanları için ayrı ayrı hesaplanır ve
+    bir beceri matrisi skor kartında toplanır. Değerlendirmelerin birden çok
+    kaynaktan ve kanıta dayalı olması, önyargının en aza indirilmesi şarttır.
+    """
+    return 100 * mevcut_puan / gelecek_gereklilik
+
+
+def yedek_gucu_orani(esigi_karsilayan: float, havuz: float) -> float:
+    """Yedek gücünün havuza oranı (%).
+
+    Çalışan yedek gücü bir sayımdır: birden çok performans ve değerlendirme
+    alanında asgari yetkinlik eşiklerini karşılayan havuz üyelerinin toplam
+    sayısı. Eşikleri kurum dengeli skor kartı yaklaşımıyla kendisi belirler.
+    """
+    return 100 * esigi_karsilayan / havuz
+
+
+# ---------------------------------------------------------------------------
+# 3) Açık ve kaynak
+# ---------------------------------------------------------------------------
+
+def hazir_adayi_yok_orani(pozisyon_sayisi: float, toplam_pozisyon: float) -> float:
+    """Hazır adayı olmayan pozisyon oranı (%).
+
+    Ölçüm döneminin sonundaki kadro verisiyle hesaplanır. Hedefi sıfıra yakın
+    olan tek metriktir. Kapsama ya da etkililik oranının doğrudan tersi
+    değildir; pozisyonlar ve nüfuslar genelinde ortalamalarla çalışır.
+    """
+    return 100 * pozisyon_sayisi / toplam_pozisyon
+
+
+def risk_endeksi(hazir_adayi_yok_oran: float, kapsama_oran: float,
+                 hazirlik_oran: float) -> float:
+    """Yedekleme risk endeksi (0–100) — türetilmiş.
+
+    Standart tek bir metriğin süreç hakkında sınırlı ya da çarpık bir görüntü
+    verdiğini, kümenin bir pano olarak kurulması gerektiğini belirtir. Bu
+    endeks üç açığın ortalamasıdır: hazır adayı olmayan pozisyon payı,
+    %100'e göre kapsama açığı ve hazırlık açığı. Standardın parçası değildir.
+    """
+    kapsama_acik = max(0.0, 100 - min(kapsama_oran, 100))
+    hazirlik_acik = max(0.0, 100 - min(hazirlik_oran, 100))
+    return (hazir_adayi_yok_oran + kapsama_acik + hazirlik_acik) / 3
+
+
+def gelisim_yatirimi(butce: float, havuz: float) -> float:
+    """Havuzdaki kişi başına gelişim yatırımı — türetilmiş.
+
+    Standart, gelişim faaliyetleri için kaynak (bütçe dâhil) ayrılmasını
+    ister: çalışma zamanı, eğitim izni, koçluk, gölge çalışma ve rutin işin
+    üstüne gelen gelişim görevleri. Tutar formülü standartta yoktur.
+    """
+    return butce / havuz
+
+
+# ---------------------------------------------------------------------------
+# 4) Pozisyon grubu tablosu
+# ---------------------------------------------------------------------------
+
+@dataclass
+class PozisyonGrubu:
+    """Bir pozisyon grubunun (unvan düzeyi, işlev, birim) yedekleme verisi."""
+    ad: str
+    kritik: float
+    havuz: float
+    hazir_simdi: float
+    hazir_1_3: float = 0
+    hazir_4_5: float = 0
+    hazir_yok: float = 0
+
+    @property
+    def kapsama(self) -> float:
+        return kapsama_orani(self.havuz, self.kritik)
+
+    @property
+    def hazir_oran(self) -> float:
+        return hazirlik_orani(self.hazir_simdi, self.kritik)
+
+    @property
+    def yok_oran(self) -> float:
+        return hazir_adayi_yok_orani(self.hazir_yok, self.kritik)
+
+
+@dataclass
+class YedeklemeTablosu:
+    """Pozisyon gruplarından oluşan küme özeti."""
+    gruplar: list = field(default_factory=list)
+
+    def ekle(self, ad: str, kritik: float, havuz: float, hazir_simdi: float,
+             hazir_1_3: float = 0, hazir_4_5: float = 0,
+             hazir_yok: float = 0) -> "YedeklemeTablosu":
+        self.gruplar.append(PozisyonGrubu(ad, kritik, havuz, hazir_simdi,
+                                          hazir_1_3, hazir_4_5, hazir_yok))
+        return self
+
+    def _topla(self, alan: str) -> float:
+        return sum(getattr(g, alan) for g in self.gruplar)
+
+    def ozet(self) -> dict:
+        kritik = self._topla("kritik")
+        havuz = self._topla("havuz")
+        r0 = self._topla("hazir_simdi")
+        r13 = self._topla("hazir_1_3")
+        r45 = self._topla("hazir_4_5")
+        yok = self._topla("hazir_yok")
+        return {
+            "grup_sayisi": len(self.gruplar),
+            "kritik_pozisyon": kritik,
+            "havuz": havuz,
+            "kapsama_yuzde": round(kapsama_orani(havuz, kritik), 1),
+            "hazir_simdi_yuzde": round(hazirlik_orani(r0, kritik), 1),
+            "hazir_1_3_yuzde": round(hazirlik_orani(r13, kritik), 1),
+            "hazir_4_5_yuzde": round(hazirlik_orani(r45, kritik), 1),
+            "pozisyon_basina_hazir": round(derinlik(r0, kritik), 2),
+            "hazir_adayi_yok_yuzde": round(hazir_adayi_yok_orani(yok, kritik), 1),
+            "risk_endeksi": round(
+                risk_endeksi(hazir_adayi_yok_orani(yok, kritik),
+                             kapsama_orani(havuz, kritik),
+                             hazirlik_orani(r0, kritik)), 1),
+        }
+
+    def tablo(self) -> list:
+        return [[g.ad, g.kritik, g.havuz, g.hazir_simdi, g.hazir_1_3, g.hazir_4_5,
+                 g.hazir_yok, round(g.kapsama, 1), round(g.hazir_oran, 1)]
+                for g in self.gruplar]
+
+
+def ornek_tablo() -> YedeklemeTablosu:
+    """Dört pozisyon gruplu örnek küme.
+
+    Toplamlar, standardın hazırlık oranı örneğiyle aynı büyüklüktedir:
+    102 kritik pozisyon; 82 şimdi hazır (%80), 76 aday 1–3 yılda (%75),
+    24 aday 4–5 yılda (%23) hazır.
+    """
+    t = YedeklemeTablosu()
+    t.ekle("Üst yönetim", 12, 14, 9, 8, 3, 4)
+    t.ekle("Direktör ve kıdemli müdür", 32, 40, 26, 24, 8, 12)
+    t.ekle("Müdür ve takım lideri", 38, 52, 31, 28, 9, 10)
+    t.ekle("Kritik uzman ve teknik roller", 20, 24, 16, 16, 4, 8)
+    return t
+
+
+def metrik_denetimi(kritik_pozisyon_tanimli: bool = False,
+                    lider_tanimi_yazili: bool = False,
+                    havuz_olcutu_yazili: bool = False,
+                    uc_ufuk_olculuyor: bool = False,
+                    coklu_degerlendirme: bool = False,
+                    gelisim_kaynagi_ayrildi: bool = False,
+                    pano_olarak_raporlaniyor: bool = False) -> list:
+    """Bir yedekleme raporunun eksiklerini listeler.
+
+    Standardın mantığı: kümedeki metriklerin tamamı, kritik pozisyonların ve
+    yedek adaylarının doğru belirlenmesine dayanır; tek metrik süreç hakkında
+    sınırlı ya da çarpık bir görüntü verir.
+    """
+    uyarilar = []
+    if not kritik_pozisyon_tanimli:
+        uyarilar.append("Kritik pozisyon listesi tanımlı değil: kurumsal "
+                        "sonuçlar üzerinde doğrudan ve belirgin etkisi olan "
+                        "roller yazılı olarak belirlenmeli.")
+    if not lider_tanimi_yazili:
+        uyarilar.append("Kapsama oranının paydası belirsiz: hangi unvanların "
+                        "'lider' sayıldığı raporda belirtilmeli.")
+    if not havuz_olcutu_yazili:
+        uyarilar.append("Havuza girme ölçütü yazılı değil: adayların yanlış "
+                        "belirlenmesi kümenin tamamını geçersiz kılar.")
+    if not uc_ufuk_olculuyor:
+        uyarilar.append("Hazırlık yalnızca tek ufukta ölçülüyor: şimdi, 1–3 yıl "
+                        "ve 4–5 yıl düzeylerinin üçü birden izlenmeli.")
+    if not coklu_degerlendirme:
+        uyarilar.append("Hazırlık tek kaynaktan belirleniyor: çoklu "
+                        "değerlendirme aracı önyargıyı azaltır.")
+    if not gelisim_kaynagi_ayrildi:
+        uyarilar.append("Gelişim için ayrılmış kaynak (zaman, eğitim izni, "
+                        "koçluk, bütçe) yok: havuz belirlemek tek başına "
+                        "hazırlık üretmez.")
+    if not pano_olarak_raporlaniyor:
+        uyarilar.append("Metrikler tek tek raporlanıyor: küme pano olarak "
+                        "okunmazsa görüntü sınırlı ya da çarpık olur.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 5) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "etkililik", "kapsama", "hazirlik", "derinlik", "yetkinlik_eslesme",
+    "yedek_gucu", "havuz_buyume", "havuz_devir", "hazir_adayi_yok",
+    "dis_alim", "gelisim_yatirimi", "risk_endeksi",
+]
+
+
+def _s(x: float) -> str:
+    """Sayıları bilimsel gösterime kaçmadan, Türkçe biçimde yazar."""
+    x = float(x)
+    if x == int(x):
+        return f"{int(x):,}".replace(",", ".")
+    t = f"{x:,.2f}".rstrip("0")
+    if t.endswith("."):
+        t = t[:-1]
+    return t.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", ".")
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "etkililik":
+        d = etkililik_orani(g["ic_yedekleme"], g["toplam_yedekleme"])
+        return {"deger": d, "ondalik": 1, "birim": "% içeriden",
+                "ifade": f"({_s(g['ic_yedekleme'])} ÷ {_s(g['toplam_yedekleme'])}) × 100",
+                "ayrinti": [["Dışarıdan doldurulan kritik pozisyon",
+                             g["toplam_yedekleme"] - g["ic_yedekleme"]],
+                            ["Dış alım payı (%)", round(100 - d, 1)],
+                            ["Önceki döneme fark (puan)", round(d - g["onceki_oran"], 1)],
+                            ["Standardın andığı iyi aralık", "%70 – %80"]]}
+
+    if metrik == "kapsama":
+        d = kapsama_orani(g["havuz"], g["lider"])
+        return {"deger": d, "ondalik": 1, "birim": "% kapsama",
+                "ifade": f"({_s(g['havuz'])} ÷ {_s(g['lider'])}) × 100",
+                "ayrinti": [["Lider başına aday", round(g["havuz"] / g["lider"], 2)],
+                            ["%100 kapsama için gereken ek aday",
+                             max(g["lider"] - g["havuz"], 0)],
+                            ["Hedef derinliğe göre eksik aday",
+                             max(g["hedef_derinlik"] * g["lider"] - g["havuz"], 0)]]}
+
+    if metrik == "hazirlik":
+        d = hazirlik_orani(g["hazir_simdi"], g["kritik_pozisyon"])
+        return {"deger": d, "ondalik": 1, "birim": "% şimdi hazır",
+                "ifade": f"({_s(g['hazir_simdi'])} ÷ {_s(g['kritik_pozisyon'])}) × 100",
+                "ayrinti": [["1–3 yılda hazır (%)",
+                             round(hazirlik_orani(g["hazir_1_3"], g["kritik_pozisyon"]), 1)],
+                            ["4–5 yılda hazır (%)",
+                             round(hazirlik_orani(g["hazir_4_5"], g["kritik_pozisyon"]), 1)],
+                            ["Pozisyon başına şimdi hazır aday",
+                             round(derinlik(g["hazir_simdi"], g["kritik_pozisyon"]), 2)],
+                            ["Belirlenmiş toplam hazır aday",
+                             g["hazir_simdi"] + g["hazir_1_3"] + g["hazir_4_5"]]]}
+
+    if metrik == "derinlik":
+        d = derinlik(g["hazir_aday"], g["kritik_pozisyon"])
+        return {"deger": d, "ondalik": 2, "birim": "hazır aday / pozisyon",
+                "ifade": f"{_s(g['hazir_aday'])} ÷ {_s(g['kritik_pozisyon'])}",
+                "ayrinti": [["Hazırlık oranı (%)",
+                             round(hazirlik_orani(g["hazir_aday"], g["kritik_pozisyon"]), 1)],
+                            ["Hedef derinlik", g["hedef_derinlik"]],
+                            ["Hedefe göre eksik hazır aday",
+                             max(round(g["hedef_derinlik"] * g["kritik_pozisyon"]
+                                       - g["hazir_aday"]), 0)]]}
+
+    if metrik == "yetkinlik_eslesme":
+        d = eslesme_yuzdesi(g["mevcut_puan"], g["gelecek_gereklilik"])
+        return {"deger": d, "ondalik": 1, "birim": "% eşleşme",
+                "ifade": f"({_s(g['mevcut_puan'])} ÷ {_s(g['gelecek_gereklilik'])}) × 100",
+                "ayrinti": [["Puan açığı",
+                             round(g["gelecek_gereklilik"] - g["mevcut_puan"], 2)],
+                            ["Açığın ölçeğe oranı (%)",
+                             round(100 * (g["gelecek_gereklilik"] - g["mevcut_puan"])
+                                   / g["olcek"], 1)],
+                            ["Ölçek üst sınırına uzaklık",
+                             round(g["olcek"] - g["mevcut_puan"], 2)]]}
+
+    if metrik == "yedek_gucu":
+        d = yedek_gucu_orani(g["esigi_karsilayan"], g["havuz"])
+        return {"deger": d, "ondalik": 1, "birim": "% havuzun eşiği karşılayan payı",
+                "ifade": f"({_s(g['esigi_karsilayan'])} ÷ {_s(g['havuz'])}) × 100",
+                "ayrinti": [["Yedek gücü (kişi)", g["esigi_karsilayan"]],
+                            ["Eşiği karşılamayan (kişi)",
+                             g["havuz"] - g["esigi_karsilayan"]],
+                            ["Tüm alanlarda ortalama başarı (%)", g["ortalama_basari"]]]}
+
+    if metrik == "havuz_buyume":
+        d = havuz_buyume(g["cari"], g["onceki"])
+        return {"deger": d, "ondalik": 1, "birim": "% büyüme",
+                "ifade": f"(({_s(g['cari'])} − {_s(g['onceki'])}) ÷ {_s(g['onceki'])}) × 100",
+                "ayrinti": [["Net değişim (kişi)", g["cari"] - g["onceki"]],
+                            ["Havuza katılan (kişi)",
+                             g["cari"] - g["onceki"] + g["ayrilan"]],
+                            ["Havuzdan ayrılan (kişi)", g["ayrilan"]],
+                            ["Havuzdan devir oranı (%)",
+                             round(havuz_devir(g["ayrilan"], g["onceki"]), 1)]]}
+
+    if metrik == "havuz_devir":
+        d = havuz_devir(g["ayrilan"], g["havuz"])
+        return {"deger": d, "ondalik": 1, "birim": "% havuzdan devir",
+                "ifade": f"({_s(g['ayrilan'])} ÷ {_s(g['havuz'])}) × 100",
+                "ayrinti": [["Havuzda kalan (kişi)", g["havuz"] - g["ayrilan"]],
+                            ["Ayrılanların hazır aday olanı (kişi)", g["hazir_kayip"]],
+                            ["Hazır aday kaybının payı (%)",
+                             round(100 * g["hazir_kayip"] / g["ayrilan"], 1)]]}
+
+    if metrik == "hazir_adayi_yok":
+        d = hazir_adayi_yok_orani(g["pozisyon_sayisi"], g["toplam_pozisyon"])
+        return {"deger": d, "ondalik": 1, "birim": "% hazır adayı yok",
+                "ifade": f"({_s(g['pozisyon_sayisi'])} ÷ {_s(g['toplam_pozisyon'])}) × 100",
+                "ayrinti": [["Hazır adayı olan pozisyon",
+                             g["toplam_pozisyon"] - g["pozisyon_sayisi"]],
+                            ["Önceki döneme fark (puan)", round(d - g["onceki_oran"], 1)],
+                            ["Hedef", "sıfıra yakın"]]}
+
+    if metrik == "dis_alim":
+        d = dis_alim_payi(g["dis_alim"], g["toplam_yedekleme"])
+        return {"deger": d, "ondalik": 1, "birim": "% dışarıdan",
+                "ifade": f"({_s(g['dis_alim'])} ÷ {_s(g['toplam_yedekleme'])}) × 100",
+                "ayrinti": [["İçeriden doldurulan", g["toplam_yedekleme"] - g["dis_alim"]],
+                            ["Dış alımların tahmini maliyeti (TL)",
+                             round(g["dis_alim"] * g["ortalama_maliyet"])],
+                            ["Bir dış alım azalırsa kazanç (TL)",
+                             round(g["ortalama_maliyet"])],
+                            ["Yedekleme etkililiği (%)", round(100 - d, 1)]]}
+
+    if metrik == "gelisim_yatirimi":
+        d = gelisim_yatirimi(g["butce"], g["havuz"])
+        return {"deger": d, "ondalik": 0, "birim": "TL / havuz üyesi",
+                "ifade": f"{_s(g['butce'])} ÷ {_s(g['havuz'])}",
+                "ayrinti": [["Kritik pozisyon başına (TL)",
+                             round(g["butce"] / g["kritik_pozisyon"])],
+                            ["Toplam gelişim bütçesi (TL)", round(g["butce"])],
+                            ["Havuz büyüklüğü (kişi)", g["havuz"]]]}
+
+    if metrik == "risk_endeksi":
+        d = risk_endeksi(g["hazir_adayi_yok_oran"], g["kapsama_oran"],
+                         g["hazirlik_oran"])
+        _ka = round(max(0.0, 100 - min(g["kapsama_oran"], 100)), 1)
+        _ha = round(max(0.0, 100 - min(g["hazirlik_oran"], 100)), 1)
+        return {"deger": d, "ondalik": 1, "birim": "risk (0–100)",
+                "ifade": (f"({_s(g['hazir_adayi_yok_oran'])} + {_s(_ka)} + "
+                          f"{_s(_ha)}) ÷ 3"),
+                "ayrinti": [["Kapsama açığı (puan)", _ka],
+                            ["Hazırlık açığı (puan)", _ha],
+                            ["Hazır adayı olmayan pozisyon payı (%)",
+                             g["hazir_adayi_yok_oran"]],
+                            ["Not", "standartta yoktur, türetilmiştir"]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 6) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _demo() -> None:
+    cizgi = "-" * 76
+    print("ISO/TS 30433 — doğrulama çıktısı")
+    print(cizgi)
+
+    print("Yedekleme etkililiği (üç dönemlik karşılaştırma)")
+    print(f"{'Dönem':<8}{'İç yedekleme':>14}{'Kritik pozisyon':>18}{'Etkililik %':>14}")
+    for ad, ic, top in [("2024", 23, 31), ("2025", 21, 31), ("2026", 25, 40)]:
+        print(f"{ad:<8}{ic:>14}{top:>18}{etkililik_orani(ic, top):>14.0f}")
+    print(cizgi)
+
+    t = ornek_tablo()
+    print("Pozisyon grupları")
+    print(f"{'Grup':<32}{'KP':>5}{'Havuz':>7}{'Şimdi':>7}{'1-3':>6}{'4-5':>6}"
+          f"{'Yok':>6}{'Kapsama':>9}{'Hazır':>8}")
+    for s in t.tablo():
+        print(f"{s[0]:<32}{s[1]:>5.0f}{s[2]:>7.0f}{s[3]:>7.0f}{s[4]:>6.0f}"
+              f"{s[5]:>6.0f}{s[6]:>6.0f}{s[7]:>9.1f}{s[8]:>8.1f}")
+    print(cizgi)
+    for k, v in t.ozet().items():
+        print(f"{k:<26}: {v}")
+    print(cizgi)
+
+    print("Genişlik ve derinlik")
+    print(f"Kapsama (24 aday / 44 lider)  : {kapsama_orani(24, 44):.0f} %")
+    print(f"Kapsama (132 aday / 44 lider) : {kapsama_orani(132, 44):.0f} %")
+    print(f"Hazır şimdi (82 / 102)        : {hazirlik_orani(82, 102):.0f} %")
+    print(f"1–3 yıl (76 / 102)            : {hazirlik_orani(76, 102):.0f} %")
+    print(f"4–5 yıl (24 / 102)            : {hazirlik_orani(24, 102):.0f} %")
+    print(f"Pozisyon başına hazır aday    : {derinlik(82, 102):.2f}")
+    print(cizgi)
+
+    print("Yetkinlik eşleşmesi (beceri matrisi)")
+    for alan, mevcut, gelecek in [("Vizyon oluşturma", 3.6, 5),
+                                  ("Sunum yapma", 2.7, 3),
+                                  ("İlişki kurma", 4.2, 5),
+                                  ("Proje yönetimi", 3.8, 4.5),
+                                  ("Sektör bilgisi", 2.5, 4)]:
+        print(f"{alan:<20}{mevcut:>6}{gelecek:>6}{eslesme_yuzdesi(mevcut, gelecek):>8.0f} %")
+    print(cizgi)
+
+    print("Değişim ve açık")
+    print(f"Yedek gücü oranı (112 / 135)  : {yedek_gucu_orani(112, 135):.1f} %")
+    print(f"Havuz büyüme (234 / 201)      : {havuz_buyume(234, 201):.0f} %")
+    print(f"Havuzdan devir (18 / 201)     : {havuz_devir(18, 201):.1f} %")
+    print(f"Hazır adayı yok (16 / 44)     : {hazir_adayi_yok_orani(16, 44):.0f} %")
+    print(f"Risk endeksi                  : {risk_endeksi(36, 54, 80):.1f}")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("etkililik", ic_yedekleme=25, toplam_yedekleme=40, onceki_oran=68))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir ön koşulu sağlamayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   u: kullanıcılar (hr İK ve yetenek / exec üst yönetim / line hat yönetimi /
+      fin finans ve yatırımcı ilişkileri / ext dış paydaş)
+   st: süreç aşaması (belirleme, havuz, gelistirme, atama, plan)
+   r: raporlama (ic, dis)
+   t: aile (v genişlik / e derinlik / o bağlam ve öngörü)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   k: ek etiket (ctx bağlam etkeni, pre öngörü etkeni, onk ön koşul, tur türetilmiş)
+   ========================================================= */
+var METRICS = [
+ {g:"Yedekleme sonucu — etkililik", t:"v", items:[
+  {n:"Yedekleme etkililiği oranı", st:"atama", r:["ic","dis"], iso:1, calc:"etkililik", d:"Kritik pozisyonların içeriden terfiyle doldurulma yüzdesi; anılan iyi aralık %70–80", u:["hr","exec","line","fin","ext"]},
+  {n:"İç yedekleme sayısı (kritik pozisyon)", st:"atama", r:["ic"], d:"Etkililik oranının payı; dönemde içeriden doldurulan kritik pozisyonlar", u:["hr","exec","line"]},
+  {n:"Toplam kritik pozisyon yedeklemesi", st:"atama", r:["ic"], d:"Etkililik oranının paydası; yıl içindeki tüm kritik pozisyon yedeklemeleri", u:["hr","exec","fin"]},
+  {n:"Dış alım payı ve maliyeti", st:"atama", r:["ic"], k:"tur", calc:"dis_alim", d:"Dış alım uzmanlık getirir; buna karşılık süre, maliyet ve kurumsal hafıza kaybı üretir", u:["hr","exec","fin"]},
+  {n:"İşlev, iş ailesi, birim ve coğrafya kırılımı", st:"atama", r:["ic"], d:"Standardın önerdiği ayrıştırma eksenleri", u:["hr","exec","line"]},
+  {n:"İç atamaların başarısını belirleyen etkenler", st:"atama", r:["ic"], k:"onk", d:"Mülakat ve değerlendirmede adayın görünürlüğü, gelişim kaynağı, doğru adayın baştan belirlenmesi, izleme ve üst yönetim desteği", u:["hr","line","exec"]},
+  {n:"Metriklerin pano olarak okunması", st:"plan", r:["ic"], k:"onk", d:"Tek başına kullanılan gösterge süreç hakkında sınırlı ya da çarpık görüntü verir", u:["hr","exec","fin"]},
+  {n:"İşveren değer önerisi göstergesi olarak kullanım", st:"atama", r:["dis"], d:"İç adayı terfiye hazırlama kabiliyetinin dışa açıklanması", u:["hr","exec","ext"]}
+ ]},
+ {g:"Genişlik — kapsama ve havuz", t:"v", items:[
+  {n:"Halef kapsama oranı", st:"havuz", r:["ic","dis"], iso:1, calc:"kapsama", d:"Havuzdaki aday sayısının toplam lider sayısına oranı; %100 = pozisyon kadar aday", u:["hr","exec","line","fin","ext"]},
+  {n:"Havuz mevcudu", st:"havuz", r:["ic"], d:"Liderlik yedekleme havuzundaki çalışan sayısı", u:["hr","exec"]},
+  {n:"Lider tanımı (unvan grubu)", st:"belirleme", r:["ic"], k:"onk", d:"Kıdemli müdür, direktör, üst düzey yönetici gibi; kapsama oranının paydası", u:["hr","exec","fin"]},
+  {n:"Kritik pozisyonun belirlenmesi", st:"belirleme", r:["ic"], k:"onk", d:"Kurumsal sonuçlar üzerinde doğrudan ve belirgin etkisi olan iş rolü", u:["hr","exec","line"]},
+  {n:"Havuza girme ölçütünün doğruluğu", st:"belirleme", r:["ic"], k:"onk", d:"Kümenin tamamı yedek adaylarının doğru belirlenmesine bağlıdır", u:["hr","line"]},
+  {n:"Havuz büyüme oranı", st:"havuz", r:["ic","dis"], calc:"havuz_buyume", d:"Havuz mevcudunun önceki yıla göre yüzde değişimi", u:["hr","exec","fin","ext"]},
+  {n:"Havuzdan devir (ayrılan ve çıkarılan)", st:"havuz", r:["ic"], k:"tur", calc:"havuz_devir", d:"Büyüme oranının pozitif olması için katılımın çıkışı aşması gerekir", u:["hr","exec","line"]},
+  {n:"Kıyas grubuyla karşılaştırmanın uygun olmaması", st:"havuz", r:["ic"], k:"onk", d:"Liderlik nüfusları ve yedekleme uygulamaları kurumlar arasında çok farklıdır", u:["hr","exec","ext"]},
+  {n:"Her pozisyonun havuz gerektirmemesi", st:"belirleme", r:["ic"], d:"Alt düzey ya da yaygın beceri setindeki yönetici rolleri zorunlu değildir", u:["hr","line"]},
+  {n:"Kurumun yaşam döngüsü evresi", st:"plan", r:["ic"], k:"ctx", d:"Başlangıç evresinde büyük havuz mümkün olmayabilir; lider ayrılış riski daha yüksektir", u:["exec","hr"]},
+  {n:"Unvan düzeyine göre kapsama kırılımı", st:"havuz", r:["ic"], d:"Kıdemli müdür, direktör, başkan yardımcısı ve üst düzey yönetici ayrımı", u:["hr","exec"]}
+ ]},
+ {g:"Derinlik — hazırlık", t:"e", items:[
+  {n:"Hazırlık oranı — şimdi hazır", st:"gelistirme", r:["ic","dis"], iso:1, calc:"hazirlik", d:"Kritik pozisyonların, hemen devralabilecek adayı bulunan yüzdesi", u:["hr","exec","line","fin","ext"]},
+  {n:"Hazırlık oranı — 1–3 yılda hazır", st:"gelistirme", r:["ic"], iso:1, d:"Aynı formül, orta vadeli ufuk", u:["hr","exec","line"]},
+  {n:"Hazırlık oranı — 4–5 yılda hazır", st:"gelistirme", r:["ic"], iso:1, d:"Aynı formül, uzun vadeli ufuk", u:["hr","exec"]},
+  {n:"Pozisyon başına hazır aday (derinlik)", st:"gelistirme", r:["ic"], k:"tur", calc:"derinlik", d:"Kaç hazır yedekin gerektiği kurumun kendi tahminine dayanır", u:["hr","exec","line"]},
+  {n:"Hazır adayı olmayan pozisyon oranı", st:"gelistirme", r:["ic","dis"], calc:"hazir_adayi_yok", d:"Hedefi sıfıra yakın olan tek metrik; kapsamanın tersi değildir", u:["hr","exec","line","fin","ext"]},
+  {n:"Hızlandırılmış hazırlık döngüleri (3–6 ay)", st:"gelistirme", r:["ic"], d:"Rakip avlanmasının yoğun olduğu sektörlerde ufukların kısaltılması", u:["hr","exec"]},
+  {n:"Hazırlığın paydaşça belirlenmesi", st:"gelistirme", r:["ic"], k:"onk", d:"Mevcut pozisyon sahibi ya da doğrudan yönetici tarafından belirlenir", u:["hr","line"]},
+  {n:"Adayın gerçek ya da senaryo temelli sınanması", st:"gelistirme", r:["ic"], d:"Hazırlık kararının dayanağı", u:["hr","line"]},
+  {n:"Çoklu değerlendirme aracı kullanımı", st:"gelistirme", r:["ic"], k:"onk", d:"Pozisyonda geçen süre, performans ve geri bildirim puanları, gelişimde geçen zaman", u:["hr","line"]},
+  {n:"Uyum sürecinin ve destek kaynağının etkisi", st:"atama", r:["ic"], d:"Adayın atandıktan sonraki başarısını etkileyen koşullar", u:["hr","line"]}
+ ]},
+ {g:"Derinlik — yetkinlik ve yedek gücü", t:"e", items:[
+  {n:"Yetkinlik eşleşme yüzdesi", st:"gelistirme", r:["ic"], calc:"yetkinlik_eslesme", d:"Mevcut ağırlıklı ortalama puanın mutabık kalınan gelecek gerekliliğe oranı", u:["hr","exec","line"]},
+  {n:"Yetkinlik alanı türleri (görev, insan, liderlik)", st:"gelistirme", r:["ic"], d:"Beceri matrisi skor kartının satır grupları", u:["hr","line"]},
+  {n:"Çalışan yedek gücü (bench strength)", st:"gelistirme", r:["ic"], iso:1, calc:"yedek_gucu", d:"Asgari yetkinlik eşiklerini karşılayan havuz üyelerinin sayısı", u:["hr","exec","line"]},
+  {n:"Eşik hedeflerinin kurumca belirlenmesi", st:"gelistirme", r:["ic"], k:"onk", d:"Dengeli skor kartı yaklaşımıyla her yetkinlik alanı için ayrı eşik", u:["hr","exec"]},
+  {n:"Veri kaynağı: performans değerlendirme puanları", st:"gelistirme", r:["ic"], d:"Yedek gücü profilinin bileşenlerinden biri", u:["hr","line"]},
+  {n:"Veri kaynağı: özel proje başarı sonuçları", st:"gelistirme", r:["ic"], d:"İş başında yetkinlik kanıtı", u:["hr","line"]},
+  {n:"Veri kaynağı: liderlik değerlendirme merkezi puanları", st:"gelistirme", r:["ic"], d:"Yapılandırılmış değerlendirme çıktısı", u:["hr","exec"]},
+  {n:"Veri kaynağı: gelişim planı sahipliği", st:"gelistirme", r:["ic"], d:"Havuz üyelerinin yazılı gelişim planı oranı", u:["hr","line"]},
+  {n:"Veri kaynağı: geri bildirim ve bağlılık anketi sonuçları", st:"gelistirme", r:["ic"], d:"Yöneticiyle ilişki memnuniyeti dâhil çoklu paydaş geri bildirimi", u:["hr","line"]},
+  {n:"Veri kaynağı: iki yıllık elde tutma (istikrar)", st:"gelistirme", r:["ic"], d:"Havuzun kalıcılığını gösteren bileşen", u:["hr","exec"]},
+  {n:"Tüm alanlarda ortalama başarı yüzdesi", st:"gelistirme", r:["ic"], d:"Havuzun bileşik yetkinlik düzeyi", u:["hr","exec"]},
+  {n:"Değerlendirmede önyargının en aza indirilmesi", st:"gelistirme", r:["ic"], k:"onk", d:"Değerlendirme süreçlerinin adil ve önyargıdan arındırılmış olması şarttır", u:["hr","exec","line"]},
+  {n:"Gelişim kaynağı ve bütçesi", st:"gelistirme", r:["ic"], k:"tur", calc:"gelisim_yatirimi", d:"Çalışma zamanı, eğitim izni, koçluk, gölge çalışma ve gelişim görevleri", u:["hr","exec","fin"]},
+  {n:"Yedekleme risk endeksi", st:"plan", r:["ic"], k:"tur", calc:"risk_endeksi", d:"Kapsama, hazırlık ve açık göstergelerini tek panoda birleştiren türetilmiş ölçü", u:["hr","exec","fin"]}
+ ]},
+ {g:"Bağlam ve öngörü etkenleri", t:"o", items:[
+  {n:"Ölçüm noktasındaki tam zaman eşdeğeri", st:"plan", r:["ic"], k:"ctx", d:"Metriğin anlamını değiştirecek ölçüde büyüme ya da küçülme", u:["hr","exec","fin"]},
+  {n:"Üretim artışı ya da ürün genişlemesi", st:"plan", r:["ic"], k:"ctx", d:"Ek liderlik ihtiyacı doğurur; açık oranını yükseltebilir", u:["exec","line"]},
+  {n:"Yeniden yapılanma", st:"plan", r:["ic"], k:"ctx", d:"Kritik pozisyon listesini ve havuzu aynı anda değiştirir", u:["hr","exec"]},
+  {n:"İşgücünün eğitimine yönelik çalışmalar", st:"plan", r:["ic"], k:"ctx", d:"Havuzun hazırlık düzeyini sonraki dönemlerde yükseltir", u:["hr","line"]},
+  {n:"Kültürel değişim (olumlu ya da olumsuz)", st:"plan", r:["ic"], k:"ctx", d:"Elverişli ya da zehirli kültür, yedek gücünü belirgin biçimde etkiler", u:["hr","exec"]},
+  {n:"Kuşak bakış açıları", st:"plan", r:["ic"], k:"ctx", d:"Kariyer beklentisi ve hareketlilik farklılıkları", u:["hr","line"]},
+  {n:"Raporlamada artışa yol açan toplumsal değişim", st:"plan", r:["ic","dis"], k:"ctx", d:"Açıklanan gösterge sayısını ve beklentiyi büyütür", u:["hr","exec","ext"]},
+  {n:"Sektör beklentisi", st:"plan", r:["ic","dis"], k:"ctx", d:"Kıyaslamanın anlamlı olduğu aralığı belirler", u:["exec","fin","ext"]},
+  {n:"Ekonomik döngü (daralma ya da genişleme)", st:"plan", r:["ic","dis"], k:"ctx", d:"Gelişim bütçesini ve dolayısıyla havuz büyüklüğünü etkiler", u:["exec","fin","ext"]},
+  {n:"Makro koşulların finansal istikrara etkisi", st:"plan", r:["ic"], k:"ctx", d:"Hazırlık üzerindeki etkisi sınırlıdır; istikrar belirsizleşirse artar", u:["exec","fin"]},
+  {n:"Rakiplerin çalışan avlaması", st:"plan", r:["ic"], k:"ctx", d:"Hazırlık ufuklarının kısaltılmasını gerektirebilir", u:["hr","exec","line"]},
+  {n:"İş yükü ve hızlı değişen ihtiyaçlar", st:"plan", r:["ic"], k:"ctx", d:"Havuz üyelerinin yeni beceri geliştirme imkânını daraltır", u:["hr","line"]},
+  {n:"Planlanan yapısal ve kadro değişiklikleri", st:"plan", r:["ic"], k:"pre", d:"Bilinen ve beklenen olaylar üzerinden öngörü", u:["hr","exec","fin"]},
+  {n:"Yaklaşan iş, işlev ya da ürün değişiklikleri", st:"plan", r:["ic"], k:"pre", d:"Gerekli yetkinlik profilini değiştirir", u:["exec","line","hr"]},
+  {n:"Satın almalar", st:"plan", r:["ic","dis"], k:"pre", d:"Havuzu ve kritik pozisyon listesini ani biçimde değiştirir", u:["exec","fin","ext"]},
+  {n:"İşgücünün farkındalığı ve eğitimi", st:"plan", r:["ic"], k:"pre", d:"Gelecek dönem hazırlık oranının öncü göstergesi", u:["hr","line"]},
+  {n:"Siyasi, sosyal, çevresel ve yasal dinamikler", st:"plan", r:["ic","dis"], k:"pre", d:"Mevzuat ve toplumsal beklenti kaynaklı değişim", u:["exec","fin","ext"]},
+  {n:"Sektörel etkiler ve büyük kırılmalar", st:"plan", r:["ic","dis"], k:"pre", d:"Yeni beceri setleri gerektiğinde geçmiş başarı geleceği garanti etmez", u:["exec","fin","ext"]},
+  {n:"Yerel işgücü piyasasının bilinmesi", st:"plan", r:["ic"], k:"onk", d:"Açık oranını düşürecek düzeltici eylemi belirlemek için gerekli", u:["hr","line"]},
+  {n:"Yeni çerçevelerin izlenmesi ve süreçlerin güncellenmesi", st:"plan", r:["ic"], k:"pre", d:"Gelecek yetkinlikleri henüz gelişim planlarında olmayabilir", u:["hr","exec"]}
+ ]}
+];
+
+var USERS = ["hr","exec","line","fin","ext"];
+var AILE_AD = {v:"genişlik", e:"derinlik", o:"bağlam ve öngörü"};
+var EK_AD = {ctx:"bağlam etkeni", pre:"öngörü etkeni", onk:"ön koşul", tur:"türetilmiş"};
+
+(function(){
+  var toplam = METRICS.reduce(function(a,g){ return a + g.items.length; }, 0);
+  document.getElementById("srcCount").textContent = toplam + " metrik ve etken";
+})();
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fu = document.getElementById("fUser").value;
+  var fs = document.getElementById("fStage").value;
+  var ft = document.getElementById("fType").value;
+  var fr = document.getElementById("fRep").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fu && m.u.indexOf(fu) === -1) return;
+      if(fs && m.st !== fs) return;
+      if(fr && m.r.indexOf(fr) === -1) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = USERS.map(function(u){
+        if(m.u.indexOf(u) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 (m.k ? ' <span class="tag lvl">' + EK_AD[m.k] + '</span>' : "") +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "") +
+                 (m.r.indexOf("dis") !== -1 ? ' <span class="tag iso">dış rapor</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="6">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="6">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve etken gösteriliyor.";
+}
+["fUser","fStage","fType","fRep","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) KRİTİK POZİSYON VE HAVUZ TABLOSU
+   ========================================================= */
+var SATIR = 6;
+var ORNEK_GRUP = [
+  ["Üst yönetim", 12, 14, 9, 8, 3, 4],
+  ["Direktör ve kıdemli müdür", 32, 40, 26, 24, 8, 12],
+  ["Müdür ve takım lideri", 38, 52, 31, 28, 9, 10],
+  ["Kritik uzman ve teknik roller", 20, 24, 16, 16, 4, 8],
+  ["", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", ""]
+];
+var ALANLAR = ["kritik","havuz","r0","r13","r45","yok"];
+
+function buildGrpTable(){
+  var html = "";
+  for(var i=0;i<SATIR;i++){
+    html += '<tr><td><input type="text" id="g_ad_' + i + '" placeholder="Grup ' + (i+1) + '"></td>';
+    ALANLAR.forEach(function(k){
+      html += '<td><input type="number" id="g_' + k + '_' + i + '" min="0" step="1"></td>';
+    });
+    html += '<td class="calc" id="g_kap_' + i + '">—</td>' +
+            '<td class="calc" id="g_haz_' + i + '">—</td></tr>';
+  }
+  document.getElementById("pBody").innerHTML = html;
+  document.getElementById("pBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computeGrp);
+  });
+  document.getElementById("hedefDerinlik").addEventListener("input", computeGrp);
+}
+
+function gNum(k, i){
+  var el = document.getElementById("g_" + k + "_" + i);
+  if(!el || el.value === "") return null;
+  var x = parseFloat(el.value);
+  return isNaN(x) ? null : x;
+}
+
+var KUME = null;
+
+function fmt1(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:1, maximumFractionDigits:1}); }
+function fmt2(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+function computeGrp(){
+  var t = {kritik:0, havuz:0, r0:0, r13:0, r45:0, yok:0, satir:0};
+  var hedef = parseFloat(document.getElementById("hedefDerinlik").value);
+  if(isNaN(hedef) || hedef < 0) hedef = 1;
+
+  for(var i=0;i<SATIR;i++){
+    var kritik = gNum("kritik", i);
+    var hKap = document.getElementById("g_kap_" + i);
+    var hHaz = document.getElementById("g_haz_" + i);
+    if(kritik === null || kritik <= 0){ hKap.textContent = "—"; hHaz.textContent = "—"; continue; }
+    var havuz = gNum("havuz", i) || 0, r0 = gNum("r0", i) || 0,
+        r13 = gNum("r13", i) || 0, r45 = gNum("r45", i) || 0, yok = gNum("yok", i) || 0;
+    hKap.textContent = fmt1(100 * havuz / kritik) + " %";
+    hHaz.textContent = fmt1(100 * r0 / kritik) + " %";
+    t.kritik += kritik; t.havuz += havuz; t.r0 += r0; t.r13 += r13; t.r45 += r45;
+    t.yok += yok; t.satir++;
+  }
+
+  var kart = document.getElementById("pCards");
+  if(!t.satir){
+    KUME = null;
+    ["tKP","tHavuz","tR0","tR13","tR45","tYok","tKapsama","tHazir"].forEach(function(id){
+      document.getElementById(id).textContent = "—";
+    });
+    kart.innerHTML = "";
+    document.getElementById("pNot").textContent =
+      "Tabloya en az bir pozisyon grubunun kritik pozisyon sayısını girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+
+  var kapsama = 100 * t.havuz / t.kritik;
+  var hazirOran = 100 * t.r0 / t.kritik;
+  var oran13 = 100 * t.r13 / t.kritik;
+  var oran45 = 100 * t.r45 / t.kritik;
+  var yokOran = 100 * t.yok / t.kritik;
+  var risk = (yokOran + Math.max(0, 100 - Math.min(kapsama, 100)) +
+              Math.max(0, 100 - Math.min(hazirOran, 100))) / 3;
+  KUME = {kritik:t.kritik, havuz:t.havuz, r0:t.r0, r13:t.r13, r45:t.r45, yok:t.yok,
+          kapsama:kapsama, hazir:hazirOran, oran13:oran13, oran45:oran45,
+          yokOran:yokOran, risk:risk, hedef:hedef};
+
+  document.getElementById("tKP").textContent = t.kritik;
+  document.getElementById("tHavuz").textContent = t.havuz;
+  document.getElementById("tR0").textContent = t.r0;
+  document.getElementById("tR13").textContent = t.r13;
+  document.getElementById("tR45").textContent = t.r45;
+  document.getElementById("tYok").textContent = t.yok;
+  document.getElementById("tKapsama").textContent = fmt1(kapsama) + " %";
+  document.getElementById("tHazir").textContent = fmt1(hazirOran) + " %";
+
+  kart.innerHTML =
+    '<div class="card"><b>' + fmt1(kapsama) + ' %</b><span>Halef kapsama oranı</span></div>' +
+    '<div class="card"><b>' + fmt1(hazirOran) + ' %</b><span>Şimdi hazır</span></div>' +
+    '<div class="card alt"><b>' + fmt1(oran13) + ' %</b><span>1–3 yılda hazır</span></div>' +
+    '<div class="card alt"><b>' + fmt1(oran45) + ' %</b><span>4–5 yılda hazır</span></div>' +
+    '<div class="card warn"><b>' + fmt1(yokOran) + ' %</b><span>Hazır adayı olmayan pozisyon</span></div>' +
+    '<div class="card warn"><b>' + fmt1(risk) + '</b><span>Risk endeksi (türetilmiş)</span></div>';
+
+  var derinlik = t.r0 / t.kritik;
+  var not = t.kritik + " kritik pozisyon, " + t.havuz + " havuz adayı → kapsama " +
+            fmt1(kapsama) + " %; pozisyon başına şimdi hazır aday " + fmt2(derinlik) + ". ";
+  if(kapsama >= 100 && hazirOran < 60){
+    not += "Havuz geniş ama derinlik zayıf: adaylar belirlenmiş, devralmaya hazır değil. ";
+  }
+  if(derinlik < hedef){
+    not += "Hedef derinliğe (" + fmt1(hedef) + " hazır aday/pozisyon) ulaşmak için " +
+           Math.ceil(hedef * t.kritik - t.r0) + " hazır aday daha gerekiyor. ";
+  }
+  if(yokOran > 0){
+    not += "Kritik pozisyonların " + fmt1(yokOran) + " %'inde hazır aday yok; bu metriğin hedefi " +
+           "sıfıra yakındır. ";
+  }
+  if(t.r0 + t.r13 + t.r45 > t.havuz){
+    not += "Üç ufuktaki aday toplamı havuz mevcudunu aşıyor; aynı aday birden çok ufukta " +
+           "sayılmış olabilir, tanımı kontrol edin. ";
+  }
+  document.getElementById("pNot").textContent = not;
+}
+
+function loadGrpExample(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("g_ad_" + i).value = ORNEK_GRUP[i][0];
+    ALANLAR.forEach(function(k, j){
+      document.getElementById("g_" + k + "_" + i).value = ORNEK_GRUP[i][j+1];
+    });
+  }
+  computeGrp();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadGrpExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("g_ad_" + i).value = "";
+    ALANLAR.forEach(function(k){ document.getElementById("g_" + k + "_" + i).value = ""; });
+  }
+  computeGrp();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Grup;Kritik pozisyon;Havuz;Hazir simdi;1-3 yil;4-5 yil;Hazir adayi yok;Kapsama %;Hazir %"];
+  for(var i=0;i<SATIR;i++){
+    var kritik = gNum("kritik", i);
+    if(kritik === null || kritik <= 0) continue;
+    var havuz = gNum("havuz", i) || 0, r0 = gNum("r0", i) || 0,
+        r13 = gNum("r13", i) || 0, r45 = gNum("r45", i) || 0, yok = gNum("yok", i) || 0;
+    satir.push([document.getElementById("g_ad_" + i).value || ("Grup " + (i+1)),
+                kritik, havuz, r0, r13, r45, yok,
+                (100*havuz/kritik).toFixed(1), (100*r0/kritik).toFixed(1)].join(";"));
+  }
+  if(KUME){
+    satir.push(["Toplam", KUME.kritik, KUME.havuz, KUME.r0, KUME.r13, KUME.r45, KUME.yok,
+                KUME.kapsama.toFixed(1), KUME.hazir.toFixed(1)].join(";"));
+  }
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30433_yedekleme_tablosu.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+function n(x){ return Number(x).toLocaleString("tr-TR"); }
+
+var CALC = [
+ {id:"etkililik", name:"Yedekleme etkililiği oranı", grp:"Sonuç",
+  formula:"Etkililik = (İçeriden doldurulan kritik pozisyon &divide; Toplam kritik pozisyon yedeklemesi) &times; 100",
+  note:"Standart, örnek olarak %70 ile %80 arasındaki bir oranı iyi yedekleme etkililiğinin işareti sayar. Metrik geriye dönüktür: süreçlerin çalıştığını olaydan sonra gösterir, kırılganlığın nerede olduğunu söylemez.",
+  fields:[{k:"ic_yedekleme",l:"İçeriden doldurulan kritik pozisyon",v:25},
+          {k:"toplam_yedekleme",l:"Toplam kritik pozisyon yedeklemesi",v:40},
+          {k:"onceki_oran",l:"Önceki dönem oranı (%)",v:68,step:0.1}],
+  unit:"% içeriden",
+  py:"etkililik_orani(ic_yedekleme=25, toplam_yedekleme=40)",
+  calc:function(v){ var d=100*v.ic_yedekleme/v.toplam_yedekleme;
+    return {value:d, dec:1, expl:"(" + n(v.ic_yedekleme) + " ÷ " + n(v.toplam_yedekleme) + ") × 100",
+      detail:[["Dışarıdan doldurulan kritik pozisyon", v.toplam_yedekleme-v.ic_yedekleme],
+              ["Dış alım payı (%)", +(100-d).toFixed(1)],
+              ["Önceki döneme fark (puan)", +(d-v.onceki_oran).toFixed(1)],
+              ["Standardın andığı iyi aralık", "%70 – %80"]]}; },
+  bands:[[80,"warn","Neredeyse tüm kritik pozisyonlar içeriden doldurulmuş; dış bakış açısı ve yeni beceri girişi azalıyor olabilir."],
+         [70,"ok","Standardın iyi yedekleme etkililiği olarak andığı %70–80 aralığında."],
+         [50,"warn","Kritik pozisyonların önemli bir bölümü dışarıdan doldurulmuş; hattın zayıflığı mı, kritik pozisyon artışı mı olduğuna mutlak sayılarla bakın."],
+         [0,"bad","Yedekleme hattı büyük ölçüde çalışmıyor: dış alım maliyeti, süresi ve kurumsal hafıza kaybı büyüyor."]]},
+
+ {id:"kapsama", name:"Halef kapsama oranı", grp:"Genişlik",
+  formula:"Kapsama = (Havuzdaki çalışan &divide; Toplam lider sayısı) &times; 100",
+  note:"%100, yedek bekleyen liderlik pozisyonu sayısı kadar potansiyel yedek bulunduğu anlamına gelir. Genişlik ölçüsüdür: geniş havuz, adayların hazır olacağını garanti etmez. Kıyas grubuyla karşılaştırma bu metrikte anlamlı değildir.",
+  fields:[{k:"havuz",l:"Havuzdaki çalışan",v:24},{k:"lider",l:"Toplam lider sayısı",v:44},
+          {k:"hedef_derinlik",l:"Hedef derinlik (aday / pozisyon)",v:2,step:0.5}],
+  unit:"% kapsama",
+  py:"kapsama_orani(havuz=24, lider=44)",
+  calc:function(v){ var d=100*v.havuz/v.lider;
+    return {value:d, dec:1, expl:"(" + n(v.havuz) + " ÷ " + n(v.lider) + ") × 100",
+      detail:[["Lider başına aday", +(v.havuz/v.lider).toFixed(2)],
+              ["%100 kapsama için gereken ek aday", Math.max(v.lider-v.havuz, 0)],
+              ["Hedef derinliğe göre eksik aday", Math.max(v.hedef_derinlik*v.lider-v.havuz, 0)]]}; },
+  bands:[[200,"warn","Havuz çok geniş: kapsama derinlik garantisi değildir ve geliştirme kaynağını seyreltebilir."],
+         [100,"ok","Pozisyon sayısı kadar ya da daha fazla potansiyel yedek belirlenmiş; şimdi derinliğe bakın."],
+         [50,"warn","Kapsama yarım: pozisyonların bir bölümü için belirlenmiş yedek yok."],
+         [0,"bad","Havuz çok küçük: hat fazla kısıtlı tanımlanmış ya da işgücünde gerekli beceri ve deneyim yok; dış alım baskısı büyüyor."]]},
+
+ {id:"hazirlik", name:"Hazırlık (derinlik) oranı — üç ufuk", grp:"Derinlik",
+  formula:"Hazırlık = (İlgili ufukta hazır aday bulunan kritik pozisyon &divide; Kritik pozisyon) &times; 100",
+  note:"Aynı formül üç ufuk için de kullanılır: şimdi hazır, 1–3 yılda hazır, 4–5 yılda hazır. Büyük kurumlarda üçünün birden iç raporlamada kullanılması önerilir; rakip avlanmasının yoğun olduğu sektörlerde ufuklar 3–6 aylık döngülere çekilebilir.",
+  fields:[{k:"hazir_simdi",l:"Şimdi hazır aday",v:82},{k:"hazir_1_3",l:"1–3 yılda hazır aday",v:76},
+          {k:"hazir_4_5",l:"4–5 yılda hazır aday",v:24},{k:"kritik_pozisyon",l:"Kritik pozisyon",v:102}],
+  unit:"% şimdi hazır",
+  py:'hesapla("hazirlik", hazir_simdi=82, hazir_1_3=76, hazir_4_5=24, kritik_pozisyon=102)',
+  calc:function(v){ var d=100*v.hazir_simdi/v.kritik_pozisyon;
+    return {value:d, dec:1, expl:"(" + n(v.hazir_simdi) + " ÷ " + n(v.kritik_pozisyon) + ") × 100",
+      detail:[["1–3 yılda hazır (%)", +(100*v.hazir_1_3/v.kritik_pozisyon).toFixed(1)],
+              ["4–5 yılda hazır (%)", +(100*v.hazir_4_5/v.kritik_pozisyon).toFixed(1)],
+              ["Pozisyon başına şimdi hazır aday", +(v.hazir_simdi/v.kritik_pozisyon).toFixed(2)],
+              ["Belirlenmiş toplam hazır aday", v.hazir_simdi+v.hazir_1_3+v.hazir_4_5]]}; },
+  bands:[[80,"ok","Kritik pozisyonların büyük bölümü için hemen devralabilecek aday var."],
+         [50,"warn","Hazırlık orta düzeyde; 1–3 yıl ufkundaki adayların gelişimini hızlandırın."],
+         [0,"bad","Kritik pozisyonların yarısından fazlasında hemen devralabilecek aday yok; ani ayrılış riski yüksek."]]},
+
+ {id:"derinlik", name:"Pozisyon başına hazır aday", grp:"Derinlik",
+  formula:"Derinlik = Hazır aday &divide; Kritik pozisyon",
+  note:"Türetilmiştir. Kaç hazır yedekin gerekli olduğu kurumun kendi tahminine dayanır: pozisyonun kritikliği, adayların hazırlık düzeyi ve hem havuzdaki hem de yedeki olunacak liderlerdeki beklenen devir.",
+  fields:[{k:"hazir_aday",l:"Hazır aday",v:82},{k:"kritik_pozisyon",l:"Kritik pozisyon",v:102},
+          {k:"hedef_derinlik",l:"Hedef derinlik",v:2,step:0.5}],
+  unit:"hazır aday / pozisyon",
+  py:'hesapla("derinlik", hazir_aday=82, kritik_pozisyon=102, hedef_derinlik=2)',
+  calc:function(v){ var d=v.hazir_aday/v.kritik_pozisyon;
+    return {value:d, dec:2, expl:n(v.hazir_aday) + " ÷ " + n(v.kritik_pozisyon),
+      detail:[["Hazırlık oranı (%)", +(100*d).toFixed(1)],
+              ["Hedef derinlik", v.hedef_derinlik],
+              ["Hedefe göre eksik hazır aday",
+               Math.max(Math.round(v.hedef_derinlik*v.kritik_pozisyon-v.hazir_aday), 0)]]}; },
+  bands:[[2,"ok","Her kritik pozisyon için birden çok hazır aday var; tek adayın ayrılması süreci başa döndürmez."],
+         [1,"warn","Pozisyon başına yaklaşık tek hazır aday; kırılgan bir denge."],
+         [0,"bad","Hazır aday sayısı kritik pozisyon sayısının altında; bazı pozisyonlar korumasız."]]},
+
+ {id:"yetkinlik_eslesme", name:"Yetkinlik eşleşme yüzdesi", grp:"Derinlik",
+  formula:"Eşleşme = (Mevcut ağırlıklı ortalama puan &divide; Mutabık kalınan gelecek gereklilik) &times; 100",
+  note:"Görev, insan ve liderlik yetkinlik alanları için ayrı ayrı hesaplanır ve bir beceri matrisi skor kartında toplanır. Değerlendirmelerin birden çok kaynaktan, kanıta dayalı ve önyargıdan arındırılmış olması şarttır.",
+  fields:[{k:"mevcut_puan",l:"Mevcut ağırlıklı ortalama puan",v:3.6,step:0.1},
+          {k:"gelecek_gereklilik",l:"Gelecek gereklilik",v:5,step:0.1},
+          {k:"olcek",l:"Ölçek üst sınırı",v:5,step:0.5}],
+  unit:"% eşleşme",
+  py:"eslesme_yuzdesi(mevcut_puan=3.6, gelecek_gereklilik=5)",
+  calc:function(v){ var d=100*v.mevcut_puan/v.gelecek_gereklilik;
+    return {value:d, dec:1, expl:"(" + n(v.mevcut_puan) + " ÷ " + n(v.gelecek_gereklilik) + ") × 100",
+      detail:[["Puan açığı", +(v.gelecek_gereklilik-v.mevcut_puan).toFixed(2)],
+              ["Açığın ölçeğe oranı (%)", +(100*(v.gelecek_gereklilik-v.mevcut_puan)/v.olcek).toFixed(1)],
+              ["Ölçek üst sınırına uzaklık", +(v.olcek-v.mevcut_puan).toFixed(2)]]}; },
+  bands:[[90,"ok","Bu yetkinlik alanı gelecek gerekliliğe büyük ölçüde ulaşmış."],
+         [70,"warn","Kayda değer bir yetkinlik açığı var; gelişim kaynağının önceliklendirilmesi gereken alanlardan biri."],
+         [0,"bad","Alan gelecek gerekliliğin belirgin altında; kritik yetkinlik açığı olarak raporlanmalı."]]},
+
+ {id:"yedek_gucu", name:"Çalışan yedek gücü (bench strength)", grp:"Derinlik",
+  formula:"Yedek gücü oranı = (Asgari eşikleri karşılayan havuz üyesi &divide; Havuz mevcudu) &times; 100",
+  note:"Yedek gücü bir sayımdır: birden çok performans ve değerlendirme alanında asgari yetkinlik eşiklerini karşılayan havuz üyelerinin toplamı. Eşikleri kurum dengeli skor kartı yaklaşımıyla kendisi belirler; veri performans, çoklu paydaş geri bildirimi, proje çalışmaları ve gözlemlerden derlenir.",
+  fields:[{k:"esigi_karsilayan",l:"Eşikleri karşılayan havuz üyesi",v:112},
+          {k:"havuz",l:"Havuz mevcudu",v:135},
+          {k:"ortalama_basari",l:"Tüm alanlarda ortalama başarı (%)",v:83,step:0.1}],
+  unit:"% havuzun eşiği karşılayan payı",
+  py:"yedek_gucu_orani(esigi_karsilayan=112, havuz=135)",
+  calc:function(v){ var d=100*v.esigi_karsilayan/v.havuz;
+    return {value:d, dec:1, expl:"(" + n(v.esigi_karsilayan) + " ÷ " + n(v.havuz) + ") × 100",
+      detail:[["Yedek gücü (kişi)", v.esigi_karsilayan],
+              ["Eşiği karşılamayan (kişi)", v.havuz-v.esigi_karsilayan],
+              ["Tüm alanlarda ortalama başarı (%)", v.ortalama_basari]]}; },
+  bands:[[80,"ok","Havuzun büyük bölümü asgari yetkinlik eşiklerini karşılıyor."],
+         [60,"warn","Havuzun kayda değer bir bölümü eşiklerin altında; gelişim önceliklerini yetkinlik alanına göre belirleyin."],
+         [0,"bad","Havuz nominal olarak var ama yetkinlik düzeyi zayıf; kapsama oranı gerçek bir güvence sağlamıyor."]]},
+
+ {id:"havuz_buyume", name:"Havuz büyüme oranı", grp:"Genişlik",
+  formula:"Büyüme = ((Cari havuz mevcudu &minus; Önceki yıl mevcudu) &divide; Önceki yıl mevcudu) &times; 100",
+  note:"Oranın pozitif olması için havuza katılanların, havuzdan çıkanları (ayrılanlar ya da listeden çıkarılanlar) aşması gerekir; bu nedenle iki hareket de tutarlı biçimde izlenir. Küçülen havuz, işgücünde gerekli beceri ve deneyimin bulunmadığına işaret edebilir.",
+  fields:[{k:"cari",l:"Cari yıl havuz mevcudu",v:234},{k:"onceki",l:"Önceki yıl havuz mevcudu",v:201},
+          {k:"ayrilan",l:"Dönemde havuzdan çıkan (kişi)",v:18}],
+  unit:"% büyüme",
+  py:"havuz_buyume(cari=234, onceki=201)",
+  calc:function(v){ var d=100*(v.cari-v.onceki)/v.onceki;
+    return {value:d, dec:1, expl:"((" + n(v.cari) + " − " + n(v.onceki) + ") ÷ " + n(v.onceki) + ") × 100",
+      detail:[["Net değişim (kişi)", v.cari-v.onceki],
+              ["Havuza katılan (kişi)", v.cari-v.onceki+v.ayrilan],
+              ["Havuzdan ayrılan (kişi)", v.ayrilan],
+              ["Havuzdan devir oranı (%)", +(100*v.ayrilan/v.onceki).toFixed(1)]]}; },
+  bands:[[10,"ok","Havuz belirgin biçimde büyümüş; büyümenin yetkinlik düzeyini seyreltip seyreltmediğini yedek gücüyle kontrol edin."],
+         [0,"warn","Havuz yerinde sayıyor; katılım ile çıkışın dengesine bakın."],
+         [-1000000,"bad","Havuz küçülüyor: gelişim hattı ya da elde tutma tarafında sorun var; dış alım baskısı artacak."]]},
+
+ {id:"havuz_devir", name:"Havuzdan devir oranı", grp:"Genişlik",
+  formula:"Havuz devri = (Dönemde havuzdan çıkan &divide; Havuz mevcudu) &times; 100",
+  note:"Türetilmiştir; standart bu oranı ayrı bir formül olarak vermez ama havuz büyüme oranının havuzdan çıkışları da hesaba kattığını açıkça belirtir. Yüksek potansiyellilerin devri, büyüme oranını doğrudan aşağı çeker.",
+  fields:[{k:"ayrilan",l:"Havuzdan çıkan (kişi)",v:18},{k:"havuz",l:"Havuz mevcudu",v:201},
+          {k:"hazir_kayip",l:"Bunların şimdi hazır olanı (kişi)",v:6}],
+  unit:"% havuzdan devir",
+  py:'hesapla("havuz_devir", ayrilan=18, havuz=201, hazir_kayip=6)',
+  calc:function(v){ var d=100*v.ayrilan/v.havuz;
+    return {value:d, dec:1, expl:"(" + n(v.ayrilan) + " ÷ " + n(v.havuz) + ") × 100",
+      detail:[["Havuzda kalan (kişi)", v.havuz-v.ayrilan],
+              ["Ayrılanların hazır aday olanı (kişi)", v.hazir_kayip],
+              ["Hazır aday kaybının payı (%)", +(100*v.hazir_kayip/v.ayrilan).toFixed(1)]]}; },
+  bands:[[20,"bad","Havuzun beşte biri kaybedilmiş; elde tutma, yedekleme planının önünde bir sorun hâline gelmiş."],
+         [10,"warn","Kayda değer bir havuz kaybı var; ayrılanların hazırlık düzeyine ayrıca bakın."],
+         [0,"ok","Havuz istikrarlı; büyüme oranı gerçek gelişimi yansıtıyor."]]},
+
+ {id:"hazir_adayi_yok", name:"Hazır adayı olmayan pozisyon oranı", grp:"Açık",
+  formula:"Oran = (Hazır adayı olmayan liderlik pozisyonu &divide; Toplam liderlik pozisyonu) &times; 100",
+  note:"Ölçüm döneminin sonundaki kadro verisiyle hesaplanır ve hedefi sıfıra yakındır. Kapsama ya da etkililik oranının doğrudan tersi değildir; pozisyonlar ve nüfuslar genelinde ortalamalarla çalışır. Dış raporlamada kilit liderlik ayrılışlarına karşı hazırlık düzeyini gösterir.",
+  fields:[{k:"pozisyon_sayisi",l:"Hazır adayı olmayan pozisyon",v:16},
+          {k:"toplam_pozisyon",l:"Toplam liderlik pozisyonu",v:44},
+          {k:"onceki_oran",l:"Önceki dönem oranı (%)",v:23,step:0.1}],
+  unit:"% hazır adayı yok",
+  py:"hazir_adayi_yok_orani(pozisyon_sayisi=16, toplam_pozisyon=44)",
+  calc:function(v){ var d=100*v.pozisyon_sayisi/v.toplam_pozisyon;
+    return {value:d, dec:1, expl:"(" + n(v.pozisyon_sayisi) + " ÷ " + n(v.toplam_pozisyon) + ") × 100",
+      detail:[["Hazır adayı olan pozisyon", v.toplam_pozisyon-v.pozisyon_sayisi],
+              ["Önceki döneme fark (puan)", +(d-v.onceki_oran).toFixed(1)],
+              ["Hedef", "sıfıra yakın"]]}; },
+  bands:[[30,"bad","Liderlik pozisyonlarının üçte birine yakınında hazır aday yok; ani bir ayrılışta hazır olmayan adayla ya da dış alımla doldurmak zorunda kalınır."],
+         [10,"warn","Kayda değer bir açık var; artışın nedeni havuz devri mi, yavaşlayan gelişim mi, kurumsal sarsıntı mı ayırın."],
+         [0,"ok","Açık sınırlı; metriğin hedefi zaten sıfıra yakındır."]]},
+
+ {id:"dis_alim", name:"Dış alım payı ve maliyeti", grp:"Sonuç",
+  formula:"Dış alım payı = (Dışarıdan doldurulan kritik pozisyon &divide; Toplam yedekleme) &times; 100",
+  note:"Maliyet hesabı türetilmiştir; standart bir formül vermez ama dış alımın uzun sürdüğünü, işe alım maliyetini yükselttiğini ve kurumsal bilginin uygulanmasında boşluk yarattığını belirtir. Üst düzeyde dış alım, dışarıdan uzmanlık ve rakip bilgisi getirmesi bakımından yararlı da olabilir.",
+  fields:[{k:"dis_alim",l:"Dışarıdan doldurulan kritik pozisyon",v:15},
+          {k:"toplam_yedekleme",l:"Toplam kritik pozisyon yedeklemesi",v:40},
+          {k:"ortalama_maliyet",l:"Bir dış alımın ortalama maliyeti (TL)",v:250000}],
+  unit:"% dışarıdan",
+  py:'hesapla("dis_alim", dis_alim=15, toplam_yedekleme=40, ortalama_maliyet=250000)',
+  calc:function(v){ var d=100*v.dis_alim/v.toplam_yedekleme;
+    return {value:d, dec:1, expl:"(" + n(v.dis_alim) + " ÷ " + n(v.toplam_yedekleme) + ") × 100",
+      detail:[["İçeriden doldurulan", v.toplam_yedekleme-v.dis_alim],
+              ["Dış alımların tahmini maliyeti (TL)", Math.round(v.dis_alim*v.ortalama_maliyet)],
+              ["Bir dış alım azalırsa kazanç (TL)", Math.round(v.ortalama_maliyet)],
+              ["Yedekleme etkililiği (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[50,"bad","Kritik pozisyonların yarısından fazlası dışarıdan dolduruluyor; maliyet ve kurumsal hafıza kaybı büyük."],
+         [30,"warn","Dış alım payı yüksek; hangi pozisyon ailelerinde yoğunlaştığına bakın."],
+         [0,"ok","Dış alım sınırlı düzeyde; üst düzeyde bir miktar dış alım yeni bakış açısı için yararlı olabilir."]]},
+
+ {id:"gelisim_yatirimi", name:"Havuz üyesi başına gelişim yatırımı", grp:"Kaynak",
+  formula:"Yatırım = Gelişim bütçesi &divide; Havuz mevcudu",
+  note:"Türetilmiştir. Standart, gelişim faaliyetleri için kaynak ayrılmasını ister: çalışma zamanı, eğitim izni, koçluk, gölge çalışma ve rutin işin üstüne gelen gelişim görevleri. Amaç, tüm potansiyel yedeklerin eşit gelişme fırsatına erişmesidir.",
+  fields:[{k:"butce",l:"Yıllık gelişim bütçesi (TL)",v:1800000},
+          {k:"havuz",l:"Havuz mevcudu",v:135},
+          {k:"kritik_pozisyon",l:"Kritik pozisyon",v:102}],
+  unit:"TL / havuz üyesi",
+  py:"gelisim_yatirimi(butce=1800000, havuz=135)",
+  calc:function(v){ return {value:v.butce/v.havuz, dec:0,
+    expl:n(v.butce) + " ÷ " + n(v.havuz),
+    detail:[["Kritik pozisyon başına (TL)", Math.round(v.butce/v.kritik_pozisyon)],
+            ["Toplam gelişim bütçesi (TL)", Math.round(v.butce)],
+            ["Havuz büyüklüğü (kişi)", v.havuz]]}; },
+  bands:[[0,"ok","Tutarı hazırlık oranıyla birlikte sunun: havuzu belirlemek tek başına hazırlık üretmez, kaynak ayırmak üretir."]]},
+
+ {id:"risk_endeksi", name:"Yedekleme risk endeksi", grp:"Pano",
+  formula:"Risk = (Hazır adayı olmayan pozisyon payı + Kapsama açığı + Hazırlık açığı) &divide; 3",
+  note:"Standardın parçası değildir, türetilmiştir. Gerekçesi standardın kendi uyarısıdır: tek başına kullanılan bir metrik süreç hakkında sınırlı ya da çarpık bir görüntü verir; küme pano olarak okunmalıdır. Açıklar %100'e göre hesaplanır ve sıfırın altına inmez.",
+  fields:[{k:"hazir_adayi_yok_oran",l:"Hazır adayı olmayan pozisyon (%)",v:36,step:0.1},
+          {k:"kapsama_oran",l:"Kapsama oranı (%)",v:54,step:0.1},
+          {k:"hazirlik_oran",l:"Şimdi hazır oranı (%)",v:80,step:0.1}],
+  unit:"risk (0–100)",
+  py:"risk_endeksi(hazir_adayi_yok_oran=36, kapsama_oran=54, hazirlik_oran=80)",
+  calc:function(v){ var ka=Math.max(0,100-Math.min(v.kapsama_oran,100));
+    var ha=Math.max(0,100-Math.min(v.hazirlik_oran,100));
+    var d=(v.hazir_adayi_yok_oran+ka+ha)/3;
+    return {value:d, dec:1,
+      expl:"(" + n(v.hazir_adayi_yok_oran) + " + " + n(+ka.toFixed(1)) + " + " + n(+ha.toFixed(1)) + ") ÷ 3",
+      detail:[["Kapsama açığı (puan)", +ka.toFixed(1)],
+              ["Hazırlık açığı (puan)", +ha.toFixed(1)],
+              ["Hazır adayı olmayan pozisyon payı (%)", v.hazir_adayi_yok_oran],
+              ["Not", "standartta yoktur, türetilmiştir"]]}; },
+  bands:[[50,"bad","Üç göstergenin ortalaması yüksek risk gösteriyor; yedekleme planı kurumsal dayanıklılık açısından öncelikli gündem."],
+         [25,"warn","Orta düzey risk; hangi bileşenin baskın olduğuna bakıp kaynağı oraya yönlendirin."],
+         [0,"ok","Üç gösterge birlikte olumlu; yine de bileşenleri ayrı ayrı raporlayın."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    var raw = el && el.value !== "" ? parseFloat(el.value) : NaN;
+    if(isNaN(raw)){ missing = true; v[f.k] = f.v; } else { v[f.k] = raw; }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){ return f.k + "=" + r.v[f.k]; }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30433_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!KUME){ loadGrpExample(); }
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("hazirlik");
+  sel.value = idx; buildFields();
+  document.getElementById("in_hazir_simdi").value = KUME.r0;
+  document.getElementById("in_hazir_1_3").value = KUME.r13;
+  document.getElementById("in_hazir_4_5").value = KUME.r45;
+  document.getElementById("in_kritik_pozisyon").value = KUME.kritik;
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso30433_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30433_metrikler')\n" +
+      "_m.__file__ = 'iso30433_metrikler.py'\n" +
+      "sys.modules['iso30433_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30433_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30433_metrikler import *\n" +
+      "import iso30433_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30433_metrikler import *\n' +
+  'import iso30433_metrikler as m\n\n' +
+  '# Sonuç ve genişlik\n' +
+  'print("Etkililik (25/40)   :", round(etkililik_orani(25, 40), 1), "%")\n' +
+  'print("Kapsama (24/44)     :", round(kapsama_orani(24, 44), 1), "%")\n' +
+  'print("Kapsama (132/44)    :", round(kapsama_orani(132, 44), 1), "%")\n\n' +
+  '# Derinlik: üç ufuk aynı formülü kullanır\n' +
+  'for ad, hazir in [("şimdi", 82), ("1-3 yıl", 76), ("4-5 yıl", 24)]:\n' +
+  '    print(f"{ad:<10}: {hazirlik_orani(hazir, 102):.0f} %")\n' +
+  'print("Pozisyon başına hazır aday:", round(derinlik(82, 102), 2))\n\n' +
+  '# Pozisyon grubu tablosu\n' +
+  't = ornek_tablo()\n' +
+  'for satir in t.tablo():\n' +
+  '    print(satir)\n' +
+  'for anahtar, deger in t.ozet().items():\n' +
+  '    print(f"{anahtar:<26}: {deger}")\n\n' +
+  '# Yetkinlik eşleşmesi\n' +
+  'print("Vizyon oluşturma    :", round(eslesme_yuzdesi(3.6, 5), 1), "%")\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("hazir_adayi_yok", pozisyon_sayisi=16, toplam_pozisyon=44, onceki_oran=23))\n\n' +
+  '# Rapor denetimi: hangi ön koşullar eksik?\n' +
+  'for uyari in metrik_denetimi(kritik_pozisyon_tanimli=True, uc_ufuk_olculuyor=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30433_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30433_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildGrpTable();
+loadGrpExample();
+buildFields();
+run();
+</script>
+</body>
+</html>

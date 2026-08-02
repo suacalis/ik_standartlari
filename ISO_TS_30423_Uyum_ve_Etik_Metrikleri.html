@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 30423 Uyum ve Etik Metrikleri Kümesi — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:72px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- pozisyon tablosu --- */
+  .postbl{font-size:13.5px}
+  .postbl input[type=text],.postbl input[type=date],.postbl input[type=number]{
+    width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .postbl input[type=text]{font-family:var(--sans)}
+  .postbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .postbl td.chk{text-align:center}
+  .postbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .postbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tblbar .inline{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-soft)}
+  .tblbar .inline input{width:78px;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--eff-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--efc-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+  .tblwrap{overflow-x:auto;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 30423 Uyum ve Etik Metrikleri Kümesi</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 30423:2021 — <i>Human resource management — Compliance and ethics metrics cluster</i></span>
+  <span><b>Kapsam:</b> 5 kullanıcı · 3 metrik ailesi · <span id="srcCount">—</span></span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 30423, ISO 30414'ün <b>uyum ve etik</b> kümesini ayrıntılandıran bir teknik şartnamedir. Beş
+metrik tanımlar: <b>açılan şikâyetlerin sayısı ve türü</b>, <b>sonuçlandırılan disiplin işlemlerinin sayısı
+ve türü</b>, <b>uyum ve etik eğitimini tamamlayan çalışan oranı</b>, <b>dış taraflara havale edilen
+uyuşmazlıklar</b> ve <b>dış (denetim dâhil) bulguların sayısı, türü, kaynağı ve bunlardan doğan
+eylemler</b>. Kümenin ayırt edici yanı, metriklerin çoğunun bir <i>oran</i> değil, <b>yıl başından
+itibaren biriken sayım</b> olmasıdır; iki metrik ise açılış bakiyesi, dönem içi ekleme ve kapanış
+bakiyesiyle çalışan bir hareket hesabı kullanır. Bu sayfa, standardın metrik kümesini filtrelenebilir bir
+matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı + Python koduna dönüştürür.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>Tanımı kurum yapar, ama yazılı yapar.</b> "Şikâyet" ve "disiplin işlemi" ile ne kastedildiğini
+  her kurum kendisi tanımlar ve ilgili tüm iç ve dış taraflara bunu bildirir. Bir şikâyet, kaydedildiği
+  ya da soruşturması başladığı anda resmî sayılır.</li>
+  <li><b>Hedef uyum düzeyi ve "kayda değer sapma" önceden belirlenir.</b> Sektör ve kurum büyüklüğü
+  yorumu doğrudan etkilediği için her kurum, her metrik için hedefini ve hedeften sapmanın hangi
+  eşikten sonra kayda değer sayılacağını belgeler, günceller ve paydaşlara duyurur.</li>
+  <li><b>Sayının artması kötü haber olmayabilir.</b> Standardın kendi örneğinde sözlü taciz ve dolaylı
+  ayrımcılık şikâyetlerindeki artışın, işgücünün bu iki konunun ne olduğuna dair farkındalığının
+  artmasından kaynaklanabileceği belirtilir. Bu yüzden sayının yanına bağlam açıklaması konur.</li>
+  <li><b>Payda kadro değişimini yakalamalıdır.</b> Ölçüm döneminde kurum ikiye katlanmışsa sabit kalan
+  bir uyuşmazlık sayısı, tam zaman eşdeğerine oranlandığında yarıya inmiş demektir.</li>
+  <li><b>İçeride mi çözüldü, dışarıda mı?</b> Şikâyetler ayrıca içeride ve dışarıda çözülenler olarak
+  sınıflandırılabilir; içeride çözülen payın artması olumlu bir eğilim sayılır.</li>
+  <li><b>"Eğitimi tamamlamak" yeterlilik demektir.</b> Katılımcının, kurumun tanımladığı tatmin edici
+  tamamlama ölçütüne göre eğitimi uygulamada yetkin bulunması gerekir; salt katılım yeterli değildir.</li>
+  <li><b>Kabul edilmeyen tavsiye açıkça yazılır.</b> Kurum bir dış bulgunun tavsiyesini benimsemiyorsa,
+  bulguya yanıt olarak net bir açıklama (kabul edilmediyse neden) rapora eklenir.</li>
+  <li><b>Karşılaştırma aralığı üç ilâ beş yıldır</b> ve raporlama, önceki dönemlerle cari dönemi, geçmiş
+  yıllarla cari yılı birlikte gösterir.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik kurma adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Kümülatif dönem tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Örgüt ikliminin resmi çıkarılırken:</b> dış taraflara havale edilen uyuşmazlık sayısı, iç
+  uyuşmazlıkların dışarıda çözülmesinin gerekli hâle geldiği bir çalışma ortamını gösterir.</li>
+  <li><b>Nedenin anlaşılması ve önleyici yanıt geliştirilmesi gerektiğinde:</b> şikâyetlerin ve
+  sonuçlandırılan disiplin işlemlerinin etkili biçimde sınıflandırılması ve çözümlenmesi, nedeni daha iyi
+  anlamayı ve proaktif yanıt vermeyi mümkün kılar.</li>
+  <li><b>Etik ve davranış kuralları programının etkisi ölçülürken:</b> eğitim tamamlama oranı, hem
+  hedefe göre hem de öngörülen süre içinde tamamlanma açısından izlenir.</li>
+  <li><b>Dış denetim ve tahkim sonuçları takip edilirken:</b> bulgular sınıflandırılır, izlenir ve
+  bunlardan doğan eylemler kayda geçirilir.</li>
+  <li><b>Uzlaşma çabası değerlendirilirken:</b> İK işlevi, uyum güçlükleriyle yüzleşmede ve kurumun genel
+  uzlaşma çabasında belirgin bir rol oynar.</li>
+  <li><b>Dış raporlamada:</b> yatırımcılar, finansal analistler, sendikalar, medya ve kıyaslama yapan
+  sektör grupları bu kümenin dış kullanıcılarıdır — ancak metriklerin tümü dış kullanım için
+  tasarlanmamıştır.</li>
+</ul>
+<div class="note">Standart, hesabın mali yıl, yıllık bütçe döngüsü ya da her ikisiyle hizalanmasını
+ister. Hesaplama anı, her ölçüm döneminin sonunda kayıtlı olan sayıdır: birinci ayın sonu, ikinci
+çeyreğin sonu, yıl sonu toplamları gibi. Başka bir ölçüm noktası seçilirse tercih tutarlı biçimde
+uygulanır ve açıkça yazılır.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Her metrik için yedi bileşen</h3>
+<table>
+  <thead><tr><th>Bileşen</th><th>Yanıtladığı soru</th></tr></thead>
+  <tbody>
+    <tr><td>Tanım</td><td>Metrik neyi sayar?</td></tr>
+    <tr><td>Amaç</td><td>Hangi kurumsal soruya hizmet eder, nasıl sınıflandırılır?</td></tr>
+    <tr><td>Formül</td><td>Nasıl hesaplanır, ölçüm noktası nedir?</td></tr>
+    <tr><td>Kullanım biçimi</td><td>Karşılaştırmalı tabloda ne görünür?</td></tr>
+    <tr><td>Hedef kullanıcılar</td><td>Kime raporlanır (iç ve dış)?</td></tr>
+    <tr><td>Bağlam etkenleri</td><td>Sonucu bugün ne etkiliyor olabilir?</td></tr>
+    <tr><td>Öngörü etkenleri</td><td>Bilinen ve beklenen olaylar sonucu nasıl değiştirecek?</td></tr>
+  </tbody>
+</table>
+
+<h3>İki hesap mantığı: birikim ve hareket</h3>
+<p>Kümedeki metriklerin hepsi aynı biçimde hesaplanmaz. Hangi mantığın kullanıldığı ayrılmadan yapılan
+toplama, aynı vakayı iki kez saymaya ya da hiç saymamaya yol açar.</p>
+<table>
+  <thead><tr><th>Mantık</th><th>Formül</th><th>Hangi metrikler</th></tr></thead>
+  <tbody>
+    <tr><td><b>Yıl başından itibaren birikim</b></td>
+      <td>Dönem toplamı = A1 + A2 + … + An (her dönemin sayısının kümülatif toplamı)</td>
+      <td>Açılan şikâyetler; dış taraflara havale edilen uyuşmazlıklar</td></tr>
+    <tr><td><b>Hareket hesabı</b></td>
+      <td>Sonuçlandırılan = Açılış bakiyesi + Dönemde eklenen − Kapanış bakiyesi</td>
+      <td>Sonuçlandırılan disiplin işlemleri; dış taraflarca sonuçlandırılan uyuşmazlıklar (bu ikincisinde
+      eklenen yerine <i>havale edilen</i>, çıkarılan olarak <i>geri çekilen</i> kullanılır)</td></tr>
+    <tr><td><b>Oran</b></td>
+      <td>(Tamamlayan çalışan ÷ Tamamlaması gereken çalışan) × 100</td>
+      <td>Uyum ve etik eğitimini tamamlayan çalışan oranı</td></tr>
+  </tbody>
+</table>
+<div class="note">Her iki toplu formül de <b>her kategoriye ayrı ayrı</b> uygulanır: taciz, ayrımcılık
+(doğrudan/dolaylı), saldırı (sözlü/fiziksel) ve disiplin işlemlerinde ayrıca bireysel performans, kurum
+değer ve etiğine uyumsuzluk, düşük iş performansı, mevzuat ya da politika gerekliliklerine uymama.</div>
+
+<h3>Sınıflandırma örnekleri</h3>
+<table>
+  <thead><tr><th>Metrik</th><th>Standardın andığı kategoriler</th></tr></thead>
+  <tbody>
+    <tr><td><b>Şikâyetler</b></td>
+      <td>Taciz; ayrımcılık (doğrudan: kişiye ya da gruba yönelik / dolaylı: bir politikanın yorumu
+      üzerinden); saldırı (sözlü / fiziksel). Ayrıca içeride çözülenler ve dışarıda çözülenler</td></tr>
+    <tr><td><b>Disiplin işlemleri</b></td>
+      <td>Yukarıdakilere ek olarak bireysel performans; kurumun değer ve etiğine zayıf uyum; düşük iş
+      performansı; mevzuat ya da politika gerekliliklerine uymama</td></tr>
+    <tr><td><b>Dış uyuşmazlıklar ve bulgular</b></td>
+      <td>Haksız fesih; mali uyuşmazlıklar; ücret ya da hak edişler; sözleşmesel uyuşmazlıklar;
+      strese bağlı uyuşmazlıklar; kazaya bağlı uyuşmazlıklar; davranış kuralları</td></tr>
+    <tr><td><b>Bulgu kaynakları</b></td>
+      <td>Tahkim kurulu, mahkeme, kamu kurumu gibi yetkili üçüncü taraflar</td></tr>
+  </tbody>
+</table>
+
+<h2 id="adimlar">Metrik Kurma Adımları</h2>
+<ol>
+  <li><b>Tanımları yazın.</b> "Şikâyet" ve "disiplin işlemi" kurumunuz için ne demek; bir şikâyet hangi
+  anda resmî sayılıyor?</li>
+  <li><b>Kayıt ve yönetim sürecini kurun.</b> Tüm resmî şikâyetleri ve disiplin işlemlerini yakalayacak
+  bir süreç ve prosedür; küçük kurumlarda basit çalışma sayfaları, büyük kurumlarda daha gelişmiş
+  teknoloji çözümleri.</li>
+  <li><b>Hedef uyum düzeyini ve "kayda değer sapma"yı belirleyin</b>, belgeleyin, güncel tutun ve ilgili
+  paydaşlara duyurun.</li>
+  <li><b>Ölçüm noktasını sabitleyin</b> ve mali yıl ile bütçe döngüsüne hizalayın.</li>
+  <li><b>Kategori listesini oluşturun</b> ve toplu formülü her kategoriye ayrı ayrı uygulayın.</li>
+  <li><b>Eğitim paketini tanımlayın.</b> Her pozisyon için uyum ve etik eğitim paketine ne girdiği,
+  tatmin edici tamamlamanın nasıl ölçüleceği (değerlendirme yöntemi) ve hedef tamamlama yüzdesi.</li>
+  <li><b>Süre hedefi koyun.</b> Uyuma ulaşmak ya da onu sürdürmek ve etik eğitimini tamamlamak için
+  geçen süreye de hedef konur; raporlama bu hedeflere göre yapılır.</li>
+  <li><b>Bulguları sınıflandırın ve izleyin;</b> her bulgudan doğan eylemi ve kabul edilmeyen tavsiyeler
+  için gerekçeli yanıtı kayda geçirin.</li>
+  <li><b>Üç–beş yıllık seriyi kurun</b> ve bağlam açıklamasını sayının yanına ekleyin.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kavram</th><th>Karşılığı</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>Şikâyet</b></td><td>grievance</td>
+      <td>İşyeri içindeki resmî yakınma; taciz, ayrımcılık gibi pek çok nedenle açılabilir. Kaydedildiği
+      ya da soruşturması başladığı anda resmî sayılır</td></tr>
+    <tr><td><b>Disiplin işlemi</b></td><td>disciplinary action</td>
+      <td>Beklenen ve duyurulmuş işyeri kurallarını karşılamayan işle ilgili davranışın ele alınma
+      süreci</td></tr>
+    <tr><td><b>Sonuçlandırılan</b></td><td>concluded</td>
+      <td>Hareket hesabıyla bulunan, dönem içinde kapanmış işlem sayısı</td></tr>
+    <tr><td><b>Açılış / kapanış bakiyesi</b></td><td>opening / closing balance</td>
+      <td>Dönem başında ve sonunda açık duran dosya sayısı</td></tr>
+    <tr><td><b>Eğitimin tamamlanması</b></td><td>completion of training</td>
+      <td>Katılımcının, kurumun tatmin edici tamamlama tanımına göre eğitimi uygulamada yetkin
+      bulunması</td></tr>
+    <tr><td><b>Dış tarafa havale</b></td><td>referred to external parties</td>
+      <td>İşgücüyle ilgili uyuşmazlığın, yetkili üçüncü taraflara aktarıldığının raporlanması</td></tr>
+    <tr><td><b>Geri çekilen</b></td><td>withdrawn</td>
+      <td>Dış tarafa havale edildikten sonra dönem içinde geri çekilen uyuşmazlık</td></tr>
+    <tr><td><b>Dış bulgu</b></td><td>external finding</td>
+      <td>Denetim dâhil dış incelemeden doğan tespit; kaynağı, bulgusu ve doğurduğu eylemle birlikte
+      kaydedilir</td></tr>
+    <tr><td><b>Şikâyetsiz gün</b></td><td>grievance free days</td>
+      <td>Son şikâyetten bu yana geçen gün ya da belirlenen dönemdeki şikâyetsiz gün sayısı; iyileşmenin
+      raporlanma biçimlerinden biri</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın tanımladığı ve türettiği metrikler ile bağlam–öngörü etkenlerinin
+kullanıcı × konu × raporlama sınıflandırmasıdır. Filtreleri değiştirdiğinizde tablo anında daralır.</p>
+
+<div class="filters">
+  <div><label for="fUser">Kullanıcı</label>
+    <select id="fUser">
+      <option value="">Tümü</option>
+      <option value="hr">İK hizmet birimleri</option>
+      <option value="exec">Yönetim kurulu ve üst yönetim</option>
+      <option value="line">Hat yönetimi ve sendika temsilcisi</option>
+      <option value="fin">Finans ve hukuk</option>
+      <option value="ext">Dış paydaş (yatırımcı, analist, medya)</option>
+    </select></div>
+  <div><label for="fStage">Konu</label>
+    <select id="fStage">
+      <option value="">Tümü</option>
+      <option value="sikayet">Şikâyetler</option>
+      <option value="disiplin">Disiplin işlemleri</option>
+      <option value="egitim">Uyum ve etik eğitimi</option>
+      <option value="dis">Dış uyuşmazlık ve bulgular</option>
+      <option value="altyapi">Tanım ve altyapı</option>
+      <option value="baglam">Bağlam ve öngörü</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">İç uyuşmazlık (şikâyet ve disiplin)</option>
+      <option value="e">Eğitim ve dış süreçler</option>
+      <option value="o">Altyapı, bağlam ve öngörü</option>
+    </select></div>
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="ic">İç raporlama</option>
+      <option value="dis">Dış raporlama</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. taciz"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<div class="tblwrap">
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">İK</th>
+    <th class="rot">Kurul / üst yönetim</th>
+    <th class="rot">Hat / sendika</th>
+    <th class="rot">Finans / hukuk</th>
+    <th class="rot">Dış paydaş</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+</div>
+<div class="legend">
+  <span><span class="dot v"></span> iç uyuşmazlık</span>
+  <span><span class="dot e"></span> eğitim ve dış süreçler</span>
+  <span><span class="dot o"></span> altyapı, bağlam ve öngörü</span>
+  <span><span class="tag iso">30414</span> insan sermayesi raporlamasında da yer alan metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Kümülatif Dönem Tablosu</h2>
+<p>Kümenin iki hesap mantığı da tek bir tablodan üretilebilir. Her dönem için o dönemde açılan şikâyet
+sayısını, disiplin işlemlerinin açılış bakiyesi–eklenen–kapanış bakiyesi üçlüsünü ve dış taraflara
+havale edilen uyuşmazlık sayısını girin; kümülatif toplam ve sonuçlandırılan işlem sayısı satır satır
+hesaplanır.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+  <span class="inline"><label for="tzeKadro">Tam zaman eşdeğeri (oranlama için)</label>
+    <input type="number" id="tzeKadro" min="1" step="1" value="1000"></span>
+</div>
+
+<div class="tblwrap">
+<table class="postbl">
+  <thead><tr>
+    <th style="width:96px">Dönem</th>
+    <th class="num">Şikâyet</th>
+    <th class="num">Disiplin: açılış</th><th class="num">Eklenen</th><th class="num">Kapanış</th>
+    <th class="num">Dış havale</th>
+    <th class="calc" style="width:96px">Kümülatif şikâyet</th>
+    <th class="calc" style="width:110px">Sonuçlandırılan</th>
+  </tr></thead>
+  <tbody id="pBody"></tbody>
+  <tfoot><tr>
+    <td>Toplam</td>
+    <td class="calc" id="tSikayet">—</td>
+    <td class="calc" id="tAcilis">—</td>
+    <td class="calc" id="tEklenen">—</td>
+    <td class="calc" id="tKapanis">—</td>
+    <td class="calc" id="tHavale">—</td>
+    <td class="calc" id="tKum">—</td>
+    <td class="calc" id="tSonuc">—</td>
+  </tr></tfoot>
+</table>
+</div>
+
+<div class="cards" id="pCards"></div>
+<div class="note" id="pNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü doğrudan sayımdır (bulgu kaynağı, alınan eylem, kategori listesi) ve formül
+gerektirmez. Hesaplanabilir olanların tamamı aşağıdadır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>Uyum ve Etik Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Sayımlar adet, oranlar yüzde olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30423_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle aynı
+  sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve Pyodide
+(WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30423_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+standardın örnek tablolarını yeniden üretir.</p>
+
+<div class="filename">iso30423_metrikler.py (özet)</div>
+<pre><i># --- Birikim mantığı ---</i>
+
+<b>def</b> <span class="fn">kumulatif</span>(aylik):
+    <i>"""Yıl başından itibaren biriken toplam: A1, A1+A2, A1+A2+A3 …
+    Aynı formül her kategoriye ayrı ayrı uygulanır."""</i>
+    toplam, seri = <u>0</u>, []
+    <b>for</b> deger <b>in</b> aylik:
+        toplam += deger
+        seri.append(toplam)
+    <b>return</b> seri
+
+<i># --- Hareket hesabı ---</i>
+
+<b>def</b> <span class="fn">sonuclandirilan</span>(acilis, eklenen, kapanis):
+    <i>"""Sonuçlandırılan disiplin işlemi =
+    açılış bakiyesi + dönemde eklenen dosya − kapanış bakiyesi."""</i>
+    <b>return</b> acilis + eklenen - kapanis
+
+<b>def</b> <span class="fn">dis_sonuclandirilan</span>(acilis, havale, geri_cekilen, kapanis):
+    <i>"""Dış taraflarca sonuçlandırılan uyuşmazlık = açılış bakiyesi +
+    dönemde havale edilen − geri çekilen − kapanış bakiyesi."""</i>
+    <b>return</b> acilis + havale - geri_cekilen - kapanis
+
+<i># --- Oran mantığı ---</i>
+
+<b>def</b> <span class="fn">egitim_tamamlama</span>(tamamlayan, tamamlamasi_gereken):
+    <i>"""Tamamlamak, katılımcının eğitimi uygulamada yetkin bulunması demektir."""</i>
+    <b>return</b> <u>100</u> * tamamlayan / tamamlamasi_gereken
+
+<i># --- Türetilmiş oranlar ---</i>
+
+<b>def</b> <span class="fn">tze_orani</span>(vaka, tze):
+    <i>"""Kadro büyürken sabit kalan vaka sayısı, TZE'ye oranlandığında düşer."""</i>
+    <b>return</b> <u>100</u> * vaka / tze
+
+<b>def</b> <span class="fn">ic_cozum_orani</span>(ic_cozulen, toplam):
+    <i>"""İçeride çözülen şikâyetlerin payı; artması olumlu eğilim sayılır."""</i>
+    <b>return</b> <u>100</u> * ic_cozulen / toplam
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30423_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30423_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Artış her zaman kötüleşme değildir.</b> Standardın örneğinde doğrudan ayrımcılık ve fiziksel
+  saldırı şikâyetleri belirgin biçimde düşerken sözlü saldırı ve dolaylı ayrımcılık yükselir; bunun
+  nedeni işgücünün bu iki konunun tanımına dair farkındalığının artması olabilir. İlk bakıştaki sayı
+  durumun kapsamlı bir değerlendirmesi değildir; daha ileri inceleme gerekir.</li>
+  <li><b>İçeride çözülen payın artması olumlu bir eğilimdir.</b> Şikâyetleri içeride ve dışarıda çözülenler
+  olarak ayırmak, uzlaşma kapasitesini görünür kılar.</li>
+  <li><b>Disiplin işlemlerindeki artışın iki farklı okuması vardır:</b> işgücündeki gerilimin artması ya da
+  birikmiş dosyaları temizlemeye ve uyuşmazlıkları hızla sonuçlandırmaya yönelik kayda değer bir çaba.
+  Kadro büyümesi de aynı sonucu üretebilir; nedeni ek araştırma belirler.</li>
+  <li><b>Sayıyı kadroya oranlayın.</b> Kurum ölçüm döneminde ikiye katlanmışsa sabit kalan kazaya bağlı
+  uyuşmazlık sayısı, tam zaman eşdeğerine oran olarak yarıya inmiş demektir.</li>
+  <li><b>Eğitim tamamlama oranındaki dalgalanma kadro değişimini yansıtabilir.</b> Standardın örneğinde
+  iki etik eğitimi arasındaki tamamlama farkının, artan kadro sayısından kaynaklanmış olabileceği
+  belirtilir.</li>
+  <li><b>Süre içinde tamamlanma ayrı bir göstergedir.</b> Genel tamamlama oranı yüksek olsa da,
+  öngörülen süre içinde tamamlanan pay düşükse süreç aksıyor demektir.</li>
+  <li><b>Dış bulgularda sonuç kadar eylem önemlidir.</b> Standardın örnek tablosunda her bulgu türü için
+  alınan eylem de kaydedilir: hat yöneticisine danışmanlık ve eğitim verilmesi, sözleşmelerin gözden
+  geçirilip güncellenmesi, yönetim eğitimi ve mentorluk programı başlatılması, ilgili alanlarda yoğun
+  iş sağlığı ve güvenliği eğitimi ya da "eylem yok".</li>
+  <li><b>İyileşme, olayın yokluğuyla da raporlanabilir:</b> son şikâyetten bu yana geçen gün sayısı ya da
+  belirlenen dönemdeki şikâyetsiz gün sayısı.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Standardın yayımlanmış tablolarında sayısal tutarsızlıklar vardır.</b> Şikâyet türlerinin
+  karşılaştırmalı tablosunda 2020'nin ilk altı ayına ait kategoriler toplandığında 22 çıkar ve toplam
+  satırı da 22'dir; ancak aynı dönemin içeride/dışarıda çözüm tablosunda toplam 32'dir (26 + 6).
+  Disiplin işlemleri hareket tablosunda da satır bazında sonuçlandırılan sayıların toplamı 77 verilirken
+  aritmetik toplam 25+5+10+13+14+10 = 77 olsa da açılış bakiyeleri ile bir önceki ayın kapanış bakiyeleri
+  birbirini takip etmez. Bu sayfadaki örnek tablo, kendi içinde tutarlı bir veri kümesiyle kurulmuştur.</li>
+  <li><b>Metrikler tanım bağımlıdır.</b> "Şikâyet" ve "disiplin işlemi" tanımı kurumdan kuruma
+  değiştiğinden, tanımlar açıklanmadan kurumlar arası kıyaslama anlamsızdır.</li>
+  <li><b>Sektör ve büyüklük yorumu doğrudan etkiler.</b> Standart bunu her metrik için ayrı ayrı
+  yineler; hedef uyum düzeyi ve kayda değer sapma eşiği bu yüzden kurumca belirlenir.</li>
+  <li><b>Sayım, ağırlık taşımaz.</b> Bir fiziksel saldırı vakası ile bir usul ihlali aynı hanede toplanır;
+  ciddiyet ayrımı yapmak isteyen kurum bunu kendi kategori tasarımıyla kurmalıdır.</li>
+  <li><b>Düşük sayı iyi iklim anlamına gelmeyebilir.</b> Bildirimin önündeki engeller ya da güven eksikliği
+  de sayıyı düşürür; standardın farkındalık artışı vurgusu bu ilişkinin tersten okunmasına da işaret
+  eder.</li>
+  <li><b>Metriklerin tümü dış kullanım için tasarlanmamıştır;</b> hangi metriğin dışarıya açıklanacağı
+  insan sermayesi raporlaması çerçevesine göre belirlenir.</li>
+  <li><b>Hareket hesabı, ölçüm noktasına duyarlıdır.</b> Standardın örneğinde ölçüm noktası ayın ilk
+  günüdür; başka bir nokta seçilirse seri kırılır ve tercihin tutarlı biçimde uygulanması gerekir.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>Yönetim kurulu ve üst yönetim</td>
+      <td>Beş metriğin üç–beş yıllık eğilimi, hedeften kayda değer sapmalar, dış bulgulardan doğan
+      eylemler</td>
+      <td>Uyum panosu, dönemsel</td></tr>
+    <tr><td>Diğer İK hizmet birimleri</td>
+      <td>Kategori kırılımları, içeride/dışarıda çözüm dağılımı, eğitim tamamlama ve süre uyumu</td>
+      <td>Analitik rapor, aylık ya da çeyreklik</td></tr>
+    <tr><td>Hat yönetimi ve (varsa) sendika temsilcileri</td>
+      <td>Kendi biriminin şikâyet ve disiplin sayıları, alınan eylemler</td>
+      <td>Birim raporu, aylık</td></tr>
+    <tr><td>Finans ve hukuk</td>
+      <td>Dış uyuşmazlıkların mali sonucu, uzlaşma tutarları, cezalar, sözleşme revizyonları</td>
+      <td>Vaka ve risk raporu, çeyreklik</td></tr>
+    <tr><td>Dış paydaş (yatırımcı, finansal analist, sendika, medya, sektör grupları)</td>
+      <td>Dışarıya açıklanmak üzere belirlenmiş toplu göstergeler ve yöntem notu</td>
+      <td>Faaliyet ve sürdürülebilirlik raporu, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> şikâyet ve disiplin işlemi tanımı, bir şikâyetin resmî
+sayıldığı an, kategori listesi, ölçüm noktası, hedef uyum düzeyi ve kayda değer sapma eşiği, karşılaştırma
+tabanı ve bağlam notu. Dış bulgularda kaynak, bulgu ve alınan eylem birlikte verilir; kurum bir tavsiyeyi
+kabul etmiyorsa gerekçesi açıkça yazılır.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması; uyum ve etik kümesinin tanımı oradan
+  gelir (2018 sürümünde 4.7.2).</li>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü; bu belgenin normatif atfı.</li>
+  <li><b>ISO/TS 24179</b> — iş sağlığı ve güvenliği metrikleri; kazaya bağlı uyuşmazlıklar bu kümeyle
+  birlikte okunur.</li>
+  <li><b>ISO/TS 30428</b> — beceri ve yetkinlik metrikleri; uyum eğitimi saatleri ve katılımı oradaki
+  metriklerle eşleştirilir.</li>
+  <li><b>ISO/TS 30421</b> — devir ve elde tutma metrikleri; haksız fesih uyuşmazlıkları ve ayrılışlar
+  arasındaki ilişki.</li>
+  <li><b>ISO 30415</b> — çeşitlilik ve kapsayıcılık; ayrımcılık ve taciz kategorileri bu çerçeveyle
+  birlikte değerlendirilir.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Bir şikâyet ne zaman "resmî" sayılır?</summary>
+<p>Standart iki tetikleyici verir: şikâyetin kaydedilmesi (raporlanması) ya da bir soruşturmanın
+başlaması. Bu andan itibaren şikâyet resmîdir ve analitik ile raporlama süreçlerine dâhil edilir.
+Tanımı kurum kendisi yapar, ancak ilgili tüm iç ve dış tarafların bu tanım hakkında bilgilendirilmesi
+ve eğitilmesi gerekir.</p></details>
+
+<details><summary>Sonuçlandırılan disiplin işlemini neden basitçe saymıyoruz?</summary>
+<p>Çünkü bir dönemde açılan dosyayla sonuçlanan dosya aynı değildir. Standart bu yüzden hareket hesabı
+kullanır: açılış bakiyesi + dönemde eklenen dosya − kapanış bakiyesi. Böylece önceki dönemlerden devreden
+ve bu dönemde kapanan dosyalar da sayıma girer, hâlâ açık olanlar girmez.</p></details>
+
+<details><summary>Aynı formülü her kategoriye uygulamak zorunda mıyım?</summary>
+<p>Standart hem toplu tabloyu hem de kategori bazlı uygulamayı ister: toplu örnekler tüm kategorileri
+birleştirir ve "bu formül her kategoriye de uygulanmalıdır" denir. Toplam sayı eğilimi gösterir, kategori
+kırılımı ise nedeni ve alınacak önlemi. Taciz artarken fiziksel saldırının düşmesi, toplam sabit kalsa
+bile bambaşka bir tablodur.</p></details>
+
+<details><summary>Eğitim tamamlama oranını nasıl tanımlamalıyım?</summary>
+<p>Her pozisyon için uyum ve etik eğitim paketine neyin girdiğini, tatmin edici tamamlamanın nasıl
+ölçüleceğini (değerlendirme yöntemi) ve hedef tamamlama yüzdesini önceden yazın. "Tamamlama",
+katılımcının eğitimi uygulamada yetkin bulunması demektir. Ayrıca uyuma ulaşma/sürdürme ve etik eğitimini
+bitirme süresi için de hedef konur ve raporlama bu hedeflere göre yapılır.</p></details>
+
+<details><summary>Dış taraflara havale edilen uyuşmazlık sayısı neyi gösteriyor?</summary>
+<p>İç uyuşmazlıkların dışarıda çözülmesinin gerekli hâle geldiği bir çalışma ortamını. Yetkili üçüncü
+taraflara havale edildiği raporlanan, işgücüyle ilgili uyuşmazlıkların sayısı örgüt ikliminin bir
+resmini verir. Kategoriler haksız fesih, mali uyuşmazlıklar, ücret ya da hak edişler, sözleşmesel
+uyuşmazlıklar, strese bağlı uyuşmazlıklar, kazaya bağlı uyuşmazlıklar ve davranış kurallarıdır.</p></details>
+
+<details><summary>Dış denetim bulgusunun tavsiyesini kabul etmezsek ne olur?</summary>
+<p>Standart bunu yasaklamaz ama şeffaflık ister: tavsiye kabul edilmiyorsa bulguya yanıt olarak net bir
+açıklamanın (kabul edilmediyse neden) rapora eklenmesi gerekir. Bulgular ayrıca sınıflandırılır,
+izlenir ve takip edilir; her bulgunun kaynağı, içeriği ve doğurduğu eylem birlikte kaydedilir.</p></details>
+
+<details><summary>Sayılar arttı; nasıl açıklamalıyım?</summary>
+<p>Önce nedenini araştırın, sonra bağlamı yazın. Standardın andığı bağlam etkenleri: her ölçüm
+noktasındaki tam zaman eşdeğeri, yeniden yapılanmalar, işgücünün eğitimine yönelik çalışmalar, olumlu ya
+da olumsuz kültürel değişimler, kuşak bakış açıları, raporlamada artışa yol açan toplumsal değişim ve
+farkındalık, pazar talebi, sendika görüşmeleri ile sektörel ya da bölgesel faaliyetler, sektör beklentisi
+ve ekonomik döngü. Farkındalık kampanyası yürüten bir kurumda sayının artması, sorunun büyümesinden çok
+bildirimin kolaylaşmasından kaynaklanıyor olabilir.</p></details>
+
+<footer>
+  ISO/TS 30423:2021 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın kendisi
+  telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30423_metrikler.py
+=====================
+ISO/TS 30423:2021 (Human resource management — Compliance and ethics metrics
+cluster) çerçevesindeki uyum ve etik metriklerinin Python karşılığı.
+
+Standart, ISO 30414'ün "uyum ve etik" kümesini beş metrik üzerinden tanımlar.
+Kümenin ayırt edici yanı, metriklerin çoğunun oran değil sayım olmasıdır ve
+üç ayrı hesap mantığı kullanılır. Modül dört bölüme ayrılmıştır:
+
+    1) Birikim  — yıl başından itibaren kümülatif toplam (şikâyetler, dış
+       taraflara havale edilen uyuşmazlıklar)
+    2) Hareket  — açılış bakiyesi + eklenen − kapanış bakiyesi (sonuçlandırılan
+       disiplin işlemleri; dış taraflarca sonuçlandırılan uyuşmazlıklar)
+    3) Oran     — uyum ve etik eğitimini tamamlayan çalışan oranı
+    4) Türetilmiş — TZE'ye oranlama, iç çözüm payı, kategori payı, eğilim
+
+Kullanım:
+    from iso30423_metrikler import kumulatif, sonuclandirilan
+    kumulatif([3, 5, 4, 4, 4, 2])        ->  [3, 8, 12, 16, 20, 22]
+    sonuclandirilan(25, 10, 10)          ->  25
+
+Doğrudan çalıştırıldığında (python3 iso30423_metrikler.py) standardın örnek
+tablolarına karşılık gelen hesaplar yeniden üretilir.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 30423:2021'e dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif korumalıdır.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Optional, Sequence
+
+__all__ = [
+    # birikim
+    "kumulatif", "yil_basindan_toplam",
+    # hareket
+    "sonuclandirilan", "dis_sonuclandirilan", "acik_dosya",
+    # oran
+    "egitim_tamamlama", "sure_icinde_tamamlama",
+    # türetilmiş
+    "tze_orani", "ic_cozum_orani", "kategori_payi", "yillik_degisim",
+    "hedef_sapmasi", "sikayetsiz_gun",
+    # tablo
+    "Donem", "UyumTablosu", "ornek_tablo", "metrik_denetimi",
+    # dağıtıcı
+    "hesapla", "METRIK_LISTESI",
+]
+
+
+def _s(x: float) -> str:
+    """Sayıları bilimsel gösterime kaçmadan, Türkçe biçimde yazar."""
+    x = float(x)
+    if x == int(x):
+        return f"{int(x):,}".replace(",", ".")
+    t = f"{x:,.2f}".rstrip("0")
+    if t.endswith("."):
+        t = t[:-1]
+    return t.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", ".")
+
+
+# ---------------------------------------------------------------------------
+# 1) Birikim mantığı: yıl başından itibaren kümülatif toplam
+# ---------------------------------------------------------------------------
+
+def kumulatif(aylik: Sequence[float]) -> list:
+    """Yıl başından itibaren biriken toplam serisi.
+
+    Hesap, mali yıl ve/veya yıllık bütçe döngüsüyle hizalanır. Hesaplama anı,
+    her ölçüm döneminin sonunda kayıtlı olan sayıdır (birinci ayın sonu,
+    ikinci çeyreğin sonu, yıl sonu toplamları gibi).
+
+    Aynı formül hem tüm kategorilerin toplamına hem de her kategoriye ayrı ayrı
+    uygulanır: taciz, ayrımcılık (doğrudan/dolaylı), saldırı (sözlü/fiziksel).
+    """
+    toplam, seri = 0.0, []
+    for deger in aylik:
+        toplam += deger
+        seri.append(toplam)
+    return seri
+
+
+def yil_basindan_toplam(aylik: Sequence[float]) -> float:
+    """Dönem sonundaki yıl başından itibaren toplam."""
+    return sum(aylik)
+
+
+# ---------------------------------------------------------------------------
+# 2) Hareket hesabı
+# ---------------------------------------------------------------------------
+
+def sonuclandirilan(acilis: float, eklenen: float, kapanis: float) -> float:
+    """Sonuçlandırılan disiplin işlemi sayısı.
+
+        Açılış bakiyesi + Dönemde eklenen disiplin dosyası − Kapanış bakiyesi
+
+    Bir dönemde açılan dosyayla sonuçlanan dosya aynı değildir; bu hesap,
+    önceki dönemlerden devreden ve bu dönemde kapanan dosyaları da yakalar.
+    Ölçüm noktası (örneğin ayın ilk günü) tutarlı biçimde uygulanmalıdır.
+    """
+    return acilis + eklenen - kapanis
+
+
+def dis_sonuclandirilan(acilis: float, havale: float, geri_cekilen: float,
+                        kapanis: float) -> float:
+    """Dış taraflarca sonuçlandırılan uyuşmazlık sayısı.
+
+        Açılış bakiyesi + Dönemde dış taraflara havale edilen
+        − Dönemde geri çekilen − Kapanış bakiyesi
+
+    Dış bulgular (denetim dâhil) bu hesapla izlenir; her bulgunun kaynağı,
+    içeriği ve doğurduğu eylem ayrıca kaydedilir.
+    """
+    return acilis + havale - geri_cekilen - kapanis
+
+
+def acik_dosya(acilis: float, eklenen: float, sonuclanan: float) -> float:
+    """Dönem sonunda açık kalan dosya sayısı (kapanış bakiyesi kontrolü)."""
+    return acilis + eklenen - sonuclanan
+
+
+# ---------------------------------------------------------------------------
+# 3) Oran mantığı
+# ---------------------------------------------------------------------------
+
+def egitim_tamamlama(tamamlayan: float, tamamlamasi_gereken: float) -> float:
+    """Uyum ve etik eğitimini tamamlayan çalışan oranı (%).
+
+        (Eğitimi tamamlayan toplam çalışan
+         ÷ Eğitimi tamamlaması gereken toplam çalışan) × 100
+
+    "Tamamlama", katılımcının kurumun tatmin edici tamamlama tanımına göre
+    eğitimi uygulamada yetkin bulunması demektir; salt katılım yeterli değildir.
+    """
+    return 100 * tamamlayan / tamamlamasi_gereken
+
+
+def sure_icinde_tamamlama(sure_icinde: float, tamamlamasi_gereken: float) -> float:
+    """Öngörülen süre içinde eğitimi tamamlayan çalışan oranı (%).
+
+    Standart, uyuma ulaşmak ya da onu sürdürmek ve etik eğitimini bitirmek için
+    geçen süreye de hedef konmasını ve raporlamanın bu hedefe göre yapılmasını
+    ister. Genel tamamlama yüksek olsa da süre içinde tamamlanan pay düşükse
+    süreç aksıyor demektir.
+    """
+    return 100 * sure_icinde / tamamlamasi_gereken
+
+
+# ---------------------------------------------------------------------------
+# 4) Türetilmiş ölçüler
+# ---------------------------------------------------------------------------
+
+def tze_orani(vaka: float, tze: float) -> float:
+    """Vaka sayısının tam zaman eşdeğerine oranı (%) — türetilmiş.
+
+    Standardın bağlam açıklaması: kurum ölçüm döneminde ikiye katlanmışsa,
+    sabit kalan bir uyuşmazlık sayısı TZE'ye oran olarak yarıya inmiş demektir.
+    """
+    return 100 * vaka / tze
+
+
+def ic_cozum_orani(ic_cozulen: float, toplam: float) -> float:
+    """İçeride çözülen şikâyetlerin payı (%).
+
+    Şikâyetler ayrıca içeride ve dışarıda çözülenler olarak sınıflandırılabilir;
+    içeride çözülen payın artması olumlu bir eğilim sayılır.
+    """
+    return 100 * ic_cozulen / toplam
+
+
+def kategori_payi(kategori: float, toplam: float) -> float:
+    """Bir kategorinin toplam içindeki payı (%) — türetilmiş."""
+    return 100 * kategori / toplam
+
+
+def yillik_degisim(cari: float, onceki: float) -> float:
+    """Bir metriğin önceki yıla göre yüzde değişimi — türetilmiş.
+
+    Raporlama, önceki dönemlerle cari dönemi ve geçmiş yıllarla cari yılı
+    karşılaştırır; tipik karşılaştırma aralığı üç ilâ beş yıldır.
+    """
+    return 100 * (cari - onceki) / onceki
+
+
+def hedef_sapmasi(gerceklesen: float, hedef: float) -> float:
+    """Hedeflenen uyum düzeyinden sapma (puan) — türetilmiş.
+
+    Her kurum, her metrik için hedef uyum düzeyini ve sapmanın hangi eşikten
+    sonra "kayda değer" sayılacağını kendisi belirler, belgeler ve paydaşlara
+    duyurur.
+    """
+    return gerceklesen - hedef
+
+
+def sikayetsiz_gun(donem_gun: float, sikayetli_gun: float) -> float:
+    """Belirlenen dönemdeki şikâyetsiz gün sayısı — türetilmiş.
+
+    Kurumlar iyileşmeyi olayın yokluğuyla da raporlayabilir: son şikâyetten bu
+    yana geçen gün ya da dönemdeki şikâyetsiz gün sayısı.
+    """
+    return donem_gun - sikayetli_gun
+
+
+# ---------------------------------------------------------------------------
+# 5) Dönem tablosu
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Donem:
+    """Tek bir ölçüm döneminin uyum verisi."""
+    ad: str
+    sikayet: float = 0
+    acilis: float = 0
+    eklenen: float = 0
+    kapanis: float = 0
+    havale: float = 0
+
+    @property
+    def sonuclanan(self) -> float:
+        return sonuclandirilan(self.acilis, self.eklenen, self.kapanis)
+
+
+@dataclass
+class UyumTablosu:
+    """Dönemlerden oluşan kümülatif uyum tablosu."""
+    donemler: list = field(default_factory=list)
+
+    def ekle(self, ad: str, sikayet: float = 0, acilis: float = 0,
+             eklenen: float = 0, kapanis: float = 0,
+             havale: float = 0) -> "UyumTablosu":
+        self.donemler.append(Donem(ad, sikayet, acilis, eklenen, kapanis, havale))
+        return self
+
+    def _topla(self, alan: str) -> float:
+        return sum(getattr(d, alan) for d in self.donemler)
+
+    def ozet(self, tze: float = 1000) -> dict:
+        sikayet = self._topla("sikayet")
+        havale = self._topla("havale")
+        sonuclanan = sum(d.sonuclanan for d in self.donemler)
+        return {
+            "donem_sayisi": len(self.donemler),
+            "toplam_sikayet": sikayet,
+            "toplam_havale": havale,
+            "toplam_sonuclanan": sonuclanan,
+            "eklenen_disiplin": self._topla("eklenen"),
+            "sikayet_tze_yuzde": round(tze_orani(sikayet, tze), 2),
+            "havale_tze_yuzde": round(tze_orani(havale, tze), 2),
+            "dis_havale_payi_yuzde": round(kategori_payi(havale, sikayet), 1)
+            if sikayet else None,
+            "acik_kalan": round(acik_dosya(
+                self.donemler[0].acilis, self._topla("eklenen"), sonuclanan), 0)
+            if self.donemler else None,
+        }
+
+    def tablo(self) -> list:
+        seri = kumulatif([d.sikayet for d in self.donemler])
+        return [[d.ad, d.sikayet, d.acilis, d.eklenen, d.kapanis, d.havale,
+                 seri[i], d.sonuclanan]
+                for i, d in enumerate(self.donemler)]
+
+
+def ornek_tablo() -> UyumTablosu:
+    """Altı aylık örnek tablo (1.000 kişilik bir kurum için).
+
+    Şikâyet serisi standardın kümülatif örneğiyle aynı büyüklüktedir:
+    3, 5, 4, 4, 4, 2 → yıl başından itibaren 22. Disiplin işlemlerinde açılış
+    bakiyeleri bir önceki ayın kapanış bakiyesini takip edecek biçimde
+    kurulmuştur; dış havale serisi 1, 2, 2, 4, 1, 2 → 12'dir.
+    """
+    t = UyumTablosu()
+    t.ekle("Ocak", sikayet=3, acilis=25, eklenen=10, kapanis=22, havale=1)
+    t.ekle("Şubat", sikayet=5, acilis=22, eklenen=10, kapanis=20, havale=2)
+    t.ekle("Mart", sikayet=4, acilis=20, eklenen=15, kapanis=25, havale=2)
+    t.ekle("Nisan", sikayet=4, acilis=25, eklenen=8, kapanis=20, havale=4)
+    t.ekle("Mayıs", sikayet=4, acilis=20, eklenen=9, kapanis=15, havale=1)
+    t.ekle("Haziran", sikayet=2, acilis=15, eklenen=12, kapanis=17, havale=2)
+    return t
+
+
+def metrik_denetimi(sikayet_tanimi_yazili: bool = False,
+                    disiplin_tanimi_yazili: bool = False,
+                    kayit_sureci_var: bool = False,
+                    hedef_uyum_belirlendi: bool = False,
+                    kayda_deger_sapma_tanimli: bool = False,
+                    kategori_bazli_raporlama: bool = False,
+                    bulgu_eylem_kaydi_var: bool = False,
+                    baglam_notu_var: bool = False) -> list:
+    """Bir uyum ve etik raporunun eksiklerini listeler.
+
+    Standardın mantığı: bu kümedeki sayılar, tanımlar ve hedefler yazılı
+    olmadan ne kurum içinde ne de kurumlar arasında yorumlanabilir.
+    """
+    uyarilar = []
+    if not sikayet_tanimi_yazili:
+        uyarilar.append("'Şikâyet' tanımı yazılı değil: bir şikâyetin hangi "
+                        "anda resmî sayıldığı (kayıt ya da soruşturmanın "
+                        "başlaması) belirtilmeli.")
+    if not disiplin_tanimi_yazili:
+        uyarilar.append("'Disiplin işlemi' tanımı yazılı değil ve ilgili iç ve "
+                        "dış taraflar bilgilendirilmemiş.")
+    if not kayit_sureci_var:
+        uyarilar.append("Tüm resmî şikâyetleri ve disiplin işlemlerini yakalayan "
+                        "bir kayıt ve yönetim süreci yok.")
+    if not hedef_uyum_belirlendi:
+        uyarilar.append("Her metrik için hedeflenen uyum düzeyi belirlenmemiş, "
+                        "belgelenmemiş ve paydaşlara duyurulmamış.")
+    if not kayda_deger_sapma_tanimli:
+        uyarilar.append("Hedeften sapmanın hangi eşikten sonra 'kayda değer' "
+                        "sayılacağı tanımlanmamış.")
+    if not kategori_bazli_raporlama:
+        uyarilar.append("Formül yalnızca toplama uygulanmış: her kategoriye "
+                        "(taciz, ayrımcılık, saldırı vb.) ayrı ayrı da "
+                        "uygulanmalı.")
+    if not bulgu_eylem_kaydi_var:
+        uyarilar.append("Dış bulgular için kaynak, bulgu ve alınan eylem kaydı "
+                        "yok; kabul edilmeyen tavsiyeler için gerekçe de "
+                        "yazılmalı.")
+    if not baglam_notu_var:
+        uyarilar.append("Bağlam notu yok: kadro değişimi, farkındalık "
+                        "kampanyaları, yeniden yapılanma ve ekonomik koşullar "
+                        "sayının yanına yazılmalı.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 6) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "kumulatif", "sonuclandirilan", "dis_sonuclandirilan", "egitim_tamamlama",
+    "sure_icinde", "tze_orani", "ic_cozum", "kategori_payi", "yillik_degisim",
+    "sikayetsiz_gun",
+]
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "kumulatif":
+        aylik = [float(x) for x in g["aylik"]]
+        seri = kumulatif(aylik)
+        d = seri[-1]
+        return {"deger": d, "ondalik": 0, "birim": "vaka (yıl başından itibaren)",
+                "ifade": " + ".join(_s(x) for x in aylik),
+                "ayrinti": [["Dönem sayısı", len(aylik)],
+                            ["Dönem ortalaması", round(d / len(aylik), 2)],
+                            ["En yüksek dönem", max(aylik)],
+                            ["Son dönem", aylik[-1]],
+                            ["TZE'ye oranı (%)", round(tze_orani(d, g["tze"]), 2)]]}
+
+    if metrik == "sonuclandirilan":
+        d = sonuclandirilan(g["acilis"], g["eklenen"], g["kapanis"])
+        return {"deger": d, "ondalik": 0, "birim": "sonuçlandırılan işlem",
+                "ifade": (f"{_s(g['acilis'])} + {_s(g['eklenen'])} − "
+                          f"{_s(g['kapanis'])}"),
+                "ayrinti": [["Dönem sonunda açık kalan", g["kapanis"]],
+                            ["Dönemde işleme giren toplam",
+                             g["acilis"] + g["eklenen"]],
+                            ["Sonuçlandırma oranı (%)",
+                             round(100 * d / (g["acilis"] + g["eklenen"]), 1)],
+                            ["TZE'ye oranı (%)", round(tze_orani(d, g["tze"]), 2)]]}
+
+    if metrik == "dis_sonuclandirilan":
+        d = dis_sonuclandirilan(g["acilis"], g["havale"], g["geri_cekilen"],
+                                g["kapanis"])
+        return {"deger": d, "ondalik": 0, "birim": "sonuçlandırılan uyuşmazlık",
+                "ifade": (f"{_s(g['acilis'])} + {_s(g['havale'])} − "
+                          f"{_s(g['geri_cekilen'])} − {_s(g['kapanis'])}"),
+                "ayrinti": [["Dönem sonunda açık kalan", g["kapanis"]],
+                            ["Geri çekilen", g["geri_cekilen"]],
+                            ["Geri çekilme oranı (%)",
+                             round(100 * g["geri_cekilen"] / g["havale"], 1)],
+                            ["TZE'ye oranı (%)", round(tze_orani(d, g["tze"]), 2)]]}
+
+    if metrik == "egitim_tamamlama":
+        d = egitim_tamamlama(g["tamamlayan"], g["tamamlamasi_gereken"])
+        sure = sure_icinde_tamamlama(g["sure_icinde"], g["tamamlamasi_gereken"])
+        return {"deger": d, "ondalik": 1, "birim": "% tamamlama",
+                "ifade": (f"({_s(g['tamamlayan'])} ÷ "
+                          f"{_s(g['tamamlamasi_gereken'])}) × 100"),
+                "ayrinti": [["Süre içinde tamamlama (%)", round(sure, 1)],
+                            ["Süre hedefini kaçıran (kişi)",
+                             g["tamamlayan"] - g["sure_icinde"]],
+                            ["Hiç tamamlamayan (kişi)",
+                             g["tamamlamasi_gereken"] - g["tamamlayan"]],
+                            ["Hedeften sapma (puan)",
+                             round(hedef_sapmasi(d, g["hedef"]), 1)]]}
+
+    if metrik == "sure_icinde":
+        d = sure_icinde_tamamlama(g["sure_icinde"], g["tamamlamasi_gereken"])
+        genel = egitim_tamamlama(g["tamamlayan"], g["tamamlamasi_gereken"])
+        return {"deger": d, "ondalik": 1, "birim": "% süre içinde tamamlama",
+                "ifade": (f"({_s(g['sure_icinde'])} ÷ "
+                          f"{_s(g['tamamlamasi_gereken'])}) × 100"),
+                "ayrinti": [["Genel tamamlama oranı (%)", round(genel, 1)],
+                            ["İki oran arasındaki fark (puan)",
+                             round(genel - d, 1)],
+                            ["Süre hedefini kaçıran (kişi)",
+                             g["tamamlayan"] - g["sure_icinde"]]]}
+
+    if metrik == "tze_orani":
+        d = tze_orani(g["vaka"], g["tze"])
+        onceki = tze_orani(g["onceki_vaka"], g["onceki_tze"])
+        return {"deger": d, "ondalik": 2, "birim": "% TZE başına vaka",
+                "ifade": f"({_s(g['vaka'])} ÷ {_s(g['tze'])}) × 100",
+                "ayrinti": [["Önceki dönem oranı (%)", round(onceki, 2)],
+                            ["Oran değişimi (puan)", round(d - onceki, 2)],
+                            ["Mutlak vaka değişimi", g["vaka"] - g["onceki_vaka"]],
+                            ["Kadro değişimi (%)",
+                             round(yillik_degisim(g["tze"], g["onceki_tze"]), 1)]]}
+
+    if metrik == "ic_cozum":
+        d = ic_cozum_orani(g["ic_cozulen"], g["toplam"])
+        return {"deger": d, "ondalik": 1, "birim": "% içeride çözülen",
+                "ifade": f"({_s(g['ic_cozulen'])} ÷ {_s(g['toplam'])}) × 100",
+                "ayrinti": [["Dışarıda çözülen", g["toplam"] - g["ic_cozulen"]],
+                            ["Dış çözüm oranı (%)", round(100 - d, 1)],
+                            ["Önceki döneme fark (puan)",
+                             round(d - g["onceki_oran"], 1)]]}
+
+    if metrik == "kategori_payi":
+        d = kategori_payi(g["kategori"], g["toplam"])
+        return {"deger": d, "ondalik": 1, "birim": "% toplam içinde",
+                "ifade": f"({_s(g['kategori'])} ÷ {_s(g['toplam'])}) × 100",
+                "ayrinti": [["Diğer kategoriler (vaka)",
+                             g["toplam"] - g["kategori"]],
+                            ["Kategorideki yıllık değişim (%)",
+                             round(yillik_degisim(g["kategori"],
+                                                  g["onceki_kategori"]), 1)],
+                            ["Önceki dönem payı (%)",
+                             round(kategori_payi(g["onceki_kategori"],
+                                                 g["onceki_toplam"]), 1)]]}
+
+    if metrik == "yillik_degisim":
+        d = yillik_degisim(g["cari"], g["onceki"])
+        return {"deger": d, "ondalik": 1, "birim": "% yıllık değişim",
+                "ifade": (f"(({_s(g['cari'])} − {_s(g['onceki'])}) ÷ "
+                          f"{_s(g['onceki'])}) × 100"),
+                "ayrinti": [["Mutlak değişim", g["cari"] - g["onceki"]],
+                            ["Cari dönem TZE oranı (%)",
+                             round(tze_orani(g["cari"], g["tze"]), 2)],
+                            ["Önceki dönem TZE oranı (%)",
+                             round(tze_orani(g["onceki"], g["onceki_tze"]), 2)]]}
+
+    if metrik == "sikayetsiz_gun":
+        d = sikayetsiz_gun(g["donem_gun"], g["sikayetli_gun"])
+        return {"deger": d, "ondalik": 0, "birim": "şikâyetsiz gün",
+                "ifade": f"{_s(g['donem_gun'])} − {_s(g['sikayetli_gun'])}",
+                "ayrinti": [["Dönemdeki şikâyetli gün", g["sikayetli_gun"]],
+                            ["Şikâyetsiz gün payı (%)",
+                             round(100 * d / g["donem_gun"], 1)],
+                            ["Son şikâyetten bu yana geçen gün",
+                             g["son_sikayetten_gun"]]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 7) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _demo() -> None:
+    cizgi = "-" * 78
+    print("ISO/TS 30423 — doğrulama çıktısı")
+    print(cizgi)
+
+    print("Şikâyetler: yıl başından itibaren birikim")
+    aylar = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran"]
+    aylik = [3, 5, 4, 4, 4, 2]
+    seri = kumulatif(aylik)
+    print(f"{'Ay':<10}{'Şikâyet':>9}{'Kümülatif':>12}")
+    for ad, a, k in zip(aylar, aylik, seri):
+        print(f"{ad:<10}{a:>9.0f}{k:>12.0f}")
+    print(f"{'TOPLAM':<10}{sum(aylik):>9.0f}")
+    print(cizgi)
+
+    print("Şikâyet kategorileri (dört yıllık karşılaştırma)")
+    kategoriler = [
+        ("Taciz - cinsel", [2, 5, 7, 10]),
+        ("Taciz", [2, 7, 10, 15]),
+        ("Ayrımcılık - doğrudan", [4, 10, 12, 15]),
+        ("Ayrımcılık - dolaylı", [7, 5, 2, 0]),
+        ("Saldırı - sözlü", [7, 4, 2, 0]),
+        ("Saldırı - fiziksel", [0, 1, 5, 7]),
+    ]
+    print(f"{'Kategori':<24}{'2026':>7}{'2025':>7}{'2024':>7}{'2023':>7}{'Pay %':>8}")
+    toplamlar = [sum(k[1][i] for k in kategoriler) for i in range(4)]
+    for ad, degerler in kategoriler:
+        pay = kategori_payi(degerler[0], toplamlar[0]) if toplamlar[0] else 0
+        print(f"{ad:<24}" + "".join(f"{d:>7.0f}" for d in degerler) + f"{pay:>8.1f}")
+    print(f"{'TOPLAM':<24}" + "".join(f"{t:>7.0f}" for t in toplamlar))
+    print(cizgi)
+
+    print("İçeride mi dışarıda mı çözüldü?")
+    for yil, ic, dis in [("2026", 16, 6), ("2025", 20, 12),
+                         ("2024", 10, 28), ("2023", 7, 37)]:
+        print(f"  {yil}: içeride {ic:>3}, dışarıda {dis:>3} → "
+              f"iç çözüm oranı {ic_cozum_orani(ic, ic + dis):.1f} %")
+    print(cizgi)
+
+    print("Disiplin işlemleri: hareket hesabı")
+    t = ornek_tablo()
+    print(f"{'Ay':<10}{'Açılış':>8}{'Eklenen':>9}{'Kapanış':>9}"
+          f"{'Sonuçlanan':>12}{'Havale':>8}{'Küm. şikâyet':>14}")
+    for satir in t.tablo():
+        print(f"{satir[0]:<10}{satir[2]:>8.0f}{satir[3]:>9.0f}{satir[4]:>9.0f}"
+              f"{satir[7]:>12.0f}{satir[5]:>8.0f}{satir[6]:>14.0f}")
+    print(cizgi)
+    for k, v in t.ozet().items():
+        print(f"{k:<24}: {v}")
+    print(cizgi)
+
+    print("Dış taraflarca sonuçlandırılan uyuşmazlıklar")
+    print(f"  Açılış 20, havale 3, geri çekilen 0, kapanış 16 → "
+          f"{dis_sonuclandirilan(20, 3, 0, 16):.0f}")
+    print(f"  Açılış 16, havale 5, geri çekilen 1, kapanış 15 → "
+          f"{dis_sonuclandirilan(16, 5, 1, 15):.0f}")
+    print(cizgi)
+
+    print("Uyum ve etik eğitimi tamamlama (dört yıllık karşılaştırma)")
+    egitimler = [("Uyum 1", [90, 85, 85, 80]), ("Uyum 2", [87, 87, 80, 70]),
+                 ("Etik 1", [100, 90, 85, 80]), ("Etik 2", [80, 75, 70, 70])]
+    print(f"{'Eğitim':<10}{'2026':>7}{'2025':>7}{'2024':>7}{'2023':>7}"
+          f"{'Değişim %':>12}")
+    for ad, degerler in egitimler:
+        deg = yillik_degisim(degerler[0], degerler[1])
+        print(f"{ad:<10}" + "".join(f"{d:>7.0f}" for d in degerler) + f"{deg:>12.1f}")
+    print(f"  900/1000 çalışan tamamladı → {egitim_tamamlama(900, 1000):.1f} %")
+    print(f"  Bunun 780'i süre içinde   → {sure_icinde_tamamlama(780, 1000):.1f} %")
+    print(cizgi)
+
+    print("Bağlam: kadro büyürken sabit kalan vaka sayısı")
+    print(f"  2023: 2 kaza uyuşmazlığı / 500 TZE → {tze_orani(2, 500):.2f} %")
+    print(f"  2026: 2 kaza uyuşmazlığı / 1000 TZE → {tze_orani(2, 1000):.2f} %")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("sonuclandirilan", acilis=25, eklenen=10, kapanis=22, tze=1000))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir ön koşulu sağlamayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   u: kullanıcılar (hr İK hizmet birimleri / exec yönetim kurulu ve üst yönetim /
+      line hat yönetimi ve sendika temsilcisi / fin finans ve hukuk /
+      ext dış paydaş)
+   st: konu (sikayet, disiplin, egitim, dis, altyapi, baglam)
+   r: raporlama (ic, dis)
+   t: aile (v iç uyuşmazlık / e eğitim ve dış süreçler / o altyapı, bağlam, öngörü)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   k: ek etiket (ctx bağlam etkeni, pre öngörü etkeni, onk ön koşul,
+      tur türetilmiş, kat kategori)
+   ========================================================= */
+var METRICS = [
+ {g:"Açılan şikâyetler", t:"v", items:[
+  {n:"Açılan şikâyetlerin sayısı ve türü", st:"sikayet", r:["ic","dis"], iso:1, calc:"kumulatif", d:"Yıl başından itibaren biriken toplam; hesap mali yıl ve/veya bütçe döngüsüyle hizalanır", u:["hr","exec","line","fin","ext"]},
+  {n:"Şikâyetin resmî sayıldığı an", st:"sikayet", r:["ic"], k:"onk", d:"Şikâyet kaydedildiği ya da soruşturması başladığı anda resmî sayılır", u:["hr","line"]},
+  {n:"Kategori: taciz", st:"sikayet", r:["ic","dis"], k:"kat", d:"Standardın andığı örnek sınıflandırmalardan biri", u:["hr","exec","line"]},
+  {n:"Kategori: ayrımcılık — doğrudan", st:"sikayet", r:["ic","dis"], k:"kat", d:"Kişiye ya da gruba doğrudan yönelik ayrımcılık", u:["hr","exec","line"]},
+  {n:"Kategori: ayrımcılık — dolaylı", st:"sikayet", r:["ic","dis"], k:"kat", d:"Bir politikanın yorumu üzerinden ortaya çıkan ayrımcılık", u:["hr","exec","line","fin"]},
+  {n:"Kategori: saldırı — sözlü", st:"sikayet", r:["ic","dis"], k:"kat", d:"Standardın andığı örnek sınıflandırmalardan biri", u:["hr","exec","line"]},
+  {n:"Kategori: saldırı — fiziksel", st:"sikayet", r:["ic","dis"], k:"kat", d:"Standardın andığı örnek sınıflandırmalardan biri", u:["hr","exec","line","fin"]},
+  {n:"İçeride çözülen şikâyetler", st:"sikayet", r:["ic"], calc:"ic_cozum", d:"İçeride çözülen payın artması olumlu eğilim sayılır", u:["hr","exec","line"]},
+  {n:"Dışarıda çözülen şikâyetler", st:"sikayet", r:["ic","dis"], d:"İç ve dış çözüm ayrımının ikinci bileşeni", u:["hr","exec","fin","ext"]},
+  {n:"Şikâyetsiz gün sayısı", st:"sikayet", r:["ic"], k:"tur", calc:"sikayetsiz_gun", d:"İyileşme, olayın yokluğuyla da raporlanabilir: son şikâyetten bu yana geçen gün", u:["hr","exec","line"]},
+  {n:"Kategori bazlı formül uygulaması", st:"sikayet", r:["ic"], k:"onk", d:"Toplu formül her kategoriye ayrı ayrı da uygulanır", u:["hr","fin"]},
+  {n:"Kategorinin toplam içindeki payı", st:"sikayet", r:["ic"], k:"tur", calc:"kategori_payi", d:"Toplam sabit kalsa da karma değişebilir", u:["hr","exec"]}
+ ]},
+ {g:"Sonuçlandırılan disiplin işlemleri", t:"v", items:[
+  {n:"Sonuçlandırılan disiplin işlemlerinin sayısı ve türü", st:"disiplin", r:["ic"], iso:1, calc:"sonuclandirilan", d:"Açılış bakiyesi + dönemde eklenen − kapanış bakiyesi", u:["hr","exec","line","fin"]},
+  {n:"Disiplin işleminin tanımı", st:"disiplin", r:["ic"], k:"onk", d:"Beklenen ve duyurulmuş işyeri kurallarını karşılamayan işle ilgili davranışın ele alınma süreci", u:["hr","line"]},
+  {n:"Açılış ve kapanış bakiyesi", st:"disiplin", r:["ic"], d:"Hareket hesabının iki ucu; dönem sonunda açık duran dosya sayısı", u:["hr","fin"]},
+  {n:"Dönemde eklenen dosya sayısı", st:"disiplin", r:["ic"], d:"Hareket hesabının orta terimi", u:["hr","line"]},
+  {n:"Kategori: bireysel performans", st:"disiplin", r:["ic"], k:"kat", d:"Disiplin işlemlerine özgü ek sınıflandırma", u:["hr","line"]},
+  {n:"Kategori: kurum değer ve etiğine zayıf uyum", st:"disiplin", r:["ic"], k:"kat", d:"Disiplin işlemlerine özgü ek sınıflandırma", u:["hr","exec","line"]},
+  {n:"Kategori: düşük iş performansı", st:"disiplin", r:["ic"], k:"kat", d:"Disiplin işlemlerine özgü ek sınıflandırma", u:["hr","line"]},
+  {n:"Kategori: mevzuat ya da politikaya uymama", st:"disiplin", r:["ic"], k:"kat", d:"Disiplin işlemlerine özgü ek sınıflandırma", u:["hr","fin","exec"]},
+  {n:"Ölçüm noktasının tutarlılığı", st:"disiplin", r:["ic"], k:"onk", d:"Başka bir ölçüm noktası seçilirse tercih tutarlı uygulanır ve açıkça yazılır", u:["hr","fin"]},
+  {n:"Sonuçlandırma oranı", st:"disiplin", r:["ic"], k:"tur", d:"Sonuçlanan dosyanın, işleme giren toplam dosyaya oranı", u:["hr","exec"]}
+ ]},
+ {g:"Uyum ve etik eğitimi", t:"e", items:[
+  {n:"Uyum ve etik eğitimini tamamlayan çalışan oranı", st:"egitim", r:["ic","dis"], iso:1, calc:"egitim_tamamlama", d:"Büyük kurumlar için iç ve dış, KOBİ'ler için iç ve dış raporlama önerilir", u:["hr","exec","line","fin","ext"]},
+  {n:"Öngörülen süre içinde tamamlama oranı", st:"egitim", r:["ic"], calc:"sure_icinde", d:"Uyuma ulaşma/sürdürme ve etik eğitimini bitirme süresine de hedef konur", u:["hr","exec","line"]},
+  {n:"Eğitim paketinin pozisyona göre tanımı", st:"egitim", r:["ic"], k:"onk", d:"Her pozisyon için uyum ve etik eğitim paketine neyin girdiği yazılır", u:["hr","line"]},
+  {n:"Tatmin edici tamamlamanın ölçülmesi", st:"egitim", r:["ic"], k:"onk", d:"Değerlendirme yöntemi; katılımcının uygulamada yetkin bulunması gerekir", u:["hr"]},
+  {n:"Hedef tamamlama yüzdesi", st:"egitim", r:["ic","dis"], k:"onk", d:"Kurum kendi hedefini belirler ve bu hedefe göre raporlar", u:["hr","exec","ext"]},
+  {n:"Eğitim programlarının belgelenmesi", st:"egitim", r:["ic"], k:"onk", d:"Tüm uyum ve etik eğitim programları belgelenir", u:["hr"]},
+  {n:"Tamamlamanın kayıt ve yönetim süreci", st:"egitim", r:["ic"], k:"onk", d:"Tüm tamamlamaları yakalayacak süreç ve prosedür kurulur", u:["hr"]},
+  {n:"Alt kırılımlar (bölüm, hizmet hattı, eğitim türü, saat)", st:"egitim", r:["ic"], d:"Kurumun büyüklük ve karmaşıklığına göre tablo genişletilebilir", u:["hr","exec","line"]},
+  {n:"İç ve dış tarafların eğitilmesi", st:"egitim", r:["ic"], k:"onk", d:"İlgili tüm iç ve dış taraflar tanımlı eğitim paketi konusunda bilgilendirilir", u:["hr","line","ext"]}
+ ]},
+ {g:"Dış uyuşmazlıklar ve dış bulgular", t:"e", items:[
+  {n:"Dış taraflara havale edilen uyuşmazlıklar", st:"dis", r:["ic","dis"], iso:1, calc:"kumulatif", d:"Yetkili üçüncü taraflara havale edilen, işgücüyle ilgili uyuşmazlıkların kümülatif sayısı", u:["hr","exec","fin","ext"]},
+  {n:"Dış (denetim dâhil) bulguların sayısı, türü ve kaynağı", st:"dis", r:["ic","dis"], iso:1, calc:"dis_sonuclandirilan", d:"Açılış + havale − geri çekilen − kapanış; bulgular sınıflandırılır ve izlenir", u:["hr","exec","fin","ext"]},
+  {n:"Bulgulardan doğan eylemler", st:"dis", r:["ic","dis"], d:"Danışmanlık ve eğitim, sözleşme revizyonu, mentorluk programı, İSG eğitimi ya da 'eylem yok'", u:["hr","exec","line","fin"]},
+  {n:"Kabul edilmeyen tavsiye için gerekçeli yanıt", st:"dis", r:["ic","dis"], k:"onk", d:"Tavsiye benimsenmiyorsa bulguya yanıt olarak net bir açıklama eklenir", u:["hr","exec","fin","ext"]},
+  {n:"Kategori: haksız fesih", st:"dis", r:["ic","dis"], k:"kat", d:"Dış uyuşmazlık sınıflandırmalarından biri", u:["hr","fin","ext"]},
+  {n:"Kategori: mali uyuşmazlıklar", st:"dis", r:["ic","dis"], k:"kat", d:"Dış uyuşmazlık sınıflandırmalarından biri", u:["fin","exec","ext"]},
+  {n:"Kategori: ücret ya da hak edişler", st:"dis", r:["ic","dis"], k:"kat", d:"Dış uyuşmazlık sınıflandırmalarından biri", u:["hr","fin","line"]},
+  {n:"Kategori: sözleşmesel uyuşmazlıklar", st:"dis", r:["ic","dis"], k:"kat", d:"Dış uyuşmazlık sınıflandırmalarından biri", u:["hr","fin"]},
+  {n:"Kategori: strese bağlı uyuşmazlıklar", st:"dis", r:["ic","dis"], k:"kat", d:"Farkındalık kampanyalarıyla birlikte artabilen kategori", u:["hr","exec","line"]},
+  {n:"Kategori: kazaya bağlı uyuşmazlıklar", st:"dis", r:["ic","dis"], k:"kat", d:"Kadro büyürken sabit kalırsa TZE oranı düşer", u:["hr","fin","line"]},
+  {n:"Kategori: davranış kuralları", st:"dis", r:["ic","dis"], k:"kat", d:"Dış uyuşmazlık sınıflandırmalarından biri", u:["hr","exec","ext"]},
+  {n:"Bulgu kaynağı: tahkim kurulu", st:"dis", r:["ic"], d:"Standardın örnek tablosunda en sık görülen kaynak", u:["hr","fin"]},
+  {n:"Bulgu kaynağı: mahkeme", st:"dis", r:["ic","dis"], d:"Maliyeti en yüksek olabilen kaynak", u:["fin","exec","ext"]},
+  {n:"Bulgu kaynağı: kamu kurumu", st:"dis", r:["ic","dis"], d:"Uyumsuzlukta idari para cezası doğurabilir", u:["fin","exec","ext"]},
+  {n:"Dönemde geri çekilen uyuşmazlıklar", st:"dis", r:["ic"], d:"Hareket hesabında düşülen kalem", u:["hr","fin"]},
+  {n:"İK işlevinin uzlaşmadaki rolü", st:"dis", r:["ic"], d:"İK, uyum güçlükleriyle yüzleşmede ve genel uzlaşma çabasında belirgin rol oynar", u:["hr","exec"]}
+ ]},
+ {g:"Tanım ve altyapı", t:"o", items:[
+  {n:"Şikâyet tanımının yazılı olması", st:"altyapi", r:["ic"], k:"onk", d:"Kurum tanımı yapar ve ilgili tüm iç ve dış tarafları bilgilendirir", u:["hr","exec","line","fin"]},
+  {n:"Kayıt ve yönetim süreci", st:"altyapi", r:["ic"], k:"onk", d:"Küçük kurumlarda basit çalışma sayfaları, büyük kurumlarda gelişmiş teknoloji çözümleri", u:["hr","fin"]},
+  {n:"Hedeflenen uyum düzeyi", st:"altyapi", r:["ic","dis"], k:"onk", d:"Her metrik için belirlenir, belgelenir, güncel tutulur ve paydaşlara duyurulur", u:["hr","exec","fin","ext"]},
+  {n:"'Kayda değer sapma' eşiği", st:"altyapi", r:["ic"], k:"onk", d:"Hedeften sapmanın hangi noktadan sonra anlamlı sayılacağı", u:["hr","exec","fin"]},
+  {n:"Sektör ve kurum büyüklüğünün yorumdaki rolü", st:"altyapi", r:["ic","dis"], k:"onk", d:"Metriklerin yorumunu doğrudan etkiler", u:["exec","fin","ext"]},
+  {n:"Mali yıl ve bütçe döngüsüyle hizalama", st:"altyapi", r:["ic"], k:"onk", d:"Hesabın zaman çerçevesi", u:["hr","fin"]},
+  {n:"Üç–beş yıllık karşılaştırma serisi", st:"altyapi", r:["ic","dis"], d:"Eğilimin derinlemesine çözümlenmesini ve hedef koymayı sağlar", u:["hr","exec","fin","ext"]},
+  {n:"Hedeften sapmanın raporlanması", st:"altyapi", r:["ic"], k:"tur", d:"Gerçekleşen ile hedef arasındaki puan farkı", u:["hr","exec"]}
+ ]},
+ {g:"Bağlam ve öngörü etkenleri", t:"o", items:[
+  {n:"Ölçüm noktasındaki tam zaman eşdeğeri", st:"baglam", r:["ic"], k:"ctx", calc:"tze_orani", d:"Kadro büyümesi ya da küçülmesi metriğin anlamını değiştirebilir", u:["hr","exec","fin"]},
+  {n:"Yeniden yapılanmalar", st:"baglam", r:["ic"], k:"ctx", d:"Kurumun yürüttüğü mevcut faaliyetlerden biri", u:["hr","exec"]},
+  {n:"İşgücünün eğitimine yönelik çalışmalar", st:"baglam", r:["ic"], k:"ctx", d:"Farkındalığı ve dolayısıyla bildirimi artırabilir", u:["hr","line"]},
+  {n:"Kültürel değişim (olumlu ya da olumsuz)", st:"baglam", r:["ic"], k:"ctx", d:"Bildirim davranışını doğrudan etkiler", u:["hr","exec"]},
+  {n:"Kuşak bakış açıları", st:"baglam", r:["ic"], k:"ctx", d:"Neyin şikâyet konusu sayıldığına dair algı farkları", u:["hr","line"]},
+  {n:"Raporlamada artışa yol açan toplumsal değişim ve farkındalık", st:"baglam", r:["ic","dis"], k:"ctx", d:"Sayının artması sorunun büyümesi değil, bildirimin kolaylaşması olabilir", u:["hr","exec","ext"]},
+  {n:"Pazar talebi", st:"baglam", r:["ic"], k:"ctx", d:"Standardın andığı bağlam etkenlerinden biri", u:["exec","fin"]},
+  {n:"Sendika görüşmeleri, sektörel ve bölgesel faaliyetler", st:"baglam", r:["ic","dis"], k:"ctx", d:"Uyuşmazlık sayısını dönemsel olarak yükseltebilir", u:["hr","exec","line","ext"]},
+  {n:"Sektör beklentisi", st:"baglam", r:["ic","dis"], k:"ctx", d:"Kıyaslamanın anlamlı olduğu aralığı belirler", u:["exec","fin","ext"]},
+  {n:"Ekonomik döngü (daralma ya da genişleme)", st:"baglam", r:["ic","dis"], k:"ctx", d:"Hem şikâyet hem uyuşmazlık sayısını etkiler", u:["exec","fin","ext"]},
+  {n:"Planlanan yapısal ve kadro değişiklikleri", st:"baglam", r:["ic"], k:"pre", d:"Bilinen ve beklenen olaylar üzerinden öngörü", u:["hr","exec","fin"]},
+  {n:"Yaklaşan sendika görüşmeleri", st:"baglam", r:["ic"], k:"pre", d:"Öngörü etkenlerinde ayrıca anılan kalem", u:["hr","exec","line"]},
+  {n:"İşgücünün farkındalığı ve eğitimi", st:"baglam", r:["ic"], k:"pre", d:"Gelecek dönem bildirim düzeyinin öncü göstergesi", u:["hr","line"]},
+  {n:"Siyasi, sosyal, çevresel ve yasal dinamikler", st:"baglam", r:["ic","dis"], k:"pre", d:"Mevzuat ve toplumsal beklenti kaynaklı değişim", u:["exec","fin","ext"]},
+  {n:"Sektörel etkiler", st:"baglam", r:["ic","dis"], k:"pre", d:"Sektöre özgü uyum baskısı ve denetim yoğunluğu", u:["exec","fin","ext"]},
+  {n:"Metriğin yıllık yüzde değişimi", st:"baglam", r:["ic","dis"], k:"tur", calc:"yillik_degisim", d:"Eğilimi tek sayıyla özetleyen türetilmiş ölçü", u:["hr","exec","fin","ext"]}
+ ]}
+];
+
+var USERS = ["hr","exec","line","fin","ext"];
+var AILE_AD = {v:"iç uyuşmazlık", e:"eğitim ve dış süreçler", o:"altyapı ve bağlam"};
+var EK_AD = {ctx:"bağlam etkeni", pre:"öngörü etkeni", onk:"ön koşul",
+             tur:"türetilmiş", kat:"kategori"};
+
+(function(){
+  var toplam = METRICS.reduce(function(a,g){ return a + g.items.length; }, 0);
+  document.getElementById("srcCount").textContent = toplam + " metrik ve öge";
+})();
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fu = document.getElementById("fUser").value;
+  var fs = document.getElementById("fStage").value;
+  var ft = document.getElementById("fType").value;
+  var fr = document.getElementById("fRep").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fu && m.u.indexOf(fu) === -1) return;
+      if(fs && m.st !== fs) return;
+      if(fr && m.r.indexOf(fr) === -1) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = USERS.map(function(u){
+        if(m.u.indexOf(u) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 (m.k ? ' <span class="tag lvl">' + EK_AD[m.k] + '</span>' : "") +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "") +
+                 (m.r.indexOf("dis") !== -1 ? ' <span class="tag iso">dış rapor</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="6">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="6">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve öge gösteriliyor.";
+}
+["fUser","fStage","fType","fRep","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) KÜMÜLATİF DÖNEM TABLOSU
+   ========================================================= */
+var SATIR = 8;
+var ORNEK_DONEM = [
+  ["Ocak", 3, 25, 10, 22, 1],
+  ["Şubat", 5, 22, 10, 20, 2],
+  ["Mart", 4, 20, 15, 25, 2],
+  ["Nisan", 4, 25, 8, 20, 4],
+  ["Mayıs", 4, 20, 9, 15, 1],
+  ["Haziran", 2, 15, 12, 17, 2],
+  ["", "", "", "", "", ""],
+  ["", "", "", "", "", ""]
+];
+var ALANLAR = ["sikayet","acilis","eklenen","kapanis","havale"];
+
+function buildDonemTable(){
+  var html = "";
+  for(var i=0;i<SATIR;i++){
+    html += '<tr><td><input type="text" id="d_ad_' + i + '" placeholder="Dönem ' + (i+1) + '"></td>';
+    ALANLAR.forEach(function(k){
+      html += '<td><input type="number" id="d_' + k + '_' + i + '" min="0" step="1"></td>';
+    });
+    html += '<td class="calc" id="d_kum_' + i + '">—</td>' +
+            '<td class="calc" id="d_son_' + i + '">—</td></tr>';
+  }
+  document.getElementById("pBody").innerHTML = html;
+  document.getElementById("pBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computeDonem);
+  });
+  document.getElementById("tzeKadro").addEventListener("input", computeDonem);
+}
+
+function dNum(k, i){
+  var el = document.getElementById("d_" + k + "_" + i);
+  if(!el || el.value === "") return null;
+  var x = parseFloat(el.value);
+  return isNaN(x) ? null : x;
+}
+
+function dolu(i){
+  return ALANLAR.some(function(k){ return dNum(k, i) !== null; }) ||
+         (document.getElementById("d_ad_" + i).value || "") !== "";
+}
+
+var SERI = null;
+
+function fmt0(x){ return Math.round(x).toLocaleString("tr-TR"); }
+function fmt1(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:1, maximumFractionDigits:1}); }
+function fmt2(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+function computeDonem(){
+  var tze = parseFloat(document.getElementById("tzeKadro").value);
+  if(isNaN(tze) || tze <= 0) tze = 1000;
+  var satirlar = [], kum = 0;
+  var t = {sikayet:0, acilis:0, eklenen:0, kapanis:0, havale:0, sonuc:0};
+
+  for(var i=0;i<SATIR;i++){
+    var hKum = document.getElementById("d_kum_" + i);
+    var hSon = document.getElementById("d_son_" + i);
+    if(!dolu(i)){ hKum.textContent = "—"; hSon.textContent = "—"; continue; }
+    var sikayet = dNum("sikayet", i) || 0, acilis = dNum("acilis", i) || 0,
+        eklenen = dNum("eklenen", i) || 0, kapanis = dNum("kapanis", i) || 0,
+        havale = dNum("havale", i) || 0;
+    kum += sikayet;
+    var sonuc = acilis + eklenen - kapanis;
+    hKum.textContent = fmt0(kum);
+    hSon.textContent = fmt0(sonuc);
+    t.sikayet += sikayet; t.acilis += acilis; t.eklenen += eklenen;
+    t.kapanis += kapanis; t.havale += havale; t.sonuc += sonuc;
+    satirlar.push({ad:(document.getElementById("d_ad_" + i).value || ("Dönem " + (i+1))),
+                   sikayet:sikayet, acilis:acilis, eklenen:eklenen, kapanis:kapanis,
+                   havale:havale, kum:kum, sonuc:sonuc});
+  }
+
+  var kart = document.getElementById("pCards");
+  if(!satirlar.length){
+    SERI = null;
+    ["tSikayet","tAcilis","tEklenen","tKapanis","tHavale","tKum","tSonuc"].forEach(function(id){
+      document.getElementById(id).textContent = "—";
+    });
+    kart.innerHTML = "";
+    document.getElementById("pNot").textContent =
+      "Tabloya en az bir dönemin verisini girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+
+  var ilk = satirlar[0], son = satirlar[satirlar.length-1];
+  SERI = {satirlar:satirlar, toplam:t, tze:tze, kum:kum};
+
+  document.getElementById("tSikayet").textContent = fmt0(t.sikayet);
+  document.getElementById("tAcilis").textContent = fmt0(ilk.acilis) + " (ilk)";
+  document.getElementById("tEklenen").textContent = fmt0(t.eklenen);
+  document.getElementById("tKapanis").textContent = fmt0(son.kapanis) + " (son)";
+  document.getElementById("tHavale").textContent = fmt0(t.havale);
+  document.getElementById("tKum").textContent = fmt0(kum);
+  document.getElementById("tSonuc").textContent = fmt0(t.sonuc);
+
+  kart.innerHTML =
+    '<div class="card"><b>' + fmt0(kum) + '</b><span>Kümülatif şikâyet</span></div>' +
+    '<div class="card"><b>' + fmt0(t.sonuc) + '</b><span>Sonuçlandırılan disiplin işlemi</span></div>' +
+    '<div class="card alt"><b>' + fmt0(t.havale) + '</b><span>Dış taraflara havale</span></div>' +
+    '<div class="card alt"><b>' + fmt2(100*kum/tze) + ' %</b><span>Şikâyet / TZE</span></div>' +
+    '<div class="card warn"><b>' + fmt0(son.kapanis) + '</b><span>Dönem sonunda açık dosya</span></div>';
+
+  var beklenenKapanis = ilk.acilis + t.eklenen - t.sonuc;
+  var not = satirlar.length + " dönemde " + fmt0(kum) + " şikâyet (TZE'ye oranı " +
+            fmt2(100*kum/tze) + " %), " + fmt0(t.sonuc) + " sonuçlandırılan disiplin işlemi, " +
+            fmt0(t.havale) + " dış havale. ";
+  if(satirlar.length > 1){
+    var degisim = ilk.sikayet ? 100*(son.sikayet-ilk.sikayet)/ilk.sikayet : null;
+    if(degisim !== null){
+      not += ilk.ad + "–" + son.ad + " arasında dönemlik şikâyet sayısı " + fmt1(degisim) +
+             " % değişti. ";
+    }
+    var kopuk = false;
+    for(var j=1;j<satirlar.length;j++){
+      if(satirlar[j].acilis !== satirlar[j-1].kapanis) kopuk = true;
+    }
+    if(kopuk){
+      not += "Bazı dönemlerde açılış bakiyesi, bir önceki dönemin kapanış bakiyesini takip etmiyor; " +
+             "hareket hesabının tutarlı olması için bu iki sayının eşleşmesi gerekir. ";
+    }
+  }
+  if(Math.abs(beklenenKapanis - son.kapanis) > 0.001){
+    not += "Tutarlılık kontrolü: ilk açılış (" + fmt0(ilk.acilis) + ") + toplam eklenen (" +
+           fmt0(t.eklenen) + ") − toplam sonuçlanan (" + fmt0(t.sonuc) + ") = " +
+           fmt0(beklenenKapanis) + "; son kapanış bakiyesi " + fmt0(son.kapanis) + ". ";
+  } else {
+    not += "Tutarlılık kontrolü geçti: ilk açılış + toplam eklenen − toplam sonuçlanan, son kapanış " +
+           "bakiyesine eşit. ";
+  }
+  not += "Sayıların yanına bağlam notunu (kadro değişimi, farkındalık kampanyaları, yeniden yapılanma) " +
+         "eklemeyi unutmayın.";
+  document.getElementById("pNot").textContent = not;
+}
+
+function loadDonemExample(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("d_ad_" + i).value = ORNEK_DONEM[i][0];
+    ALANLAR.forEach(function(k, j){
+      document.getElementById("d_" + k + "_" + i).value = ORNEK_DONEM[i][j+1];
+    });
+  }
+  computeDonem();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadDonemExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("d_ad_" + i).value = "";
+    ALANLAR.forEach(function(k){ document.getElementById("d_" + k + "_" + i).value = ""; });
+  }
+  computeDonem();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Donem;Sikayet;Acilis;Eklenen;Kapanis;Dis havale;Kumulatif sikayet;Sonuclandirilan"];
+  if(SERI){
+    SERI.satirlar.forEach(function(s){
+      satir.push([s.ad, s.sikayet, s.acilis, s.eklenen, s.kapanis, s.havale,
+                  s.kum, s.sonuc].join(";"));
+    });
+    satir.push(["Toplam", SERI.toplam.sikayet, "", SERI.toplam.eklenen, "",
+                SERI.toplam.havale, SERI.kum, SERI.toplam.sonuc].join(";"));
+  }
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30423_uyum_tablosu.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+function n(x){ return Number(x).toLocaleString("tr-TR"); }
+
+var CALC = [
+ {id:"kumulatif", name:"Yıl başından itibaren kümülatif toplam", grp:"Birikim",
+  formula:"Dönem toplamı = A1 + A2 + A3 + … + An",
+  note:"Şikâyetler ve dış taraflara havale edilen uyuşmazlıklar bu mantıkla hesaplanır. Hesap mali yıl ve/veya bütçe döngüsüyle hizalanır; hesaplama anı her ölçüm döneminin sonunda kayıtlı olan sayıdır. Aynı formül her kategoriye ayrı ayrı da uygulanır.",
+  fields:[{k:"aylik",l:"Dönem sayıları (virgülle ayırın)",v:"3, 5, 4, 4, 4, 2",text:1},
+          {k:"tze",l:"Tam zaman eşdeğeri",v:1000}],
+  unit:"vaka (yıl başından itibaren)",
+  py:"kumulatif([3, 5, 4, 4, 4, 2])",
+  calc:function(v){ var a=v.aylik;
+    var d=a.reduce(function(x,y){ return x+y; },0);
+    return {value:d, dec:0, expl:a.map(function(x){ return n(x); }).join(" + "),
+      detail:[["Dönem sayısı", a.length],
+              ["Dönem ortalaması", +(d/a.length).toFixed(2)],
+              ["En yüksek dönem", Math.max.apply(null, a)],
+              ["Son dönem", a[a.length-1]],
+              ["TZE'ye oranı (%)", +(100*d/v.tze).toFixed(2)]]}; },
+  bands:[[0,"ok","Sayıyı tek başına değil, kategori kırılımı, TZE oranı ve bağlam notuyla birlikte raporlayın; artış farkındalık artışından da kaynaklanabilir."]]},
+
+ {id:"sonuclandirilan", name:"Sonuçlandırılan disiplin işlemleri", grp:"Hareket",
+  formula:"Sonuçlandırılan = Açılış bakiyesi + Dönemde eklenen dosya &minus; Kapanış bakiyesi",
+  note:"Bir dönemde açılan dosyayla sonuçlanan dosya aynı değildir; bu hesap, önceki dönemlerden devreden ve bu dönemde kapanan dosyaları da yakalar. Ölçüm noktası (örneğin ayın ilk günü) tutarlı biçimde uygulanmalı ve açıkça yazılmalıdır.",
+  fields:[{k:"acilis",l:"Açılış bakiyesi (dosya)",v:25},
+          {k:"eklenen",l:"Dönemde eklenen dosya",v:10},
+          {k:"kapanis",l:"Kapanış bakiyesi (dosya)",v:22},
+          {k:"tze",l:"Tam zaman eşdeğeri",v:1000}],
+  unit:"sonuçlandırılan işlem",
+  py:"sonuclandirilan(acilis=25, eklenen=10, kapanis=22)",
+  calc:function(v){ var d=v.acilis+v.eklenen-v.kapanis;
+    return {value:d, dec:0,
+      expl:n(v.acilis) + " + " + n(v.eklenen) + " − " + n(v.kapanis),
+      detail:[["Dönem sonunda açık kalan", v.kapanis],
+              ["Dönemde işleme giren toplam", v.acilis+v.eklenen],
+              ["Sonuçlandırma oranı (%)", +(100*d/(v.acilis+v.eklenen)).toFixed(1)],
+              ["TZE'ye oranı (%)", +(100*d/v.tze).toFixed(2)]]}; },
+  bands:[[0,"ok","Artış iki farklı şey anlatabilir: işgücündeki gerilimin yükselmesi ya da birikmiş dosyaları hızla kapatma çabası. Kadro büyümesi de aynı sonucu üretir; nedeni ek araştırma belirler."],
+         [-1000000,"bad","Negatif sonuç: kapanış bakiyesi, açılış ile eklenen dosyaların toplamını aşıyor. Bakiyeleri ve ölçüm noktasını kontrol edin."]]},
+
+ {id:"dis_sonuclandirilan", name:"Dış taraflarca sonuçlandırılan uyuşmazlıklar", grp:"Hareket",
+  formula:"Sonuçlandırılan = Açılış bakiyesi + Dönemde havale edilen &minus; Geri çekilen &minus; Kapanış bakiyesi",
+  note:"Dış (denetim dâhil) bulgular bu hesapla izlenir. Bulgular sınıflandırılır, izlenir ve takip edilir; her bulgunun kaynağı (tahkim kurulu, mahkeme, kamu kurumu), içeriği ve doğurduğu eylem birlikte kaydedilir. Kurum bir tavsiyeyi benimsemiyorsa gerekçesi açıkça yazılır.",
+  fields:[{k:"acilis",l:"Açılış bakiyesi (uyuşmazlık)",v:20},
+          {k:"havale",l:"Dönemde havale edilen",v:3},
+          {k:"geri_cekilen",l:"Dönemde geri çekilen",v:0},
+          {k:"kapanis",l:"Kapanış bakiyesi",v:16},
+          {k:"tze",l:"Tam zaman eşdeğeri",v:1000}],
+  unit:"sonuçlandırılan uyuşmazlık",
+  py:"dis_sonuclandirilan(acilis=20, havale=3, geri_cekilen=0, kapanis=16)",
+  calc:function(v){ var d=v.acilis+v.havale-v.geri_cekilen-v.kapanis;
+    return {value:d, dec:0,
+      expl:n(v.acilis) + " + " + n(v.havale) + " − " + n(v.geri_cekilen) + " − " + n(v.kapanis),
+      detail:[["Dönem sonunda açık kalan", v.kapanis],
+              ["Geri çekilen", v.geri_cekilen],
+              ["Geri çekilme oranı (%)", +(100*v.geri_cekilen/v.havale).toFixed(1)],
+              ["TZE'ye oranı (%)", +(100*d/v.tze).toFixed(2)]]}; },
+  bands:[[0,"ok","Sonucu, bulgunun kaynağı ve alınan eylemle birlikte raporlayın; sonuçlanma sayısı tek başına uzlaşma kapasitesini göstermez."],
+         [-1000000,"bad","Negatif sonuç: bakiyeler ve geri çekilen sayısı birbiriyle tutarsız. Ölçüm noktasını ve kayıtları kontrol edin."]]},
+
+ {id:"egitim_tamamlama", name:"Uyum ve etik eğitimini tamamlayan çalışan oranı", grp:"Oran",
+  formula:"Tamamlama oranı = (Eğitimi tamamlayan çalışan &divide; Tamamlaması gereken çalışan) &times; 100",
+  note:"\"Tamamlama\", katılımcının kurumun tatmin edici tamamlama tanımına göre eğitimi uygulamada yetkin bulunması demektir; salt katılım yeterli değildir. Kurum, her pozisyon için eğitim paketini, değerlendirme yöntemini, hedef yüzdeyi ve tamamlama süresi hedefini önceden yazar.",
+  fields:[{k:"tamamlayan",l:"Eğitimi tamamlayan çalışan",v:900},
+          {k:"tamamlamasi_gereken",l:"Tamamlaması gereken çalışan",v:1000},
+          {k:"sure_icinde",l:"Öngörülen süre içinde tamamlayan",v:780},
+          {k:"hedef",l:"Hedef tamamlama oranı (%)",v:95,step:0.1}],
+  unit:"% tamamlama",
+  py:"egitim_tamamlama(tamamlayan=900, tamamlamasi_gereken=1000)",
+  calc:function(v){ var d=100*v.tamamlayan/v.tamamlamasi_gereken;
+    var sure=100*v.sure_icinde/v.tamamlamasi_gereken;
+    return {value:d, dec:1,
+      expl:"(" + n(v.tamamlayan) + " ÷ " + n(v.tamamlamasi_gereken) + ") × 100",
+      detail:[["Süre içinde tamamlama (%)", +sure.toFixed(1)],
+              ["Süre hedefini kaçıran (kişi)", v.tamamlayan-v.sure_icinde],
+              ["Hiç tamamlamayan (kişi)", v.tamamlamasi_gereken-v.tamamlayan],
+              ["Hedeften sapma (puan)", +(d-v.hedef).toFixed(1)]]}; },
+  bands:[[95,"ok","Tamamlama yüksek; asıl soru bunun öngörülen süre içinde gerçekleşip gerçekleşmediğidir."],
+         [80,"warn","Tamamlama makul ama hedefin altında; sapmanın kurumun tanımladığı 'kayda değer' eşiği aşıp aşmadığını kontrol edin."],
+         [0,"bad","Çalışanların önemli bir bölümü uyum ve etik eğitimini tamamlamamış; kadro artışı mı, süreç aksaması mı olduğunu araştırın."]]},
+
+ {id:"sure_icinde", name:"Öngörülen süre içinde tamamlama oranı", grp:"Oran",
+  formula:"Süre içinde tamamlama = (Süre içinde tamamlayan &divide; Tamamlaması gereken çalışan) &times; 100",
+  note:"Standart, uyuma ulaşmak ya da onu sürdürmek ve etik eğitimini bitirmek için geçen süreye de hedef konmasını ve raporlamanın bu hedeflere göre yapılmasını ister. Genel tamamlama yüksek olsa bile süre içinde tamamlanan pay düşükse süreç aksıyor demektir.",
+  fields:[{k:"sure_icinde",l:"Süre içinde tamamlayan",v:780},
+          {k:"tamamlamasi_gereken",l:"Tamamlaması gereken çalışan",v:1000},
+          {k:"tamamlayan",l:"Toplam tamamlayan",v:900}],
+  unit:"% süre içinde tamamlama",
+  py:'hesapla("sure_icinde", sure_icinde=780, tamamlamasi_gereken=1000, tamamlayan=900)',
+  calc:function(v){ var d=100*v.sure_icinde/v.tamamlamasi_gereken;
+    var genel=100*v.tamamlayan/v.tamamlamasi_gereken;
+    return {value:d, dec:1,
+      expl:"(" + n(v.sure_icinde) + " ÷ " + n(v.tamamlamasi_gereken) + ") × 100",
+      detail:[["Genel tamamlama oranı (%)", +genel.toFixed(1)],
+              ["İki oran arasındaki fark (puan)", +(genel-d).toFixed(1)],
+              ["Süre hedefini kaçıran (kişi)", v.tamamlayan-v.sure_icinde]]}; },
+  bands:[[90,"ok","Eğitim büyük ölçüde zamanında tamamlanıyor; süreç işliyor."],
+         [70,"warn","Kayda değer bir gecikme var; iki oran arasındaki farkı hatırlatıcı ve takip mekanizmalarıyla kapatın."],
+         [0,"bad","Eğitim tamamlanıyor ama zamanında değil: süre hedefi ya gerçekçi değil ya da takip süreci çalışmıyor."]]},
+
+ {id:"tze_orani", name:"Vaka sayısının tam zaman eşdeğerine oranı", grp:"Bağlam",
+  formula:"TZE oranı = (Vaka sayısı &divide; Tam zaman eşdeğeri) &times; 100",
+  note:"Türetilmiştir. Standardın bağlam açıklamasının sayısal karşılığı: kurum ölçüm döneminde ikiye katlanmışsa, sabit kalan bir uyuşmazlık sayısı TZE'ye oran olarak yarıya inmiş demektir. Mutlak sayı ile oranı birlikte raporlayın.",
+  fields:[{k:"vaka",l:"Cari dönem vaka sayısı",v:2},
+          {k:"tze",l:"Cari dönem tam zaman eşdeğeri",v:1000},
+          {k:"onceki_vaka",l:"Önceki dönem vaka sayısı",v:2},
+          {k:"onceki_tze",l:"Önceki dönem tam zaman eşdeğeri",v:500}],
+  unit:"% TZE başına vaka",
+  py:'hesapla("tze_orani", vaka=2, tze=1000, onceki_vaka=2, onceki_tze=500)',
+  calc:function(v){ var d=100*v.vaka/v.tze, o=100*v.onceki_vaka/v.onceki_tze;
+    return {value:d, dec:2, expl:"(" + n(v.vaka) + " ÷ " + n(v.tze) + ") × 100",
+      detail:[["Önceki dönem oranı (%)", +o.toFixed(2)],
+              ["Oran değişimi (puan)", +(d-o).toFixed(2)],
+              ["Mutlak vaka değişimi", v.vaka-v.onceki_vaka],
+              ["Kadro değişimi (%)", +(100*(v.tze-v.onceki_tze)/v.onceki_tze).toFixed(1)]]}; },
+  bands:[[0,"ok","Mutlak sayı sabit kalsa bile kadro büyüdüyse oran düşmüştür; iki sayıyı yan yana raporlayın."]]},
+
+ {id:"ic_cozum", name:"İçeride çözülen şikâyetlerin payı", grp:"Şikâyet",
+  formula:"İç çözüm oranı = (İçeride çözülen şikâyet &divide; Toplam çözülen şikâyet) &times; 100",
+  note:"Şikâyetler ayrıca içeride ve dışarıda çözülenler olarak sınıflandırılabilir; standardın örneğinde içeride çözülen sayının yıllar içinde artması olumlu bir eğilim olarak yorumlanır.",
+  fields:[{k:"ic_cozulen",l:"İçeride çözülen şikâyet",v:16},
+          {k:"toplam",l:"Toplam çözülen şikâyet",v:22},
+          {k:"onceki_oran",l:"Önceki dönem iç çözüm oranı (%)",v:62.5,step:0.1}],
+  unit:"% içeride çözülen",
+  py:"ic_cozum_orani(ic_cozulen=16, toplam=22)",
+  calc:function(v){ var d=100*v.ic_cozulen/v.toplam;
+    return {value:d, dec:1, expl:"(" + n(v.ic_cozulen) + " ÷ " + n(v.toplam) + ") × 100",
+      detail:[["Dışarıda çözülen", v.toplam-v.ic_cozulen],
+              ["Dış çözüm oranı (%)", +(100-d).toFixed(1)],
+              ["Önceki döneme fark (puan)", +(d-v.onceki_oran).toFixed(1)]]}; },
+  bands:[[75,"ok","Şikâyetlerin büyük bölümü içeride çözülüyor; uzlaşma kapasitesi güçlü."],
+         [50,"warn","Şikâyetlerin kayda değer bir bölümü dışarıya taşınıyor; hangi kategorilerde yoğunlaştığına bakın."],
+         [0,"bad","Şikâyetlerin çoğu dışarıda çözülüyor: iç uyuşmazlık çözüm mekanizması ya işlemiyor ya da güven görmüyor."]]},
+
+ {id:"kategori_payi", name:"Kategorinin toplam içindeki payı", grp:"Şikâyet",
+  formula:"Kategori payı = (Kategorideki vaka &divide; Toplam vaka) &times; 100",
+  note:"Türetilmiştir. Toplam sabit kalsa bile karma değişebilir: bir kategori düşerken diğeri yükseliyorsa, toplama bakan bir rapor bunu göremez. Standart bu yüzden formülün her kategoriye ayrı ayrı uygulanmasını ister.",
+  fields:[{k:"kategori",l:"Kategorideki vaka (cari)",v:7},
+          {k:"toplam",l:"Toplam vaka (cari)",v:22},
+          {k:"onceki_kategori",l:"Kategorideki vaka (önceki)",v:5},
+          {k:"onceki_toplam",l:"Toplam vaka (önceki)",v:32}],
+  unit:"% toplam içinde",
+  py:'hesapla("kategori_payi", kategori=7, toplam=22, onceki_kategori=5, onceki_toplam=32)',
+  calc:function(v){ var d=100*v.kategori/v.toplam;
+    return {value:d, dec:1, expl:"(" + n(v.kategori) + " ÷ " + n(v.toplam) + ") × 100",
+      detail:[["Diğer kategoriler (vaka)", v.toplam-v.kategori],
+              ["Kategorideki yıllık değişim (%)",
+               +(100*(v.kategori-v.onceki_kategori)/v.onceki_kategori).toFixed(1)],
+              ["Önceki dönem payı (%)",
+               +(100*v.onceki_kategori/v.onceki_toplam).toFixed(1)]]}; },
+  bands:[[40,"warn","Tek bir kategori vakaların büyük bölümünü oluşturuyor; kök neden analizi ve hedefli önlem gerekir."],
+         [0,"ok","Payı önceki dönemle karşılaştırın: toplam düşerken payı artan bir kategori, gerçek bir eğilim değişimine işaret edebilir."]]},
+
+ {id:"yillik_degisim", name:"Metriğin yıllık yüzde değişimi", grp:"Bağlam",
+  formula:"Yıllık değişim = ((Cari dönem &minus; Önceki dönem) &divide; Önceki dönem) &times; 100",
+  note:"Türetilmiştir. Raporlama, önceki dönemlerle cari dönemi ve geçmiş yıllarla cari yılı karşılaştırır; tipik karşılaştırma aralığı üç ilâ beş yıldır. Değişimi mutlak sayı ve TZE oranıyla birlikte okuyun.",
+  fields:[{k:"cari",l:"Cari dönem değeri",v:22},{k:"onceki",l:"Önceki dönem değeri",v:32},
+          {k:"tze",l:"Cari dönem TZE",v:1000},{k:"onceki_tze",l:"Önceki dönem TZE",v:900}],
+  unit:"% yıllık değişim",
+  py:'hesapla("yillik_degisim", cari=22, onceki=32, tze=1000, onceki_tze=900)',
+  calc:function(v){ var d=100*(v.cari-v.onceki)/v.onceki;
+    return {value:d, dec:1,
+      expl:"((" + n(v.cari) + " − " + n(v.onceki) + ") ÷ " + n(v.onceki) + ") × 100",
+      detail:[["Mutlak değişim", v.cari-v.onceki],
+              ["Cari dönem TZE oranı (%)", +(100*v.cari/v.tze).toFixed(2)],
+              ["Önceki dönem TZE oranı (%)", +(100*v.onceki/v.onceki_tze).toFixed(2)]]}; },
+  bands:[[25,"warn","Belirgin artış: gerilim mi arttı, bildirim mi kolaylaştı, kadro mu büyüdü? Bağlam notu olmadan raporlamayın."],
+         [0,"warn","Sayı yükseliyor; kategori kırılımına ve TZE oranına bakın."],
+         [-1000000,"ok","Sayı düşüyor; bunun gerçek iyileşme mi yoksa bildirimdeki azalma mı olduğunu ayrıca değerlendirin."]]},
+
+ {id:"sikayetsiz_gun", name:"Şikâyetsiz gün sayısı", grp:"Şikâyet",
+  formula:"Şikâyetsiz gün = Dönemdeki toplam gün &minus; Şikâyet kaydedilen gün",
+  note:"Türetilmiştir. Standart, kurumların iyileşmeyi olayın yokluğuyla da raporlayabileceğini belirtir: son şikâyetten bu yana geçen gün sayısı ya da belirlenen dönemdeki şikâyetsiz gün sayısı.",
+  fields:[{k:"donem_gun",l:"Dönemdeki toplam gün",v:182},
+          {k:"sikayetli_gun",l:"Şikâyet kaydedilen gün",v:18},
+          {k:"son_sikayetten_gun",l:"Son şikâyetten bu yana geçen gün",v:24}],
+  unit:"şikâyetsiz gün",
+  py:'hesapla("sikayetsiz_gun", donem_gun=182, sikayetli_gun=18, son_sikayetten_gun=24)',
+  calc:function(v){ var d=v.donem_gun-v.sikayetli_gun;
+    return {value:d, dec:0, expl:n(v.donem_gun) + " − " + n(v.sikayetli_gun),
+      detail:[["Dönemdeki şikâyetli gün", v.sikayetli_gun],
+              ["Şikâyetsiz gün payı (%)", +(100*d/v.donem_gun).toFixed(1)],
+              ["Son şikâyetten bu yana geçen gün", v.son_sikayetten_gun]]}; },
+  bands:[[0,"ok","Bu göstergeyi vaka sayısının yerine değil, yanında kullanın: şikâyetsiz gün, bildirim önündeki engellerden de kaynaklanabilir."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    if(f.text){
+      return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+        '<input type="text" id="in_' + f.k + '" value="" placeholder="' + f.v + '"></div>';
+    }
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function parseList(s){
+  return String(s).split(/[,;\s]+/).map(function(x){ return parseFloat(x); })
+    .filter(function(x){ return !isNaN(x); });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    if(f.text){
+      var raw = el && el.value.trim() !== "" ? el.value : null;
+      if(raw === null){ missing = true; raw = f.v; }
+      v[f.k] = parseList(raw);
+      if(!v[f.k].length){ v[f.k] = parseList(f.v); missing = true; }
+    } else {
+      var num = el && el.value !== "" ? parseFloat(el.value) : NaN;
+      if(isNaN(num)){ missing = true; v[f.k] = f.v; } else { v[f.k] = num; }
+    }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){
+      var val = r.v[f.k];
+      return f.k + "=" + (Array.isArray(val) ? "[" + val.join(",") + "]" : val);
+    }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30423_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!SERI){ loadDonemExample(); }
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("kumulatif");
+  sel.value = idx; buildFields();
+  document.getElementById("in_aylik").value =
+    SERI.satirlar.map(function(s){ return s.sikayet; }).join(", ");
+  document.getElementById("in_tze").value = SERI.tze;
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso30423_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30423_metrikler')\n" +
+      "_m.__file__ = 'iso30423_metrikler.py'\n" +
+      "sys.modules['iso30423_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30423_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30423_metrikler import *\n" +
+      "import iso30423_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30423_metrikler import *\n' +
+  'import iso30423_metrikler as m\n\n' +
+  '# Birikim: yıl başından itibaren kümülatif toplam\n' +
+  'aylik = [3, 5, 4, 4, 4, 2]\n' +
+  'print("Kümülatif seri :", kumulatif(aylik))\n' +
+  'print("Yıl başından   :", yil_basindan_toplam(aylik))\n\n' +
+  '# Hareket hesabı: açılış + eklenen − kapanış\n' +
+  'print("Sonuçlandırılan:", sonuclandirilan(25, 10, 22))\n' +
+  'print("Dış sonuçlanan :", dis_sonuclandirilan(20, 3, 0, 16))\n\n' +
+  '# Oran: eğitim tamamlama\n' +
+  'print("Tamamlama      :", round(egitim_tamamlama(900, 1000), 1), "%")\n' +
+  'print("Süre içinde    :", round(sure_icinde_tamamlama(780, 1000), 1), "%")\n\n' +
+  '# Bağlam: kadro büyürken sabit kalan vaka sayısı\n' +
+  'print("2 vaka / 500 TZE  :", round(tze_orani(2, 500), 2), "%")\n' +
+  'print("2 vaka / 1000 TZE :", round(tze_orani(2, 1000), 2), "%")\n\n' +
+  '# Dönem tablosu\n' +
+  't = ornek_tablo()\n' +
+  'for satir in t.tablo():\n' +
+  '    print(satir)\n' +
+  'for anahtar, deger in t.ozet().items():\n' +
+  '    print(f"{anahtar:<24}: {deger}")\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("ic_cozum", ic_cozulen=16, toplam=22, onceki_oran=62.5))\n\n' +
+  '# Rapor denetimi: hangi ön koşullar eksik?\n' +
+  'for uyari in metrik_denetimi(sikayet_tanimi_yazili=True, kayit_sureci_var=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30423_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30423_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildDonemTable();
+loadDonemExample();
+buildFields();
+run();
+</script>
+</body>
+</html>

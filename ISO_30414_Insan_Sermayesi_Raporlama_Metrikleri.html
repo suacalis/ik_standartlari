@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO 30414:2018 İnsan Sermayesi Raporlaması — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:72px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- pozisyon tablosu --- */
+  .postbl{font-size:13.5px}
+  .postbl input[type=text],.postbl input[type=date],.postbl input[type=number]{
+    width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .postbl input[type=text]{font-family:var(--sans)}
+  .postbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .postbl td.chk{text-align:center}
+  .postbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .postbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tblbar .inline{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-soft)}
+  .tblbar .inline input{width:78px;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--eff-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--efc-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+  .tblwrap{overflow-x:auto;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO 30414:2018 İnsan Sermayesi Raporlaması</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO 30414:2018 — <i>Human resource management — Guidelines for internal and external human capital reporting</i></span>
+  <span><b>Kapsam:</b> 11 raporlama alanı · <span id="srcCount">—</span></span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Ağustos 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO 30414, insan sermayesinin kuruma katkısını <b>şeffaf</b> kılmak ve işgücünün sürdürülebilirliğini
+desteklemek için iç ve dış <b>insan sermayesi raporlamasına</b> (HCR) kılavuzluk eden bir standarttır.
+Kamu, özel, gönüllü ya da kâr amacı gütmeyen; her tür, büyüklük ve karmaşıklıktaki kuruluşa uygulanır.
+On bir çekirdek raporlama alanı tanımlar: <b>uyum ve etik, maliyetler, çeşitlilik, liderlik, örgüt
+kültürü, sağlık-güvenlik ve refah, üretkenlik, işe alım-hareketlilik-devir, beceri ve yetkinlikler,
+halefiyet planlaması</b> ve <b>işgücü mevcudiyeti</b>. Metrikler geleneksel insan sermayesi çerçevesinin
+üç bileşenine göre sınıflandırılır: <i>girdi</i> (insan sermayesine yatırım), <i>faaliyet</i> (İK yaşam
+döngüsü görevleri) ve <i>çıktı</i> (yatırım ve faaliyetin sonucu). Bu sayfa, standardın metrik kümesini
+filtrelenebilir bir matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı + Python koduna
+dönüştürür.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>İki eksende raporlama.</b> Standardın Tablo 2'si her metriği iki boyutta konumlar: <b>büyük
+  kuruluş / KOBİ</b> ve <b>iç / dış</b> raporlama. Aynı metrik büyük bir kuruluşta dışarıya açıklanırken
+  bir KOBİ'de yalnızca içeride raporlanabilir.</li>
+  <li><b>Nicel metrikler tercih edilir</b>, çünkü kurum içinde ve kurumlar arasında karşılaştırılması
+  kolaydır. Ancak nitel açıklama (İK stratejisi, hedefler, riskler) sayının yanında verilir.</li>
+  <li><b>Üç bileşenli çerçeve.</b> Girdi (ör. işgücü maliyetleri), faaliyet (ör. örgüt kültürü) ve
+  çıktı (ör. insan sermayesi RoI) ayrımı, bir sayının yatırım mı, süreç mi yoksa sonuç mu olduğunu
+  gösterir.</li>
+  <li><b>Karşılaştırılabilirlik için üç yıllık seri.</b> Bir kuruluşun gelişimini izlemek için cari
+  dönem ve iki önceki dönemin verisi gerekir; ilk raporlamada bir yıl kabul edilebilir bir dönemdir.</li>
+  <li><b>Önemlilik (materiality) anlatıyı belirler.</b> HCR anlatısı, kurum ve paydaşları için önemli
+  olan yönleri tanımlar; her raporlama alanı için etkin bir risk yönetimi özeti önerilir.</li>
+  <li><b>Segmentli raporlama.</b> Metrikler stratejik işgücü grupları (kritik segmentler, iş aileleri,
+  konumlar) ve stratejik varlıklar (cinsiyet ve diğer çeşitlilik boyutları, hiyerarşi, iş düzeyleri,
+  bölgeler) bazında çok boyutlu olarak kırılabilir.</li>
+  <li><b>KOBİ'ler için sadeleştirme.</b> Standart, KOBİ'lerin kendi ihtiyaçlarına göre makul metrikleri
+  seçmesini önerir; raporlama, kredi olanaklarına ve ticari finansmana erişimde önem taşıyabilir.</li>
+  <li><b>Yıllık raporlama.</b> Dış ve iç raporlama, yıllık raporlama faaliyetlerinin parçası olarak
+  yılda bir kez yapılmalıdır; aksi hâlde düzeltmeler ve olumlu etki için geç kalınabilir.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">HCR kurma adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi (Tablo 2)</a>
+  <a href="#tablo">Çok yıllık gösterge tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>İnsan sermayesi katkısı şeffaflaştırılırken:</b> geleneksel kadro raporlamasında gözden kaçan
+  güçlü yanları ve riskleri görünür kılmak, finansal ve sosyal değer yaratımını açıklamak için.</li>
+  <li><b>Yatırımcı ve dış paydaşlar için:</b> yatırımcılar, insan sermayesi yatırımı ile kurumun başarısı
+  arasındaki ilişkiyi belirlemeye yarayan stratejik metriklerle özellikle ilgilenir.</li>
+  <li><b>İç karar alma desteklenirken:</b> iç ve dış metrikler, insan sermayesiyle ilgili konuların
+  yönetimini ve karar süreçlerini destekler.</li>
+  <li><b>İnsan sermayesi riski yönetilirken:</b> her raporlama alanı için temel risk ve fırsatların
+  anlatısal özeti (etkin risk yönetimi) önerilir.</li>
+  <li><b>KOBİ değerlemesi ve finansmanında:</b> standartlaştırılmış HCR çerçevesi, finansal hizmetler
+  ve sermaye/finansman gereksinimleri için yol gösterir; birleşme ve devralmalarda İK due diligence
+  sürecine katkı sağlar.</li>
+  <li><b>Dış raporlamada:</b> yatırımcılar, iş arayanlar ve toplum dış kullanıcılardır — ancak
+  metriklerin tümü dış kullanım için tasarlanmamıştır; hangisinin açıklanacağını standardın Tablo 2'si
+  önerir.</li>
+</ul>
+<div class="note">Raporlama belgeleri arasında yıllık rapor, İK raporu (ISO 30408), sürdürülebilirlik
+raporu, kurumsal sosyal sorumluluk raporu ve kurumsal web sayfası sayılır. Biçim; resmî yasal raporlama
+yöntemleri, fiziksel, dijital, çevrimiçi veya makinece okunabilir formatlar ile KPI puan kartı sunumu
+olabilir.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Üç bileşenli insan sermayesi çerçevesi</h3>
+<p>Metrikler geleneksel bir insan sermayesi çerçevesinin üç bileşenini yansıtır; bir sayının
+<i>yatırım</i> mı, <i>süreç</i> mi, yoksa <i>sonuç</i> mu olduğunu bu ayrım gösterir.</p>
+<table>
+  <thead><tr><th>Bileşen</th><th>Tanım</th><th>Örnek</th></tr></thead>
+  <tbody>
+    <tr><td><b>Girdi</b> (input)</td><td>İnsan sermayesine yapılan tüm yatırım; değer üretmenin temel yapı taşları</td><td>İşgücü maliyetleri, işgücü mevcudiyeti</td></tr>
+    <tr><td><b>Faaliyet</b> (activity)</td><td>İnsanların üretken ve sağlıklı çalışmasını sağlayan İK yaşam döngüsü görevleri</td><td>Örgüt kültürü, eğitim, halefiyet</td></tr>
+    <tr><td><b>Çıktı / sonuç</b> (output)</td><td>Yatırım ve faaliyetlerin sonucu</td><td>İnsan sermayesi RoI, kişi başı kâr</td></tr>
+  </tbody>
+</table>
+
+<h3>Kılavuz ilkeler (4.2)</h3>
+<table>
+  <thead><tr><th>İlke</th><th>Anlamı</th></tr></thead>
+  <tbody>
+    <tr><td>Stratejik odak ve önemlilik</td><td>Metrikler kurumun strateji ve değerleriyle uyumlu olmalı</td></tr>
+    <tr><td>Uygulanabilirlik</td><td>Fayda–maliyet ve fırsat maliyeti (zaman, kalite, hacim) analizine dayanmalı</td></tr>
+    <tr><td>Her tür kuruluşa uygunluk</td><td>Tür, büyüklük, sektör ve coğrafyadan bağımsız geçerli olmalı</td></tr>
+    <tr><td>Geçerli ve güvenilir ölçüm</td><td>Kanıta dayalı, yüksek kaliteli veriyle iş kararını beslemeli</td></tr>
+    <tr><td>Karşılaştırılabilirlik</td><td>Benzer kuruluş türleri ve sektörler arasında karşılaştırılabilmeli (4.5.2)</td></tr>
+    <tr><td>Önemlilik temelli anlatı</td><td>Kurum ve paydaşlar için önemli yönleri tanımlamalı</td></tr>
+    <tr><td>Şeffaflık</td><td>İnsan sermayesi risk ve fırsatlarını yönetişim organlarına açıkça göstermeli</td></tr>
+  </tbody>
+</table>
+
+<h3>İç ve dış raporlama (4.5)</h3>
+<table>
+  <thead><tr><th>Boyut</th><th>Kime</th><th>Ne gösterir</th></tr></thead>
+  <tbody>
+    <tr><td><b>İç HCR</b></td><td>İşgücü, yönetim, işgücü temsilcileri (sendika, iş konseyi)</td><td>İnsan sermayesi fırsat ve güçlükleri hakkında açık ve şeffaf bir resim</td></tr>
+    <tr><td><b>Dış HCR</b></td><td>Yatırım, fon ya da bağlılık konusunda meşru ilgisi olan paydaşlar</td><td>İşgücünün paydaşlar için değeri, gelecek potansiyeli ve gelişim fırsatları</td></tr>
+  </tbody>
+</table>
+<div class="note">Karşılaştırılabilirlik için KPI'lar iki boyutta raporlanır: (a) strateji ve değerlere
+bağlı, zaman içinde ölçülebilir ve karşılaştırılabilir anahtar göstergeler — cari ve iki önceki dönemin
+verisiyle; (b) segmentli işgücü öncelikleri — stratejik işgücü grupları ve stratejik varlıklar (cinsiyet
+ve diğer çeşitlilik boyutları) bazında çok boyutlu kırılım.</div>
+
+<h2 id="adimlar">HCR Kurma Adımları</h2>
+<ol>
+  <li><b>Ölçüm, çözümleme ve raporlamayı yönlendiren ilkeleri belirleyin</b> (4.2; yararlı referans ISO
+  30408:2016, 6.1).</li>
+  <li><b>İlgili hedef grupları ve paydaşları tanımlayın</b> (4.3): iç paydaşlar (işgücü, yönetişim
+  organları), dış paydaşlar (iş arayanlar, toplum, yatırımcılar).</li>
+  <li><b>HCR sorumluluklarını ve veri toplama sürecini kurun</b> (4.4): raporlama, sistem, kaynak-içerik
+  ve yorum-iletişim sorumlulukları çoğunlukla İK'dadır; finans, yönetişim ve bilgi sistemleri de
+  katkı verir.</li>
+  <li><b>İç ve dış raporlama ayrımını yapın</b> (4.5) ve karşılaştırılabilirlik boyutlarını belirleyin.</li>
+  <li><b>İnsan sermayesi risk ve fırsatlarını haritalayın</b> (4.6): her alan için etkin risk yönetimi
+  anlatısı ekleyin (bkz. ISO 31000, ISO 9001).</li>
+  <li><b>Zaman içinde tutarlı nicel metrikleri seçin</b> (4.7): 11 alanı ve girdi/faaliyet/çıktı
+  bileşenlerini kullanın; gerekirse ek metrik ekleyin.</li>
+  <li><b>Uygun raporlama belgesini seçin</b> (4.8): yıllık rapor, İK raporu, sürdürülebilirlik/KSS
+  raporu; büyük kuruluşlar dış raporlama için yıllık İK raporu üretmelidir.</li>
+  <li><b>Raporlama sıklığını belirleyin</b> (4.9): yılda bir kez, yıllık raporlama döngüsünün parçası
+  olarak.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kavram</th><th>Karşılığı</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>İnsan sermayesi</b></td><td>human capital</td>
+      <td>Kurum çalışanlarının birikimli bilgi, beceri ve yeteneği ile uzun vadeli performansa etkisi</td></tr>
+    <tr><td><b>HCR</b></td><td>human capital reporting</td>
+      <td>İnsan sermayesi verisinin yakalanması, ölçülmesi, çözümlenmesi ve raporlanması</td></tr>
+    <tr><td><b>Çalışan</b></td><td>employee</td>
+      <td>Ulusal hukuk ya da uygulamaya göre kurum tarafından istihdam edilen birey; çoğunlukla TZE ya da kadro olarak raporlanır</td></tr>
+    <tr><td><b>Denetimli işçi</b></td><td>supervised worker</td>
+      <td>Kurum için/adına düzenli çalışan ancak çalışan olarak tanınmayan birey (ör. geçici/kontenjan işçi)</td></tr>
+    <tr><td><b>Bağımsız yüklenici</b></td><td>independent contractor</td>
+      <td>Anlaşmayla ilişki kuran kişi ya da kuruluş (ör. danışman, tedarikçi, gig-işçi)</td></tr>
+    <tr><td><b>Tam zaman eşdeğeri</b></td><td>FTE</td>
+      <td>Bireyin iş yükünü çeşitli bağlamlarda karşılaştırılabilir kılan birim; ülke çalışma süresine göre normalleştirilir</td></tr>
+    <tr><td><b>Kritik pozisyon</b></td><td>critical position</td>
+      <td>Kurumsal sonuçlar üzerinde doğrudan ve önemli etkisi olan pozisyon (ISO/TS 30410)</td></tr>
+    <tr><td><b>KOBİ</b></td><td>SME</td>
+      <td>Ülke ya da bölgedeki yetkili otoritenin tanımladığı küçük ya da orta ölçekli kuruluş</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi (Tablo 2)</h2>
+<p>Aşağıdaki tablo, ISO 30414 Tablo 2'nin sınıflandırmasını taşır: her metrik on bir raporlama alanına ve
+girdi/faaliyet/çıktı bileşenine göre gruplanır; sütunlar metriğin <b>büyük kuruluş</b> ve <b>KOBİ</b> için
+<b>iç</b> ve <b>dış</b> raporlamada önerilip önerilmediğini gösterir. Filtreleri değiştirdiğinizde tablo
+anında daralır.</p>
+
+<div class="filters">
+  <div><label for="fArea">Raporlama alanı</label>
+    <select id="fArea">
+      <option value="">Tümü</option>
+      <option value="uyum">Uyum ve etik</option>
+      <option value="maliyet">Maliyetler</option>
+      <option value="cesitlilik">Çeşitlilik</option>
+      <option value="liderlik">Liderlik</option>
+      <option value="kultur">Örgüt kültürü</option>
+      <option value="isg">Sağlık, güvenlik ve refah</option>
+      <option value="uretkenlik">Üretkenlik</option>
+      <option value="devir">İşe alım, hareketlilik ve devir</option>
+      <option value="beceri">Beceri ve yetkinlikler</option>
+      <option value="halefiyet">Halefiyet planlaması</option>
+      <option value="isgucu">İşgücü mevcudiyeti</option>
+    </select></div>
+  <div><label for="fComp">Bileşen</label>
+    <select id="fComp">
+      <option value="">Tümü</option>
+      <option value="i">Girdi</option>
+      <option value="a">Faaliyet</option>
+      <option value="o">Çıktı</option>
+    </select></div>
+  <div><label for="fOrg">Kuruluş</label>
+    <select id="fOrg">
+      <option value="">Tümü</option>
+      <option value="b">Büyük kuruluş</option>
+      <option value="k">KOBİ</option>
+    </select></div>
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="ic">İç raporlama</option>
+      <option value="dis">Dış raporlama</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. devir"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<div class="tblwrap">
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">Büyük · İç</th>
+    <th class="rot">Büyük · Dış</th>
+    <th class="rot">KOBİ · İç</th>
+    <th class="rot">KOBİ · Dış</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+</div>
+<div class="legend">
+  <span><span class="dot e"></span> girdi</span>
+  <span><span class="dot v"></span> faaliyet</span>
+  <span><span class="dot o"></span> çıktı</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span><span class="tag iso">ISO/TS</span> ayrı bir teknik şartnamede detaylandırılan metrik</span>
+  <span>Hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Çok Yıllık Gösterge Tablosu</h2>
+<p>Standardın önerdiği üç yıllık seri ve Ek B'deki birleşik metrik örneği tek bir tablodan üretilebilir.
+Her yıl için gelir, gider, toplam işgücü maliyeti, ücret + yan hak, tam zaman eşdeğeri ve ayrılan sayısını
+girin; kişi başı gelir, toplam işgücü maliyeti oranı (TCOW), insan sermayesi RoI ve devir oranı satır
+satır türetilir.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+</div>
+
+<div class="tblwrap">
+<table class="postbl">
+  <thead><tr>
+    <th style="width:88px">Yıl</th>
+    <th class="num" style="width:120px">Gelir</th>
+    <th class="num" style="width:120px">Gider</th>
+    <th class="num" style="width:130px">Toplam işgücü mal.</th>
+    <th class="num" style="width:120px">Ücret + yan hak</th>
+    <th class="num" style="width:90px">TZE</th>
+    <th class="num" style="width:90px">Ayrılan</th>
+    <th class="calc" style="width:96px">Kişi başı gelir</th>
+    <th class="calc" style="width:80px">TCOW %</th>
+    <th class="calc" style="width:74px">RoI %</th>
+    <th class="calc" style="width:80px">Devir %</th>
+  </tr></thead>
+  <tbody id="pBody"></tbody>
+  <tfoot><tr>
+    <td>Son yıl</td>
+    <td class="calc" id="tGelir">—</td>
+    <td class="calc" id="tGider">—</td>
+    <td class="calc" id="tTcow">—</td>
+    <td class="calc" id="tUcret">—</td>
+    <td class="calc" id="tTze">—</td>
+    <td class="calc" id="tAyrilan">—</td>
+    <td class="calc" id="tKbg">—</td>
+    <td class="calc" id="tTcowP">—</td>
+    <td class="calc" id="tRoi">—</td>
+    <td class="calc" id="tDevir">—</td>
+  </tr></tfoot>
+</table>
+</div>
+
+<div class="cards" id="pCards"></div>
+<div class="note" id="pNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü doğrudan sayımdır (kadro, açılan şikâyet, eğitim kategorisi) ve formül
+gerektirmez. Hesaplanabilir olanların tamamı aşağıdadır; alan adları gömülü Python modülünün
+<code>hesapla()</code> imzasıyla birebir aynıdır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>İnsan Sermayesi Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Oranlar yüzde, tutarlar para birimi, sayımlar adet olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30414_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle aynı
+  sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve Pyodide
+(WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30414_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+standardın örnek tablolarını (Tablo 5, 6, 7, 12, 14, 18 ile Ek B) yeniden üretir.</p>
+
+<div class="filename">iso30414_metrikler.py (özet)</div>
+<pre><i># --- Girdi: maliyetler (4.7.3) ---</i>
+
+<b>def</b> <span class="fn">toplam_isgucu_maliyeti</span>(toplam_ucret, yan_haklar, dis_isgucu=<u>0</u>):
+    <i>"""Toplam ücret + yan hak maliyeti + dış işgücü maliyeti (Tablo 5)."""</i>
+    <b>return</b> toplam_ucret + yan_haklar + dis_isgucu
+
+<i># --- Çıktı: insan sermayesi RoI (4.7.8) ---</i>
+
+<b>def</b> <span class="fn">insan_sermayesi_roi</span>(gelir, giderler, ucret_yan_hak):
+    <i>"""{[Gelir − (Giderler − (Ücret+Yan hak))] ÷ (Ücret+Yan hak)} − 1.
+    Örnek: (4,5M; 3,75M; 1,5M) → 0,5 = %50."""</i>
+    <b>return</b> (gelir - (giderler - ucret_yan_hak)) / ucret_yan_hak - <u>1</u>
+
+<i># --- Faaliyet: devir oranı (4.7.9) ---</i>
+
+<b>def</b> <span class="fn">devir_orani</span>(ayrilan, ortalama_calisan):
+    <i>"""(Ayrılan ÷ Ortalama çalışan) × 100. Tüm ayrılanları içerir."""</i>
+    <b>return</b> <u>100</u> * ayrilan / ortalama_calisan
+
+<i># --- Faaliyet: halefiyet etkinliği (4.7.11) ---</i>
+
+<b>def</b> <span class="fn">halefiyet_etkinligi</span>(ic_hire_kritik, toplam_kritik):
+    <i>"""İç terfiyle doldurulan kritik pozisyon oranı (%). %70–80 iyi işaret."""</i>
+    <b>return</b> <u>100</u> * ic_hire_kritik / toplam_kritik
+
+<i># --- Girdi: işgücü mevcudiyeti (4.7.12) ---</i>
+
+<b>def</b> <span class="fn">devamsizlik_orani</span>(devamsiz_gun, mevcut_is_gunu):
+    <i>"""(Devamsız gün ÷ Mevcut çalışma günü) × 100. İzin hariç."""</i>
+    <b>return</b> <u>100</u> * devamsiz_gun / mevcut_is_gunu
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30414_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30414_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Bileşeni ayırt edin.</b> Girdi (maliyet), faaliyet (kültür, eğitim) ve çıktı (RoI) metrikleri
+  farklı soruları yanıtlar; bir maliyet artışı, bir çıktı iyileşmesiyle birlikte okunmadan tek başına
+  yorumlanamaz.</li>
+  <li><b>İnsan sermayesi RoI yatırımın verimliliğini gösterir.</b> Yatırılan her birim için geri dönen
+  tutarı verir; işgücü maliyetleri toplam maliyetin %25–60'ı olabildiğinden, bu ölçü yatırımın ne kadar
+  iyi kullanıldığını belirlemede giderek önem kazanır.</li>
+  <li><b>Devirde gönüllü ayrımı yapın.</b> Toplam devir emeklilik ve fesihleri de içerir; gönüllü devir
+  (istifa) plansız ve öngörülemez olduğu için iş üzerinde daha olumsuz etki yaratabilir.</li>
+  <li><b>İç doldurma oranı yetenek yönetiminin işaretidir.</b> Pozisyonların içeriden doldurulmasında
+  %70–80 arası bir oran iyi bir sinyaldir; halefiyet etkinliğinde de benzer eşik kullanılır.</li>
+  <li><b>Sayıyı kadroya oranlayın.</b> Kaza, devamsızlık ve uyuşmazlık gibi mutlak sayılar, tam zaman
+  eşdeğerine ya da milyon çalışma saatine oranlanmadan kurumlar arasında karşılaştırılamaz.</li>
+  <li><b>Çeşitlilikte segment kırılımı şart.</b> Yaş, cinsiyet ve engellilik oranları; yönetim–çalışan,
+  coğrafi bölge ve işlev bazında ayrıştırıldığında anlam kazanır.</li>
+  <li><b>Devamsızlık üretkenlik ve maliyetle bağlıdır.</b> İşten uzak geçen süre, kayıp üretkenlik ve
+  daha yüksek maliyet demektir; tatil ve izinli devamsızlık hesaba katılmaz.</li>
+  <li><b>Hedefe göre raporlayın.</b> Kaçırılan ya da aşılan hedefler ve dönemler arası değişim, paydaşların
+  gelecek sonuçları öngörmesini sağlar.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Metriklerin tümü zorunlu değildir.</b> Bazı kuruluşların tüm metrik kümesini kullanma amacı ya
+  da kapasitesi yoktur; KOBİ'ler için Tablo 2 ve Ek A basitleştirilmiş bir set önerir.</li>
+  <li><b>Tanım bağımlılığı.</b> "Şikâyet", "kritik pozisyon", "devamsızlık" gibi kavramların tanımı
+  kurumdan kuruma değiştiğinden, tanımlar açıklanmadan kurumlar arası kıyaslama yanıltıcıdır.</li>
+  <li><b>Uluslararası karşılaştırma güçtür.</b> Bir ülkede tam zamanlı 35 saat, başka ülkede 40 saat
+  olabilir; TZE ve ücret metrikleri tek bir referans düzeyinde normalleştirilmedikçe karşılaştırılamaz.</li>
+  <li><b>Kamu ve NGO'da üretkenlik farklıdır.</b> Kamu kuruluşları için üretkenlik metriği önerilmez;
+  NGO'larda başarı bütçe, fon kullanımı ve program etkisiyle ölçülür.</li>
+  <li><b>Nicel sayı tek başına yetmez.</b> Standart, sayıların nitel açıklama (strateji, hedef, risk,
+  bağlam) ile birlikte verilmesini ister; çıplak bir KPI, önemlilik anlatısı olmadan eksik kalır.</li>
+  <li><b>Bazı metrikler geliştirme aşamasındadır.</b> Devir, elde tutma ve halefiyet metriklerinin
+  ayrıntısı ISO/TS 23378'de; cost-per-hire ISO/TS 30407'de; kritik pozisyon etkisi ISO/TS 30410'da
+  ele alınır.</li>
+  <li><b>Ek B örnek değerleri yalnızca gösterimdir.</b> Bu sayfadaki örnek tablo, standardın Ek B.3
+  büyüklükleriyle uyumlu ancak kendi içinde tutarlı kurgusal bir veri kümesidir.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>Yönetim kurulu ve üst yönetim</td>
+      <td>11 alanın üç–beş yıllık eğilimi, insan sermayesi risk ve fırsatları, hedeften sapmalar</td>
+      <td>İnsan sermayesi puan kartı, dönemsel</td></tr>
+    <tr><td>İşgücü ve temsilciler (sendika, iş konseyi)</td>
+      <td>Kültür, çeşitlilik, sağlık-güvenlik ve gelişim göstergeleri; birim kırılımları</td>
+      <td>İç HCR / İK raporu, dönemsel</td></tr>
+    <tr><td>Finans ve yönetişim</td>
+      <td>İşgücü maliyetleri, üretkenlik, insan sermayesi RoI ve risk göstergeleri</td>
+      <td>Analitik ve risk raporu, çeyreklik</td></tr>
+    <tr><td>Yatırımcılar ve dış paydaşlar</td>
+      <td>Dışarıya açıklanmak üzere belirlenmiş toplu göstergeler ve nitel yöntem notu</td>
+      <td>Yıllık / sürdürülebilirlik / KSS raporu, yıllık</td></tr>
+    <tr><td>Finansal hizmetler (KOBİ için)</td>
+      <td>Kredi ve finansmana temel oluşturan HR göstergeleri ve insan riskleri</td>
+      <td>Standartlaştırılmış HCR özeti, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> HCR anahtar metriklerinin nitel açıklaması, İK stratejisi,
+hedefler ve odak alanları, temel teslim güçlükleri, İK süreç ve programları, karşılaştırma tabanı
+(cari ve iki önceki dönem) ve önemlilik temelli anlatı. Büyük kuruluşlar dış raporlama için yıllık İK
+raporu üretmelidir; biçim fiziksel, dijital, çevrimiçi ya da makinece okunabilir olabilir.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü; bu belgenin normatif atfı.</li>
+  <li><b>ISO 30408</b> — insan yönetişimi kılavuzu; HCR ilkelerinin dayandığı standart.</li>
+  <li><b>ISO/TS 30407</b> — cost-per-hire (kişi başı işe alım maliyeti) metriği.</li>
+  <li><b>ISO/TS 30410</b> — işe alımın etkisi (kritik pozisyon) metriği.</li>
+  <li><b>ISO/TS 30411</b> — işe alım kalitesi (quality of hire) metriği.</li>
+  <li><b>ISO 30401</b> — bilgi yönetimi sistemleri gereklilikleri.</li>
+  <li><b>ISO 45001</b> — iş sağlığı ve güvenliği yönetim sistemleri; sağlık-güvenlik alanının bağlamı.</li>
+  <li><b>ISO 26000</b> — sosyal sorumluluk kılavuzu; etik davranış önerileri (4.4).</li>
+  <li><b>GRI ve Entegre Raporlama</b> — HCR metriklerinin dayandığı mevcut raporlama çerçeveleri.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Bir metriği içeride mi dışarıda mı raporlamalıyım?</summary>
+<p>Standardın Tablo 2'si her metrik için büyük kuruluş / KOBİ ve iç / dış raporlama önerisini verir.
+Örneğin toplam işgücü maliyeti, üretkenlik metrikleri, iş kazası ve ölüm sayısı hem büyük kuruluşta hem
+KOBİ'de iç ve dış raporlama için önerilirken; ücret oranı ya da span of control yalnızca büyük kuruluşta
+iç raporlama içindir. Bu sayfadaki matris filtreleri tam olarak bu ayrımı gösterir.</p></details>
+
+<details><summary>Girdi, faaliyet ve çıktı ayrımı ne işe yarar?</summary>
+<p>Bir sayının ne anlattığını belirler. Girdi metrikleri (işgücü maliyetleri, işgücü mevcudiyeti) yapılan
+yatırımı; faaliyet metrikleri (kültür, eğitim, halefiyet) süreçleri; çıktı metrikleri (insan sermayesi
+RoI, kişi başı kâr) sonuçları gösterir. İyi bir rapor üçünü birlikte okur: yüksek girdi tek başına iyi
+değildir, çıktıyla ilişkilendirilmelidir.</p></details>
+
+<details><summary>Neden cari yılın yanında iki önceki dönemi de vermeliyim?</summary>
+<p>Karşılaştırılabilirlik ve eğilim için. Standart, bir kuruluşun gelişimini izlemek için cari dönem ve
+iki önceki dönemin verisini ister; böylece üç yıllık bir seri oluşur. İlk kez raporlayan bir kuruluş için
+bir yıl kabul edilebilir bir dönemdir, ama asıl değer serinin devamlılığındadır.</p></details>
+
+<details><summary>İnsan sermayesi RoI'sini nasıl hesaplarım?</summary>
+<p>Formül: {[Gelir − (Giderler − (Ücret + Yan haklar))] ÷ (Ücret + Yan haklar)} − 1. Standardın örneğinde
+gelir 4,5 milyon, giderler 3,75 milyon, ücret + yan hak 1,5 milyon → {[4.500.000 − (3.750.000 − 1.500.000)]
+÷ 1.500.000} − 1 = 0,5, yani %50. Her yatırılan birim için 1 birim geri döner ve 0,5 birim vergi öncesi
+kâr elde edilir. Hesaplamada TZE kullanılır.</p></details>
+
+<details><summary>Devir oranı ile gönüllü devir arasındaki fark nedir?</summary>
+<p>Devir oranı tüm ayrılanları içerir (emeklilik, fesih, işten çıkarma, istifa): (toplam ayrılan ÷
+ortalama toplam çalışan) × 100. Gönüllü devir yalnızca istifaları sayar; plansız ve öngörülemez olduğu
+için iş üzerinde daha olumsuz etki yaratabilir. Standart ikisini ayrı raporlamayı önerir; ayrıca "gönüllü
+kritik devir", kaybının kurumca üzüntüyle karşılandığı ayrılışları izler.</p></details>
+
+<details><summary>Kaza oranını milyonla mı 200.000'le mi çarpmalıyım?</summary>
+<p>İkisi de kullanılır. Milyon çalışma saati tabanı uluslararası karşılaştırma için yaygındır; OSHA'ya
+uygun 200.000 tabanı ise 100 tam zamanlı çalışan başına oranı verir. Hangi taban seçilirse seçilsin,
+büyüklük ve menşe ülkesinden bağımsız karşılaştırma sağlar; tercih tutarlı biçimde uygulanmalı ve açıkça
+yazılmalıdır.</p></details>
+
+<details><summary>KOBİ'yim; hangi metrikleri seçmeliyim?</summary>
+<p>Standart, KOBİ'lerin kendi ihtiyaçlarına göre makul metrikleri seçmesini önerir. Tablo 2'de KOBİ
+sütunları işaretli metrikler (toplam işgücü maliyeti, uyum eğitimi oranı, iş kazası ve ölüm sayısı,
+üretkenlik, devir oranı, halefiyet etkinliği, kadro ve TZE, devamsızlık vb.) başlangıç için yeterlidir.
+Veri kolay toplanmalı; basitleştirilmiş, uyumlu ve entegre bir sisteme ihtiyaç vardır. Raporlama, kredi
+olanaklarına erişimde önem taşıyabilir.</p></details>
+
+<footer>
+  ISO 30414:2018 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma (Tablo 2) ve
+  formüller standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın
+  kendisi telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30414_metrikler.py
+=====================
+ISO 30414:2018 (Human resource management — Guidelines for internal and
+external human capital reporting) çerçevesindeki insan sermayesi raporlama
+(HCR) metriklerinin Python karşılığı.
+
+ISO 30414, insan sermayesi katkısını şeffaf kılmak için 11 raporlama alanı
+tanımlar: uyum ve etik, maliyetler, çeşitlilik, liderlik, örgüt kültürü, iş
+sağlığı-güvenliği ve refah, üretkenlik, işe alım-hareketlilik-devir, beceri ve
+yetkinlikler, halefiyet planlaması ve işgücü mevcudiyeti. Metrikler geleneksel
+insan sermayesi çerçevesindeki üç bileşene göre sınıflandırılır:
+
+    Girdi (input)    — insan sermayesine yapılan yatırım (işgücü maliyetleri)
+    Faaliyet (activity) — İK yaşam döngüsünün temel görevleri (kültür, eğitim)
+    Çıktı (output)   — yatırım ve faaliyetin sonucu (insan sermayesi RoI)
+
+Tablo 2, her metriğin büyük kuruluş / KOBİ × iç / dış raporlamadaki yerini verir.
+Raporlama cari dönemi ve iki önceki dönemi (üç yıllık seri) birlikte gösterir.
+
+Kullanım:
+    from iso30414_metrikler import insan_sermayesi_roi, devir_orani
+    insan_sermayesi_roi(4_500_000, 3_750_000, 1_500_000)   ->  0.5  (=%50)
+    devir_orani(142, 1000)                                 ->  14.2
+
+Doğrudan çalıştırıldığında (python3 iso30414_metrikler.py) standardın örnek
+tablolarına (Tablo 5, 6, 7, 12, 14, 18 ile Ek B) karşılık gelen hesaplar
+yeniden üretilir.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO 30414:2018'e dayanır.
+Kod, örnek değerler ve açıklamalar özgün olarak yazılmıştır; standardın
+kendisi telif korumalıdır ve bu modül onun yerine geçmez.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Optional, Sequence
+
+__all__ = [
+    # maliyet
+    "toplam_isgucu_maliyeti", "kisi_basi_maliyet", "devir_maliyeti",
+    "ucret_orani", "istihdam_maliyeti",
+    # çeşitlilik
+    "cinsiyet_yuzdesi", "engelli_orani", "yas_dagilimi",
+    # sağlık ve güvenlik
+    "kayip_zaman_orani", "kaza_orani", "olum_orani", "egitim_katilim",
+    # üretkenlik
+    "kisi_basi_ebit", "insan_sermayesi_roi", "roi_orani",
+    # işe alım, hareketlilik, devir
+    "devir_orani", "ic_doldurma_orani", "ic_hareketlilik_orani",
+    "elde_tutma_orani",
+    # halefiyet
+    "halefiyet_etkinligi", "halef_kapsama_orani", "halefiyet_derinligi",
+    # işgücü mevcudiyeti
+    "tam_zaman_esdeger", "devamsizlik_orani",
+    # ortak
+    "yillik_degisim",
+    # tablo ve denetim
+    "Yil", "InsanSermayesiTablosu", "ornek_tablo", "metrik_denetimi",
+    # dağıtıcı
+    "hesapla", "METRIK_LISTESI",
+]
+
+
+def _s(x: float) -> str:
+    """Sayıları Türkçe biçimde (binlik nokta, ondalık virgül) yazar."""
+    x = float(x)
+    if x == int(x):
+        return f"{int(x):,}".replace(",", ".")
+    t = f"{x:,.2f}".rstrip("0")
+    if t.endswith("."):
+        t = t[:-1]
+    return t.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", ".")
+
+
+# ---------------------------------------------------------------------------
+# 1) Maliyetler (4.7.3) — Girdi
+# ---------------------------------------------------------------------------
+
+def toplam_isgucu_maliyeti(toplam_ucret: float, yan_haklar: float,
+                           dis_isgucu: float = 0.0) -> float:
+    """Toplam işgücü maliyeti (Tablo 5).
+
+        Toplam işgücü maliyeti =
+            Toplam ücret + Yan hak maliyeti + Dış işgücü maliyeti
+
+    Kurumun işgücünü yönetme, sürdürme ve geliştirme konusunda verdiği finansal
+    değerin temel göstergesidir; dış işgücü maliyetlerini de içerir.
+    """
+    return toplam_ucret + yan_haklar + dis_isgucu
+
+
+def istihdam_maliyeti(ucretler: float, sosyal_guvenlik: float,
+                      sigorta: float, emeklilik: float,
+                      gelisim: float, diger: float = 0.0) -> float:
+    """Toplam istihdam maliyeti — tüm ücret ve yan hakların fiili tutarı."""
+    return ucretler + sosyal_guvenlik + sigorta + emeklilik + gelisim + diger
+
+
+def kisi_basi_maliyet(toplam_ise_alim_maliyeti: float, ise_alinan: float) -> float:
+    """Kişi başı işe alım maliyeti (cost-per-hire, ISO/TS 30407).
+
+        Kişi başı maliyet = Toplam işe alım maliyeti ÷ İşe alınan kişi sayısı
+    """
+    return toplam_ise_alim_maliyeti / ise_alinan
+
+
+def devir_maliyeti(ayrilan: float, giren: float, birim_maliyet: float) -> float:
+    """Devir maliyeti (4.7.3-7).
+
+        Devir maliyeti = (Ayrılan − Giren) × İlgili birim maliyet
+
+    İlgili maliyetler: doğrudan fesih, işgücü ayrılış, yerine alım ve oryantasyon
+    maliyetleri. Daha gelişmiş modeller ISO/TS 23378'de geliştirilmektedir.
+    """
+    return (ayrilan - giren) * birim_maliyet
+
+
+def ucret_orani(ortalama_tum: float, tanimli_kategori: float) -> float:
+    """Ortalama ücret ve ödeme oranı (4.7.3-3).
+
+        Oran = Tüm çalışanların ortalama toplam ücreti
+               ÷ Tanımlı kategori ya da bireylerin yıllık toplam ücreti
+
+    TZE tabanında raporlanır; kurumun fırsat eşitliği politikası uygulayıp
+    uygulamadığını anlamaya yardımcı olur. Tanımlı kategori, örneğin kurumun en
+    kıdemli yöneticileridir.
+    """
+    return ortalama_tum / tanimli_kategori
+
+
+# ---------------------------------------------------------------------------
+# 2) Çeşitlilik (4.7.4) — Faaliyet
+# ---------------------------------------------------------------------------
+
+def cinsiyet_yuzdesi(ilgili_cinsiyet: float, toplam_calisan: float) -> float:
+    """İlgili cinsiyetin kurumdaki yüzdesi (Tablo 7).
+
+        Yüzde = (İlgili cinsiyetteki çalışan ÷ Toplam çalışan) × 100
+    """
+    return 100 * ilgili_cinsiyet / toplam_calisan
+
+
+def engelli_orani(engelli: float, toplam_calisan: float) -> float:
+    """Engelli çalışan oranı (Şekil 2).
+
+        Oran = (Engelli çalışan sayısı ÷ Toplam çalışan) × 100
+
+    ICF'e göre engellilik; bozukluk, etkinlik kısıtı ve katılım kısıtı için
+    kullanılan bir şemsiye terimdir.
+    """
+    return 100 * engelli / toplam_calisan
+
+
+def yas_dagilimi(yas_grubu: float, toplam_calisan: float) -> float:
+    """Bir yaş grubunun işgücü içindeki payı (Tablo 6).
+
+    0–14 grubu, çocuk işçi (15 yaş altı) bulunmadığının teyidi için raporlanır.
+    """
+    return 100 * yas_grubu / toplam_calisan
+
+
+# ---------------------------------------------------------------------------
+# 3) Sağlık, güvenlik ve refah (4.7.7) — Faaliyet
+# ---------------------------------------------------------------------------
+
+def kayip_zaman_orani(kayip_zaman_vaka: float, calisilan_saat: float) -> float:
+    """Milyon çalışma saati başına kayıp zamanlı yaralanma (4.7.7-1).
+
+        Oran = (Kayıp zamanlı yaralanma ÷ Toplam çalışılan saat) × 1.000.000
+
+    Kayıp zamanlı yaralanma: ölüm, kalıcı sakatlık ya da bir gün/vardiya veya
+    daha fazla iş kaybıyla sonuçlanan olay. ILO'ya göre iş kazaları ve meslek
+    hastalıkları, dünya GSYH'sinin yaklaşık %4'ünü soğurur.
+    """
+    return 1_000_000 * kayip_zaman_vaka / calisilan_saat
+
+
+def kaza_orani(kaza: float, calisilan_saat: float,
+               taban: float = 1_000_000) -> float:
+    """İş kazası oranı (4.7.7-2).
+
+        Oran = (İş kazası ÷ Çalışan iş saati) × Taban
+
+    Taban milyon (1.000.000) ya da OSHA'ya uygun 200.000 (100 tam zamanlı
+    çalışan) olabilir; büyüklük ve menşe ülkesinden bağımsız karşılaştırma sağlar.
+    """
+    return taban * kaza / calisilan_saat
+
+
+def olum_orani(olumcul_yaralanma: float, toplam_calisan: float) -> float:
+    """Ölüm/fatalite oranı (4.7.7-3).
+
+        Oran = Ölümcül meslek yaralanması sayısı ÷ Toplam çalışan sayısı
+
+    Kurumun itibarı, mali cezalar ve tazminatlar üzerindeki olumsuz etki
+    nedeniyle izlenir.
+    """
+    return olumcul_yaralanma / toplam_calisan
+
+
+def egitim_katilim(katilan: float, toplam_calisan: float) -> float:
+    """Belirli bir eğitime katılan/onu tamamlayan çalışan oranı (%).
+
+    Uyum ve etik eğitimi (4.7.2), sağlık-güvenlik eğitimi (4.7.7-4) ve öğrenme
+    ve gelişim (4.7.10) alanlarında ortak kullanılan oran.
+    """
+    return 100 * katilan / toplam_calisan
+
+
+# ---------------------------------------------------------------------------
+# 4) Üretkenlik (4.7.8) — Çıktı
+# ---------------------------------------------------------------------------
+
+def kisi_basi_ebit(gelir: float, giderler: float, toplam_calisan: float) -> float:
+    """Çalışan başına EBIT / kâr (4.7.8-1).
+
+        EBIT/kâr per çalışan = (Gelirler − Giderler) ÷ Toplam çalışan sayısı
+
+    EBIT (faiz ve vergi öncesi kâr), faiz ve gelir vergisi dışındaki tüm
+    giderleri içerir; kurumun faaliyetlerinden gelir üretme yeteneğinin ölçüsüdür.
+    Hesaplamalarda TZE kullanılmalıdır.
+    """
+    return (gelir - giderler) / toplam_calisan
+
+
+def insan_sermayesi_roi(gelir: float, giderler: float,
+                        ucret_yan_hak: float) -> float:
+    """İnsan sermayesi yatırım getirisi (4.7.8-2).
+
+        RoI = {[Gelir − (Giderler − (Ücret + Yan haklar))] ÷ (Ücret + Yan haklar)} − 1
+
+    Her dolar/euro için geri dönen tutarı gösterir; sonuç, vergi öncesi getiri
+    oranıdır. Örnek: gelir 4,5M; giderler 3,75M; ücret+yan hak 1,5M →
+    {[4.500.000 − (3.750.000 − 1.500.000)] / 1.500.000} − 1 = 0,5 = %50.
+    Hesaplamalarda TZE kullanılır.
+    """
+    return (gelir - (giderler - ucret_yan_hak)) / ucret_yan_hak - 1
+
+
+def roi_orani(gelir: float, istihdam_maliyeti_: float) -> float:
+    """İnsan sermayesi RoI oranı (Ek B.3) — gelir/istihdam maliyeti oranı.
+
+    Ek B, RoI'yi ayrıca gelir ile istihdam maliyeti arasındaki oran olarak da
+    sunar (ör. 1,29 → 1,30).
+    """
+    return gelir / istihdam_maliyeti_
+
+
+# ---------------------------------------------------------------------------
+# 5) İşe alım, hareketlilik ve devir (4.7.9) — Faaliyet
+# ---------------------------------------------------------------------------
+
+def devir_orani(ayrilan: float, ortalama_calisan: float) -> float:
+    """Devir oranı (4.7.9-11).
+
+        Devir oranı = (Dönemdeki toplam ayrılan
+                       ÷ Dönemdeki ortalama toplam çalışan) × 100
+
+    Tüm ayrılanları içerir (emeklilik, fesih, istifa). Gönüllü devir ayrıca
+    hesaplanır; plansız ve öngörülemez olduğu için iş üzerinde daha olumsuz etki
+    yaratabilir.
+    """
+    return 100 * ayrilan / ortalama_calisan
+
+
+def ic_doldurma_orani(ic_ise_alim: float, tum_ise_alim: float) -> float:
+    """İçeriden doldurulan pozisyon oranı (4.7.9-5/6, Tablo 13).
+
+        Oran = (İç işe alım sayısı ÷ Tüm işe alım sayısı) × 100
+
+    %70–80 arası bir oran iyi yetenek yönetiminin işaretidir.
+    """
+    return 100 * ic_ise_alim / tum_ise_alim
+
+
+def ic_hareketlilik_orani(ic_transfer: float, toplam_calisan: float) -> float:
+    """İç hareketlilik oranı (4.7.9-9) — konum ve işlevler arası transfer payı."""
+    return 100 * ic_transfer / toplam_calisan
+
+
+def elde_tutma_orani(bir_yil_kalan: float, bir_yil_once_kadro: float) -> float:
+    """Elde tutma oranı / kararlılık indeksi (4.7.6-2).
+
+        Oran = (Bir yıl ve üzeri hizmeti olan çalışan
+                ÷ Bir yıl önce o pozisyonlardaki çalışan) × 100
+    """
+    return 100 * bir_yil_kalan / bir_yil_once_kadro
+
+
+# ---------------------------------------------------------------------------
+# 6) Halefiyet planlaması (4.7.11) — Faaliyet
+# ---------------------------------------------------------------------------
+
+def halefiyet_etkinligi(ic_hire_kritik: float, toplam_kritik: float) -> float:
+    """Halefiyet etkinlik oranı (4.7.11-1, Tablo 15).
+
+        Oran = (İç terfiyle doldurulan kritik pozisyon
+                ÷ Doldurulan toplam kritik pozisyon) × 100
+
+    %70–80 arası bir oran iyi halefiyet etkinliğinin işaretidir.
+    """
+    return 100 * ic_hire_kritik / toplam_kritik
+
+
+def halef_kapsama_orani(halef_havuzu: float, halefiyet_gereken: float) -> float:
+    """Halef kapsama oranı (4.7.11-2).
+
+        Oran = (Liderlik halef havuzundaki çalışan
+                ÷ Halefiyet uygulanan toplam lider) × 100
+    """
+    return 100 * halef_havuzu / halefiyet_gereken
+
+
+def halefiyet_derinligi(hazir_aday: float, halefiyet_gereken_kritik: float) -> float:
+    """Halefiyet derinlik oranı (4.7.11-3).
+
+        Oran = (İlgili hazırlık düzeyindeki aday sayısı
+                ÷ Halefiyet uygulanan kritik pozisyon sayısı) × 100
+
+    Hazırlık düzeyleri: şimdi hazır, 1–3 yılda hazır, 4–5 yılda hazır.
+    """
+    return 100 * hazir_aday / halefiyet_gereken_kritik
+
+
+# ---------------------------------------------------------------------------
+# 7) İşgücü mevcudiyeti (4.7.12) — Girdi
+# ---------------------------------------------------------------------------
+
+def tam_zaman_esdeger(tam_zamanli: float, yari_zamanli: float,
+                      yari_zaman_orani: float = 0.5) -> float:
+    """Tam zaman eşdeğeri (FTE, 4.7.12-2).
+
+        TZE = Tam zamanlı çalışan + (Yarı zamanlı çalışan × Yarı zaman oranı)
+
+    Yarı zaman oranı ülkeye göre normalleştirilebilir (ör. 20/40 = 0,5).
+    """
+    return tam_zamanli + yari_zamanli * yari_zaman_orani
+
+
+def devamsizlik_orani(devamsiz_gun: float, mevcut_is_gunu: float) -> float:
+    """Devamsızlık oranı (4.7.12-4, Tablo 18).
+
+        Oran = (Devamsız gün sayısı
+                ÷ Dönemdeki mevcut çalışma günü) × 100
+
+    Tatil, resmî bayram ve izinli devamsızlık hesaba katılmaz.
+    """
+    return 100 * devamsiz_gun / mevcut_is_gunu
+
+
+# ---------------------------------------------------------------------------
+# 8) Ortak: yıllık değişim
+# ---------------------------------------------------------------------------
+
+def yillik_degisim(cari: float, onceki: float) -> float:
+    """Bir metriğin önceki döneme göre yüzde değişimi.
+
+    Raporlama cari dönemi ve iki önceki dönemi (üç yıllık seri) birlikte gösterir.
+    """
+    return 100 * (cari - onceki) / onceki
+
+
+# ---------------------------------------------------------------------------
+# 9) Çok yıllık insan sermayesi tablosu (Ek B)
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Yil:
+    """Tek bir raporlama yılının çekirdek insan sermayesi verisi."""
+    ad: str
+    gelir: float = 0.0
+    giderler: float = 0.0
+    toplam_isgucu_maliyeti: float = 0.0
+    ucret_yan_hak: float = 0.0
+    tze: float = 0.0
+    ayrilan: float = 0.0
+
+    @property
+    def kisi_basi_gelir(self) -> float:
+        return self.gelir / self.tze if self.tze else 0.0
+
+    @property
+    def tcow_orani(self) -> float:
+        return 100 * self.toplam_isgucu_maliyeti / self.gelir if self.gelir else 0.0
+
+    @property
+    def hc_roi(self) -> float:
+        return insan_sermayesi_roi(self.gelir, self.giderler, self.ucret_yan_hak) \
+            if self.ucret_yan_hak else 0.0
+
+    @property
+    def devir(self) -> float:
+        return devir_orani(self.ayrilan, self.tze) if self.tze else 0.0
+
+
+@dataclass
+class InsanSermayesiTablosu:
+    """Ek B tarzı çok yıllık insan sermayesi göstergeleri tablosu."""
+    yillar: list = field(default_factory=list)
+
+    def ekle(self, ad: str, gelir: float = 0, giderler: float = 0,
+             toplam_isgucu_maliyeti: float = 0, ucret_yan_hak: float = 0,
+             tze: float = 0, ayrilan: float = 0) -> "InsanSermayesiTablosu":
+        self.yillar.append(Yil(ad, gelir, giderler, toplam_isgucu_maliyeti,
+                               ucret_yan_hak, tze, ayrilan))
+        return self
+
+    def tablo(self) -> list:
+        satirlar = []
+        for i, y in enumerate(self.yillar):
+            deg = (yillik_degisim(y.gelir, self.yillar[i - 1].gelir)
+                   if i > 0 and self.yillar[i - 1].gelir else None)
+            satirlar.append([y.ad, y.tze, round(y.kisi_basi_gelir, 0),
+                             round(y.tcow_orani, 1), round(y.hc_roi * 100, 1),
+                             round(y.devir, 1),
+                             round(deg, 1) if deg is not None else None])
+        return satirlar
+
+    def ozet(self) -> dict:
+        if not self.yillar:
+            return {}
+        son = self.yillar[-1]
+        return {
+            "yil_sayisi": len(self.yillar),
+            "son_yil": son.ad,
+            "kisi_basi_gelir": round(son.kisi_basi_gelir, 0),
+            "tcow_orani_yuzde": round(son.tcow_orani, 1),
+            "hc_roi_yuzde": round(son.hc_roi * 100, 1),
+            "devir_orani_yuzde": round(son.devir, 1),
+        }
+
+
+def ornek_tablo() -> InsanSermayesiTablosu:
+    """Üç yıllık örnek tablo — Ek B.3'teki büyüklüklerle uyumlu (mutlak $).
+
+    Gelir, gider, toplam işgücü maliyeti, ücret+yan hak, TZE ve ayrılan sayısı;
+    tablo bunlardan kişi başı gelir, TCOW oranı, insan sermayesi RoI ve devir
+    oranını türetir. 2016 (önceki yıl) ve 2017 (cari yıl) Ek B.3 değerleridir;
+    2015 eğilime uygun kurgulanmıştır. Cari yıl kişi başı gelir = 1.540.000.000
+    ÷ 16.400 = 93.902 (Ek B.3 ile aynı).
+    """
+    t = InsanSermayesiTablosu()
+    t.ekle("2015", gelir=1_260_000_000, giderler=1_060_000_000,
+           toplam_isgucu_maliyeti=705_000_000, ucret_yan_hak=545_000_000,
+           tze=13_300, ayrilan=1_530)
+    t.ekle("2016", gelir=1_400_000_000, giderler=1_170_000_000,
+           toplam_isgucu_maliyeti=779_950_000, ucret_yan_hak=600_000_000,
+           tze=15_000, ayrilan=2_085)
+    t.ekle("2017", gelir=1_540_000_000, giderler=1_285_000_000,
+           toplam_isgucu_maliyeti=861_000_000, ucret_yan_hak=657_000_000,
+           tze=16_400, ayrilan=2_329)
+    return t
+
+
+def metrik_denetimi(strateji_baglantisi: bool = False,
+                    veri_kalitesi: bool = False,
+                    karsilastirilabilirlik: bool = False,
+                    ucyillik_seri: bool = False,
+                    risk_ozeti: bool = False,
+                    ic_dis_ayrimi: bool = False,
+                    nitel_aciklama: bool = False,
+                    hedef_sapma: bool = False) -> list:
+    """Bir HCR raporunun ISO 30414 kılavuz ilkelerine göre eksiklerini listeler.
+
+    Standardın 4.2 kılavuz ilkeleri: stratejik odak ve önemlilik, geçerli ve
+    güvenilir kanıta dayalı ölçüm, benzer kuruluşlar arası karşılaştırılabilirlik,
+    önemlilik temelli anlatı ve şeffaflık.
+    """
+    uyarilar = []
+    if not strateji_baglantisi:
+        uyarilar.append("Metrikler kurumun strateji ve değerleriyle "
+                        "ilişkilendirilmemiş (stratejik odak ve önemlilik).")
+    if not veri_kalitesi:
+        uyarilar.append("Geçerli, güvenilir ve kanıta dayalı ölçümlerin veri "
+                        "kalitesi ve sürekliliği belgelenmemiş.")
+    if not karsilastirilabilirlik:
+        uyarilar.append("Benzer kuruluş ve sektörlerle karşılaştırılabilirlik "
+                        "(4.5.2) sağlanmamış.")
+    if not ucyillik_seri:
+        uyarilar.append("Cari ve iki önceki dönem birlikte verilmemiş; ilk "
+                        "raporlamada bir yıl kabul edilebilir.")
+    if not risk_ozeti:
+        uyarilar.append("Her raporlama alanı için etkin risk yönetimi anlatısı "
+                        "(4.6) yok.")
+    if not ic_dis_ayrimi:
+        uyarilar.append("İç ve dış raporlama ayrımı yapılmamış; hangi metriğin "
+                        "dışarıya açıklanacağı belirlenmemiş.")
+    if not nitel_aciklama:
+        uyarilar.append("Metriklerin nitel açıklaması ve önemlilik temelli "
+                        "anlatısı eksik.")
+    if not hedef_sapma:
+        uyarilar.append("Kaçırılan ya da aşılan hedefler ile dönemler arası "
+                        "değişim raporlanmamış.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 10) Dağıtıcı: hesaplayıcı arayüzünün tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "toplam_isgucu_maliyeti", "kisi_basi_maliyet", "devir_maliyeti",
+    "ucret_orani", "cinsiyet_yuzdesi", "engelli_orani", "kayip_zaman",
+    "kaza_orani", "olum_orani", "egitim_katilim", "kisi_basi_ebit",
+    "insan_sermayesi_roi", "devir_orani", "ic_doldurma", "ic_hareketlilik",
+    "elde_tutma", "halefiyet_etkinligi", "halef_kapsama", "halefiyet_derinligi",
+    "devamsizlik",
+]
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ondalik, birim, ifade (formülün yerine konmuş
+    hâli), ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "toplam_isgucu_maliyeti":
+        d = toplam_isgucu_maliyeti(g["toplam_ucret"], g["yan_haklar"],
+                                   g.get("dis_isgucu", 0))
+        return {"deger": d, "ondalik": 0, "birim": "para birimi",
+                "ifade": (f"{_s(g['toplam_ucret'])} + {_s(g['yan_haklar'])} + "
+                          f"{_s(g.get('dis_isgucu', 0))}"),
+                "ayrinti": [["İç işgücü maliyeti",
+                             g["toplam_ucret"] + g["yan_haklar"]],
+                            ["Dış işgücü payı (%)",
+                             round(100 * g.get("dis_isgucu", 0) / d, 1) if d else 0],
+                            ["TZE başına maliyet",
+                             round(d / g["tze"], 0) if g.get("tze") else None]]}
+
+    if metrik == "kisi_basi_maliyet":
+        d = kisi_basi_maliyet(g["toplam_ise_alim_maliyeti"], g["ise_alinan"])
+        return {"deger": d, "ondalik": 0, "birim": "para birimi / işe alım",
+                "ifade": (f"{_s(g['toplam_ise_alim_maliyeti'])} ÷ "
+                          f"{_s(g['ise_alinan'])}"),
+                "ayrinti": [["İşe alınan kişi", g["ise_alinan"]],
+                            ["Toplam işe alım maliyeti",
+                             g["toplam_ise_alim_maliyeti"]]]}
+
+    if metrik == "devir_maliyeti":
+        d = devir_maliyeti(g["ayrilan"], g["giren"], g["birim_maliyet"])
+        return {"deger": d, "ondalik": 0, "birim": "para birimi",
+                "ifade": (f"({_s(g['ayrilan'])} − {_s(g['giren'])}) × "
+                          f"{_s(g['birim_maliyet'])}"),
+                "ayrinti": [["Net ayrılış", g["ayrilan"] - g["giren"]],
+                            ["Birim maliyet", g["birim_maliyet"]]]}
+
+    if metrik == "ucret_orani":
+        d = ucret_orani(g["ortalama_tum"], g["tanimli_kategori"])
+        return {"deger": d, "ondalik": 2, "birim": "oran",
+                "ifade": (f"{_s(g['ortalama_tum'])} ÷ "
+                          f"{_s(g['tanimli_kategori'])}"),
+                "ayrinti": [["Tüm çalışan ortalama ücreti", g["ortalama_tum"]],
+                            ["Tanımlı kategori ücreti", g["tanimli_kategori"]],
+                            ["Kategori / ortalama katı",
+                             round(g["tanimli_kategori"] / g["ortalama_tum"], 1)]]}
+
+    if metrik == "cinsiyet_yuzdesi":
+        d = cinsiyet_yuzdesi(g["ilgili_cinsiyet"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 1, "birim": "% işgücü",
+                "ifade": (f"({_s(g['ilgili_cinsiyet'])} ÷ "
+                          f"{_s(g['toplam_calisan'])}) × 100"),
+                "ayrinti": [["Diğer cinsiyetler (kişi)",
+                             g["toplam_calisan"] - g["ilgili_cinsiyet"]],
+                            ["Önceki döneme fark (puan)",
+                             round(d - g.get("onceki_oran", d), 1)]]}
+
+    if metrik == "engelli_orani":
+        d = engelli_orani(g["engelli"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 2, "birim": "% işgücü",
+                "ifade": (f"({_s(g['engelli'])} ÷ "
+                          f"{_s(g['toplam_calisan'])}) × 100"),
+                "ayrinti": [["Engelli çalışan", g["engelli"]],
+                            ["Toplam çalışan", g["toplam_calisan"]]]}
+
+    if metrik == "kayip_zaman":
+        d = kayip_zaman_orani(g["kayip_zaman_vaka"], g["calisilan_saat"])
+        return {"deger": d, "ondalik": 2,
+                "birim": "milyon saat başına kayıp zamanlı yaralanma",
+                "ifade": (f"({_s(g['kayip_zaman_vaka'])} ÷ "
+                          f"{_s(g['calisilan_saat'])}) × 1.000.000"),
+                "ayrinti": [["Kayıp zamanlı vaka", g["kayip_zaman_vaka"]],
+                            ["Çalışılan saat", g["calisilan_saat"]]]}
+
+    if metrik == "kaza_orani":
+        taban = g.get("taban", 1_000_000)
+        d = kaza_orani(g["kaza"], g["calisilan_saat"], taban)
+        return {"deger": d, "ondalik": 2,
+                "birim": ("milyon saat başına kaza" if taban == 1_000_000
+                          else "100 TZE başına kaza (OSHA)"),
+                "ifade": (f"({_s(g['kaza'])} ÷ {_s(g['calisilan_saat'])}) × "
+                          f"{_s(taban)}"),
+                "ayrinti": [["Kaza sayısı", g["kaza"]],
+                            ["Taban", taban],
+                            ["Milyon saat oranı",
+                             round(1_000_000 * g["kaza"] / g["calisilan_saat"], 2)]]}
+
+    if metrik == "olum_orani":
+        d = olum_orani(g["olumcul"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 4, "birim": "çalışan başına ölüm",
+                "ifade": f"{_s(g['olumcul'])} ÷ {_s(g['toplam_calisan'])}",
+                "ayrinti": [["Ölümcül yaralanma", g["olumcul"]],
+                            ["10.000 çalışan başına",
+                             round(10_000 * d, 2)]]}
+
+    if metrik == "egitim_katilim":
+        d = egitim_katilim(g["katilan"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 1, "birim": "% katılım",
+                "ifade": (f"({_s(g['katilan'])} ÷ "
+                          f"{_s(g['toplam_calisan'])}) × 100"),
+                "ayrinti": [["Katılmayan (kişi)",
+                             g["toplam_calisan"] - g["katilan"]],
+                            ["Hedeften sapma (puan)",
+                             round(d - g.get("hedef", d), 1)]]}
+
+    if metrik == "kisi_basi_ebit":
+        d = kisi_basi_ebit(g["gelir"], g["giderler"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 0, "birim": "para birimi / çalışan",
+                "ifade": (f"({_s(g['gelir'])} − {_s(g['giderler'])}) ÷ "
+                          f"{_s(g['toplam_calisan'])}"),
+                "ayrinti": [["EBIT / kâr", g["gelir"] - g["giderler"]],
+                            ["Toplam çalışan (TZE)", g["toplam_calisan"]]]}
+
+    if metrik == "insan_sermayesi_roi":
+        d = insan_sermayesi_roi(g["gelir"], g["giderler"], g["ucret_yan_hak"])
+        return {"deger": 100 * d, "ondalik": 1, "birim": "% getiri",
+                "ifade": (f"{{[{_s(g['gelir'])} − ({_s(g['giderler'])} − "
+                          f"{_s(g['ucret_yan_hak'])})] ÷ "
+                          f"{_s(g['ucret_yan_hak'])}}} − 1"),
+                "ayrinti": [["RoI oranı", round(d + 1, 2)],
+                            ["İşgücü maliyeti (ücret+yan hak)",
+                             g["ucret_yan_hak"]],
+                            ["Her 1 birim için geri dönen",
+                             round(1 + d, 2)]]}
+
+    if metrik == "devir_orani":
+        d = devir_orani(g["ayrilan"], g["ortalama_calisan"])
+        return {"deger": d, "ondalik": 1, "birim": "% devir",
+                "ifade": (f"({_s(g['ayrilan'])} ÷ "
+                          f"{_s(g['ortalama_calisan'])}) × 100"),
+                "ayrinti": [["Ayrılan", g["ayrilan"]],
+                            ["Gönüllü devir (%)",
+                             round(100 * g.get("gonullu", 0) /
+                                   g["ortalama_calisan"], 1)
+                             if g.get("gonullu") is not None else None],
+                            ["Önceki döneme fark (puan)",
+                             round(d - g.get("onceki_oran", d), 1)]]}
+
+    if metrik == "ic_doldurma":
+        d = ic_doldurma_orani(g["ic_ise_alim"], g["tum_ise_alim"])
+        return {"deger": d, "ondalik": 1, "birim": "% içeriden doldurulan",
+                "ifade": (f"({_s(g['ic_ise_alim'])} ÷ "
+                          f"{_s(g['tum_ise_alim'])}) × 100"),
+                "ayrinti": [["Dışarıdan doldurulan",
+                             g["tum_ise_alim"] - g["ic_ise_alim"]],
+                            ["Dış işe alım oranı (%)", round(100 - d, 1)]]}
+
+    if metrik == "ic_hareketlilik":
+        d = ic_hareketlilik_orani(g["ic_transfer"], g["toplam_calisan"])
+        return {"deger": d, "ondalik": 1, "birim": "% iç hareketlilik",
+                "ifade": (f"({_s(g['ic_transfer'])} ÷ "
+                          f"{_s(g['toplam_calisan'])}) × 100"),
+                "ayrinti": [["İç transfer", g["ic_transfer"]],
+                            ["Toplam çalışan", g["toplam_calisan"]]]}
+
+    if metrik == "elde_tutma":
+        d = elde_tutma_orani(g["bir_yil_kalan"], g["bir_yil_once_kadro"])
+        return {"deger": d, "ondalik": 1, "birim": "% elde tutma",
+                "ifade": (f"({_s(g['bir_yil_kalan'])} ÷ "
+                          f"{_s(g['bir_yil_once_kadro'])}) × 100"),
+                "ayrinti": [["Ayrılan (kişi)",
+                             g["bir_yil_once_kadro"] - g["bir_yil_kalan"]],
+                            ["Örtük devir (%)",
+                             round(100 - d, 1)]]}
+
+    if metrik == "halefiyet_etkinligi":
+        d = halefiyet_etkinligi(g["ic_hire_kritik"], g["toplam_kritik"])
+        return {"deger": d, "ondalik": 1, "birim": "% halefiyet etkinliği",
+                "ifade": (f"({_s(g['ic_hire_kritik'])} ÷ "
+                          f"{_s(g['toplam_kritik'])}) × 100"),
+                "ayrinti": [["Dış işe alımla doldurulan",
+                             g["toplam_kritik"] - g["ic_hire_kritik"]],
+                            ["İyi yönetim eşiği (%)", "70–80"]]}
+
+    if metrik == "halef_kapsama":
+        d = halef_kapsama_orani(g["halef_havuzu"], g["halefiyet_gereken"])
+        return {"deger": d, "ondalik": 1, "birim": "% halef kapsama",
+                "ifade": (f"({_s(g['halef_havuzu'])} ÷ "
+                          f"{_s(g['halefiyet_gereken'])}) × 100"),
+                "ayrinti": [["Halef havuzu", g["halef_havuzu"]],
+                            ["Halefiyet uygulanan lider",
+                             g["halefiyet_gereken"]]]}
+
+    if metrik == "halefiyet_derinligi":
+        d = halefiyet_derinligi(g["hazir_aday"], g["kritik_pozisyon"])
+        return {"deger": d, "ondalik": 1, "birim": "% derinlik",
+                "ifade": (f"({_s(g['hazir_aday'])} ÷ "
+                          f"{_s(g['kritik_pozisyon'])}) × 100"),
+                "ayrinti": [["Hazır aday", g["hazir_aday"]],
+                            ["Kritik pozisyon", g["kritik_pozisyon"]],
+                            ["Hazırlık düzeyi", g.get("duzey", "şimdi hazır")]]}
+
+    if metrik == "devamsizlik":
+        d = devamsizlik_orani(g["devamsiz_gun"], g["mevcut_is_gunu"])
+        return {"deger": d, "ondalik": 1, "birim": "% devamsızlık",
+                "ifade": (f"({_s(g['devamsiz_gun'])} ÷ "
+                          f"{_s(g['mevcut_is_gunu'])}) × 100"),
+                "ayrinti": [["Devamsız gün", g["devamsiz_gun"]],
+                            ["Mevcut çalışma günü", g["mevcut_is_gunu"]],
+                            ["Devam oranı (%)", round(100 - d, 1)]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 11) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _demo() -> None:
+    cizgi = "-" * 78
+    print("ISO 30414:2018 — doğrulama çıktısı")
+    print(cizgi)
+
+    print("Maliyetler (Tablo 5, € milyon) — toplam işgücü maliyeti")
+    print(f"{'Kalem':<26}{'2017':>8}{'2016':>8}{'2015':>8}")
+    kalemler = [
+        ("Ücretler", 163.8, 150.9, 154.3),
+        ("Vergi ve sosyal güvenlik", 28.6, 29.7, 29.0),
+        ("Yan hak giderleri", 12.3, 12.3, 12.7),
+        ("Diğer çalışan giderleri", 6.8, 6.6, 6.9),
+    ]
+    for ad, a, b, c in kalemler:
+        print(f"{ad:<26}{a:>8.1f}{b:>8.1f}{c:>8.1f}")
+    for i, yil in enumerate(("2017", "2016", "2015")):
+        toplam = sum(k[i + 1] for k in kalemler)
+        print(f"{'  → ' + yil + ' toplam':<26}{toplam:>8.1f}")
+    print(cizgi)
+
+    print("Çeşitlilik (Tablo 6 yaş % / Tablo 7 cinsiyet %)")
+    print("  15-30:", round(yas_dagilimi(131, 1000), 1),
+          "| 30-50:", round(yas_dagilimi(321, 1000), 1),
+          "| 50+:", round(yas_dagilimi(274, 1000), 1))
+    print("  Kadın:", round(cinsiyet_yuzdesi(326, 1000), 1),
+          "| Erkek:", round(cinsiyet_yuzdesi(636, 1000), 1),
+          "| Diğer:", round(cinsiyet_yuzdesi(38, 1000), 1))
+    print(cizgi)
+
+    print("Üretkenlik (Tablo 12 / 4.7.8 örneği)")
+    print(f"  Çalışan başına kâr: {kisi_basi_ebit(1_000_000, 918_000, 1):>12,.0f}")
+    print("  İnsan sermayesi RoI örneği (gelir 4,5M; gider 3,75M; ücret+yan 1,5M):")
+    roi = insan_sermayesi_roi(4_500_000, 3_750_000, 1_500_000)
+    print(f"    → {roi:.2f} = %{roi * 100:.0f}")
+    print(cizgi)
+
+    print("Devir (Tablo 14 — gönüllü/toplam %)")
+    for grup, ayr, kadro in [("Kadın", 143, 1000), ("Erkek", 141, 1000),
+                             ("Toplam", 142, 1000)]:
+        print(f"  {grup:<8}: devir {devir_orani(ayr, kadro):.1f} %")
+    print(cizgi)
+
+    print("Halefiyet (Tablo 15) ve iç doldurma (Tablo 13)")
+    for yil, ic, top in [("2017", 17, 23), ("2016", 14, 21), ("2015", 15, 25)]:
+        print(f"  {yil}: halefiyet etkinliği "
+              f"{halefiyet_etkinligi(ic, top):.0f} %")
+    print(f"  Pozisyon iç doldurma 2017: "
+          f"{ic_doldurma_orani(75, 100):.0f} %")
+    print(cizgi)
+
+    print("Devamsızlık (Tablo 18 — bölgesel %)")
+    for bolge, dev, gun in [("Asya/Pasifik", 3.4, 100), ("Avrupa", 3.3, 100),
+                            ("Kuzey Amerika", 3.5, 100)]:
+        print(f"  {bolge:<14}: {devamsizlik_orani(dev, gun):.1f} %")
+    print(cizgi)
+
+    print("Çok yıllık insan sermayesi tablosu (Ek B.3 büyüklüğünde)")
+    t = ornek_tablo()
+    print(f"{'Yıl':<8}{'TZE':>9}{'Kişi/gelir':>12}{'TCOW %':>9}"
+          f"{'RoI %':>8}{'Devir %':>9}{'Gelir Δ%':>10}")
+    for s in t.tablo():
+        deg = f"{s[6]:>10.1f}" if s[6] is not None else f"{'—':>10}"
+        print(f"{s[0]:<8}{s[1]:>9,.0f}{s[2]:>12,.0f}{s[3]:>9.1f}"
+              f"{s[4]:>8.1f}{s[5]:>9.1f}{deg}")
+    print(cizgi)
+    for k, v in t.ozet().items():
+        print(f"{k:<22}: {v}")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("insan_sermayesi_roi", gelir=4_500_000,
+                  giderler=3_750_000, ucret_yan_hak=1_500_000)["deger"], "%")
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir kılavuz ilkeyi karşılamayan kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI — ISO 30414 Tablo 2
+   a : raporlama alanı (uyum, maliyet, cesitlilik, liderlik, kultur,
+       isg, uretkenlik, devir, beceri, halefiyet, isgucu)
+   t : bileşen (i girdi / a faaliyet / o çıktı)
+   rep : Tablo 2 işaretleri — bi büyük·iç, bd büyük·dış, ki KOBİ·iç, kd KOBİ·dış
+   calc : bu sayfadaki hesaplayıcı kimliği
+   k : ek etiket (kat kategori, onk ön koşul, tur türetilmiş)
+   ts : ilgili ISO/TS teknik şartnamesi
+   ========================================================= */
+var METRICS = [
+ {g:"Uyum ve etik (4.7.2)", a:"uyum", items:[
+  {n:"Açılan şikâyetlerin sayısı ve türü", t:"a", rep:["bi","bd","ki"], d:"İşyeri içi resmî yakınmalar; taciz, ayrımcılık gibi nedenlerle açılır"},
+  {n:"Sonuçlandırılan disiplin işlemlerinin sayısı ve türü", t:"a", rep:["bi","bd"], d:"Beklenen işyeri kurallarını karşılamayan davranışın ele alınma süreci"},
+  {n:"Uyum ve etik eğitimini tamamlayan çalışan oranı", t:"a", rep:["bi","bd","ki","kd"], calc:"egitim_katilim", d:"Kurumun tanımladığı içeriğe göre eğitimi tamamlayan çalışan yüzdesi"},
+  {n:"Dış taraflara havale edilen uyuşmazlıklar", t:"a", rep:["bi","ki"], d:"İç uyuşmazlıkların dışarıda çözülmesinin gerekli hâle geldiği ortamı gösterir"},
+  {n:"Dış denetim bulgularının sayısı, türü ve kaynağı", t:"a", rep:["bi","ki"], d:"Politika seti, yasal bağlar, mevzuat gereklilikleri ve doğan eylemler"}
+ ]},
+ {g:"Maliyetler (4.7.3)", a:"maliyet", items:[
+  {n:"Toplam işgücü maliyeti", t:"i", rep:["bi","bd","ki","kd"], calc:"toplam_isgucu_maliyeti", d:"Toplam ücret + yan hak + dış işgücü maliyeti (Tablo 5)"},
+  {n:"Dış işgücü maliyeti", t:"i", rep:["bi","ki"], d:"Yüklenici, danışman, geçici ve gig-işçi giderleri; iç maliyete oranla dış bağımlılığı gösterir"},
+  {n:"Ortalama ücret ve ödeme oranı", t:"i", rep:["bi"], calc:"ucret_orani", d:"Tüm çalışan ortalaması ÷ tanımlı kategori (ör. en kıdemli yöneticiler); fırsat eşitliği göstergesi"},
+  {n:"Toplam istihdam maliyeti", t:"i", rep:["bi","ki"], d:"Ücret, sosyal güvenlik, sigorta, emeklilik ve gelişim dâhil tüm fiili maliyet"},
+  {n:"Kişi başı işe alım maliyeti", t:"i", rep:["bi"], calc:"kisi_basi_maliyet", ts:"ISO/TS 30407", d:"Cost-per-hire = toplam işe alım maliyeti ÷ işe alınan kişi sayısı"},
+  {n:"İşe alım maliyeti", t:"i", rep:["bi"], d:"İç ve dış tüm işe alım (bulma ve işe alma) maliyetlerinin toplamı"},
+  {n:"Devir maliyeti", t:"i", rep:["bi","ki"], calc:"devir_maliyeti", ts:"ISO/TS 23378", d:"(Ayrılan − Giren) × ilgili birim maliyet (fesih, ayrılış, yerine alım, oryantasyon)"}
+ ]},
+ {g:"Çeşitlilik (4.7.4)", a:"cesitlilik", items:[
+  {n:"İşgücü çeşitliliği — yaş", t:"a", rep:["bi","bd","ki"], k:"kat", d:"0–14 grubu çocuk işçi bulunmadığının teyidi için raporlanır (Tablo 6)"},
+  {n:"İşgücü çeşitliliği — cinsiyet", t:"a", rep:["bi","bd","ki"], calc:"cinsiyet_yuzdesi", d:"(İlgili cinsiyet ÷ toplam çalışan) × 100 (Tablo 7)"},
+  {n:"İşgücü çeşitliliği — engellilik", t:"a", rep:["bi","bd","ki"], calc:"engelli_orani", d:"Engelli çalışan oranı; ICF şemsiye tanımına dayanır (Şekil 2)"},
+  {n:"İşgücü çeşitliliği — diğer göstergeler", t:"a", rep:["bi","bd","ki"], k:"kat", d:"Azınlık ya da kırılgan gruplar; ör. uyruk, iş ailesi, kıdem"},
+  {n:"Liderlik/yönetim ekibi çeşitliliği", t:"a", rep:["bi","bd"], d:"Cinsiyet, yaş, engellilik vb.; kurul çeşitliliğini de kapsar"}
+ ]},
+ {g:"Liderlik (4.7.5)", a:"liderlik", items:[
+  {n:"Liderlik güveni", t:"a", rep:["bi","bd"], d:"Adalet, dürüstlük ve tutarlılık üzerine çalışan anketlerinden liderlik güven indeksi (Tablo 8)"},
+  {n:"Kontrol alanı (span of control)", t:"a", rep:["bi"], d:"Bir yöneticiye rapor veren çalışan sayısı"},
+  {n:"Liderlik gelişimi", t:"a", rep:["bi"], d:"Liderlik geliştirme programına ya da eğitime katılan lider yüzdesi"}
+ ]},
+ {g:"Örgüt kültürü (4.7.6)", a:"kultur", items:[
+  {n:"Bağlılık / tatmin / adanmışlık", t:"a", rep:["bi","ki"], d:"Anonimliği güvence altına alan çalışan anketiyle üretilen bağlılık indeksi (Tablo 9)"},
+  {n:"Elde tutma oranı", t:"a", rep:["bi","ki"], calc:"elde_tutma", ts:"ISO/TS 23378", d:"Kararlılık indeksi: bir yıl+ hizmeti olan ÷ bir yıl önceki kadro"}
+ ]},
+ {g:"Sağlık, güvenlik ve refah (4.7.7)", a:"isg", items:[
+  {n:"Yaralanmaya bağlı kayıp zaman", t:"a", rep:["bi","bd"], calc:"kayip_zaman", d:"Milyon çalışma saati başına kayıp zamanlı yaralanma (Şekil 3)"},
+  {n:"İş kazası sayısı", t:"a", rep:["bi","bd","ki","kd"], calc:"kaza_orani", d:"Milyon (ya da OSHA'ya göre 200.000) çalışma saati başına kaza oranı (Tablo 10)"},
+  {n:"İşte ölüm sayısı", t:"a", rep:["bi","bd","ki","kd"], calc:"olum_orani", d:"Ölümcül meslek yaralanması ÷ toplam çalışan (Tablo 11)"},
+  {n:"Sağlık-güvenlik eğitimine katılan çalışan oranı", t:"a", rep:["bi","ki"], calc:"egitim_katilim", d:"Dönemde sağlık ve güvenlik eğitimine katılan çalışan yüzdesi"}
+ ]},
+ {g:"Üretkenlik (4.7.8)", a:"uretkenlik", items:[
+  {n:"Çalışan başına EBIT / gelir / kâr", t:"o", rep:["bi","bd","ki","kd"], calc:"kisi_basi_ebit", d:"(Gelir − Gider) ÷ toplam çalışan (TZE); kamu için önerilmez (Tablo 12)"},
+  {n:"İnsan sermayesi RoI", t:"o", rep:["bi","bd","ki","kd"], calc:"insan_sermayesi_roi", d:"İnsan sermayesi yatırımının verimliliği; işgücü maliyeti başına getiri (Tablo 12, Ek B.3)"}
+ ]},
+ {g:"İşe alım, hareketlilik ve devir (4.7.9)", a:"devir", items:[
+  {n:"Pozisyon başına nitelikli aday sayısı", t:"a", rep:["bi"], d:"İşin gereklerini karşılayan başvuru sayısı"},
+  {n:"İşe alım kalitesi (quality per hire)", t:"a", rep:["bi"], ts:"ISO/TS 30411", d:"İşe alım sonrası performansın işe alım öncesi beklentiyle karşılaştırılması"},
+  {n:"Boş pozisyonu doldurma süresi", t:"a", rep:["bi","bd"], d:"Onaylı talepten iş teklifinin kabulüne kadar geçen ortalama gün sayısı"},
+  {n:"Kritik pozisyonu doldurma süresi", t:"a", rep:["bi","bd"], ts:"ISO/TS 30410", d:"Kritik pozisyonlar için ortalama doldurma süresi"},
+  {n:"Geçiş ve gelecek işgücü yetkinlik değerlendirmesi (yetenek havuzu)", t:"a", rep:["bi"], k:"tur", d:"Nitel gösterge: işgücü segmentasyonuna göre gelecek talep"},
+  {n:"İçeriden doldurulan pozisyon oranı", t:"a", rep:["bi","bd"], calc:"ic_doldurma", d:"%70–80 arası iyi yetenek yönetiminin işareti (Tablo 13)"},
+  {n:"İçeriden doldurulan kritik pozisyon oranı", t:"a", rep:["bi","bd"], calc:"ic_doldurma", d:"Kritik pozisyonların iç işe alımla yeniden doldurulma payı"},
+  {n:"Kritik pozisyonların diğer pozisyonlara oranı", t:"a", rep:["bi","ki"], d:"Değer katmada yüksek etkili pozisyonların tüm pozisyonlara oranı (%)"},
+  {n:"Boş kritik pozisyonların tüm boş pozisyonlara oranı", t:"a", rep:["bi"], d:"50'den az çalışanlı kurumlarda tüm pozisyonlar kritik sayılabilir"},
+  {n:"İç hareketlilik oranı (hiyerarşi, yatay, terfi)", t:"a", rep:["bi"], calc:"ic_hareketlilik", d:"Konum ve işlevler arası iç transfer sayısı"},
+  {n:"Çalışan yedek gücü (bench strength)", t:"a", rep:["bi"], d:"Kritik pozisyonlara geçebilecek potansiyel haleflerin yeterlilik ve hazır oluşu"},
+  {n:"Devir oranı", t:"a", rep:["bi","bd","ki","kd"], calc:"devir_orani", d:"(Toplam ayrılan ÷ ortalama çalışan) × 100; tüm ayrılanları içerir (Tablo 14)"},
+  {n:"Gönüllü devir oranı (emeklilik hariç)", t:"a", rep:["bi"], d:"Çalışanların isteyerek ayrıldığı oran; plansız olduğu için etkisi daha olumsuz"},
+  {n:"Gönüllü kritik devir oranı", t:"a", rep:["bi"], d:"Kaybı kurumca üzüntüyle karşılanan ayrılışların tüm ayrılışlara oranı"},
+  {n:"Ayrılış/devir nedenleri", t:"a", rep:["bi","ki"], d:"Yeni iş, liderlikten memnuniyetsizlik, ücret, kariyer, emeklilik, sağlık vb. neden dağılımı"}
+ ]},
+ {g:"Beceri ve yetkinlikler (4.7.10)", a:"beceri", items:[
+  {n:"Toplam geliştirme ve eğitim maliyeti", t:"a", rep:["bi","bd","ki","kd"], d:"Sınıf içi, e-öğrenme ve iş başı eğitimin doğrudan maliyeti; dolaylı maliyet hariç (Şekil 4)"},
+  {n:"Eğitime katılan çalışan oranı", t:"a", rep:["bi","ki"], calc:"egitim_katilim", d:"Yıl içinde eğitime katılan çalışanın toplam çalışana oranı"},
+  {n:"Çalışan başına ortalama biçimsel eğitim saati", t:"a", rep:["bi","ki"], d:"Kişi başı yıllık sınıf içi/e-öğrenme saati"},
+  {n:"Kategorilere göre biçimsel eğitime katılım", t:"a", rep:["bi"], k:"kat", d:"Zorunlu, liderlik, satış, iletişim, BT, teknik, kültürlerarası vb. kategorilerde katılım"},
+  {n:"İşgücü yetkinlik oranı", t:"a", rep:["bi"], d:"Değerlendirmeye göre çalışanlara atanan yetkinlik puanlarının ortalaması"}
+ ]},
+ {g:"Halefiyet planlaması (4.7.11)", a:"halefiyet", items:[
+  {n:"Halefiyet etkinlik oranı", t:"a", rep:["bi","ki"], calc:"halefiyet_etkinligi", d:"İç terfiyle doldurulan kritik pozisyon oranı; %70–80 iyi işaret (Tablo 15)"},
+  {n:"Halef kapsama oranı", t:"a", rep:["bi","ki"], calc:"halef_kapsama", d:"Liderlik halef havuzu ÷ halefiyet uygulanan toplam lider"},
+  {n:"Halefiyet derinliği — şimdi hazır", t:"a", rep:["bi"], calc:"halefiyet_derinligi", d:"'Şimdi hazır' adayı olan kritik pozisyon oranı"},
+  {n:"Halefiyet derinliği — 1–3 yılda hazır", t:"a", rep:["bi"], calc:"halefiyet_derinligi", d:"1–3 yılda hazır adayı olan kritik pozisyon oranı"},
+  {n:"Halefiyet derinliği — 4–5 yılda hazır", t:"a", rep:["bi"], calc:"halefiyet_derinligi", d:"4–5 yılda hazır adayı olan kritik pozisyon oranı"}
+ ]},
+ {g:"İşgücü mevcudiyeti (4.7.12)", a:"isgucu", items:[
+  {n:"Çalışan sayısı (kadro)", t:"i", rep:["bi","bd","ki","kd"], d:"Çalışma süresine bakılmaksızın her çalışanı sayan headcount (Tablo 16)"},
+  {n:"Tam zaman eşdeğeri (FTE)", t:"i", rep:["bi","bd","ki","kd"], d:"İş yükünü karşılaştırılabilir kılan birim; ülke çalışma süresine göre normalleştirilir"},
+  {n:"Kontenjan işgücü — bağımsız yüklenici", t:"i", rep:["bi","ki"], d:"Yüklenici, danışman ve gig-işçi; dış işgücüne bağımlılığı gösterir (Tablo 17)"},
+  {n:"Kontenjan işgücü — geçici işgücü", t:"i", rep:["bi","ki"], d:"Belirli süreli sözleşmeli çalışan sayısı (kiralık/interim/denetimli)"},
+  {n:"Devamsızlık", t:"i", rep:["bi","ki"], calc:"devamsizlik", d:"(Devamsız gün ÷ mevcut çalışma günü); tatil ve izin hariç (Tablo 18)"}
+ ]}
+];
+
+var COLS = ["bi","bd","ki","kd"];
+var COMP_AD = {i:"girdi", a:"faaliyet", o:"çıktı"};
+
+(function(){
+  var toplam = METRICS.reduce(function(a,g){ return a + g.items.length; }, 0);
+  document.getElementById("srcCount").textContent = toplam + " metrik ve öge";
+})();
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fa = document.getElementById("fArea").value;
+  var fc = document.getElementById("fComp").value;
+  var fo = document.getElementById("fOrg").value;   // b / k
+  var fr = document.getElementById("fRep").value;   // ic / dis
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  function repMatch(m){
+    if(fo === "b" && m.rep.indexOf("bi")===-1 && m.rep.indexOf("bd")===-1) return false;
+    if(fo === "k" && m.rep.indexOf("ki")===-1 && m.rep.indexOf("kd")===-1) return false;
+    if(fr === "ic" && m.rep.indexOf("bi")===-1 && m.rep.indexOf("ki")===-1) return false;
+    if(fr === "dis" && m.rep.indexOf("bd")===-1 && m.rep.indexOf("kd")===-1) return false;
+    return true;
+  }
+
+  METRICS.forEach(function(grp){
+    if(fa && grp.a !== fa) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fc && m.t !== fc) return;
+      if(!repMatch(m)) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = COLS.map(function(c){
+        if(m.rep.indexOf(c) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + (m.t==="i"?"e":(m.t==="o"?"o":"v")) + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + (m.t==="i"?"e":(m.t==="o"?"o":"v")) + '">' + COMP_AD[m.t] + '</span>' +
+                 (m.k ? ' <span class="tag lvl">' + ({kat:"kategori",onk:"ön koşul",tur:"türetilmiş"}[m.k]) + '</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "") +
+                 (m.ts ? ' <span class="tag iso">' + m.ts + '</span>' : "") +
+                 ((m.rep.indexOf("bd")!==-1||m.rep.indexOf("kd")!==-1) ? ' <span class="tag iso">dış rapor</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="5">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="5">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve öge gösteriliyor.";
+}
+["fArea","fComp","fOrg","fRep","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) ÇOK YILLIK GÖSTERGE TABLOSU (Ek B)
+   ========================================================= */
+var SATIR = 6;
+var ORNEK_YIL = [
+  ["2015", 1260000000, 1060000000, 705000000, 545000000, 13300, 1530],
+  ["2016", 1400000000, 1170000000, 779950000, 600000000, 15000, 2085],
+  ["2017", 1540000000, 1285000000, 861000000, 657000000, 16400, 2329],
+  ["", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", ""],
+  ["", "", "", "", "", "", ""]
+];
+var ALANLAR = ["gelir","gider","tcow","ucret","tze","ayrilan"];
+
+function buildYilTable(){
+  var html = "";
+  for(var i=0;i<SATIR;i++){
+    html += '<tr><td><input type="text" id="d_ad_' + i + '" placeholder="Yıl ' + (i+1) + '"></td>';
+    ALANLAR.forEach(function(k){
+      html += '<td><input type="number" id="d_' + k + '_' + i + '" min="0" step="any"></td>';
+    });
+    html += '<td class="calc" id="d_kbg_' + i + '">—</td>' +
+            '<td class="calc" id="d_tcp_' + i + '">—</td>' +
+            '<td class="calc" id="d_roi_' + i + '">—</td>' +
+            '<td class="calc" id="d_dev_' + i + '">—</td></tr>';
+  }
+  document.getElementById("pBody").innerHTML = html;
+  document.getElementById("pBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computeYil);
+  });
+}
+
+function dNum(k, i){
+  var el = document.getElementById("d_" + k + "_" + i);
+  if(!el || el.value === "") return null;
+  var x = parseFloat(el.value);
+  return isNaN(x) ? null : x;
+}
+function dolu(i){
+  return ALANLAR.some(function(k){ return dNum(k, i) !== null; }) ||
+         (document.getElementById("d_ad_" + i).value || "") !== "";
+}
+
+function fmt0(x){ return Math.round(x).toLocaleString("tr-TR"); }
+function fmt1(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:1, maximumFractionDigits:1}); }
+function fmt2(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:2, maximumFractionDigits:2}); }
+
+var SERI = null;
+
+function computeYil(){
+  var satirlar = [];
+  for(var i=0;i<SATIR;i++){
+    var hKbg=document.getElementById("d_kbg_"+i), hTcp=document.getElementById("d_tcp_"+i),
+        hRoi=document.getElementById("d_roi_"+i), hDev=document.getElementById("d_dev_"+i);
+    if(!dolu(i)){ hKbg.textContent="—"; hTcp.textContent="—"; hRoi.textContent="—"; hDev.textContent="—"; continue; }
+    var gelir=dNum("gelir",i)||0, gider=dNum("gider",i)||0, tcow=dNum("tcow",i)||0,
+        ucret=dNum("ucret",i)||0, tze=dNum("tze",i)||0, ayrilan=dNum("ayrilan",i)||0;
+    var kbg = tze ? gelir/tze : 0;
+    var tcp = gelir ? 100*tcow/gelir : 0;
+    var roi = ucret ? ((gelir-(gider-ucret))/ucret - 1)*100 : 0;
+    var dev = tze ? 100*ayrilan/tze : 0;
+    hKbg.textContent = tze ? fmt0(kbg) : "—";
+    hTcp.textContent = gelir ? fmt1(tcp) : "—";
+    hRoi.textContent = ucret ? fmt1(roi) : "—";
+    hDev.textContent = tze ? fmt1(dev) : "—";
+    satirlar.push({ad:(document.getElementById("d_ad_"+i).value||("Yıl "+(i+1))),
+      gelir:gelir, gider:gider, tcow:tcow, ucret:ucret, tze:tze, ayrilan:ayrilan,
+      kbg:kbg, tcp:tcp, roi:roi, dev:dev});
+  }
+
+  var kart = document.getElementById("pCards");
+  var foot = ["tGelir","tGider","tTcow","tUcret","tTze","tAyrilan","tKbg","tTcowP","tRoi","tDevir"];
+  if(!satirlar.length){
+    SERI = null;
+    foot.forEach(function(id){ document.getElementById(id).textContent="—"; });
+    kart.innerHTML = "";
+    document.getElementById("pNot").textContent =
+      "Tabloya en az bir yılın verisini girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+  var son = satirlar[satirlar.length-1], ilk = satirlar[0];
+  SERI = {satirlar:satirlar};
+
+  document.getElementById("tGelir").textContent = fmt0(son.gelir);
+  document.getElementById("tGider").textContent = fmt0(son.gider);
+  document.getElementById("tTcow").textContent = fmt0(son.tcow);
+  document.getElementById("tUcret").textContent = fmt0(son.ucret);
+  document.getElementById("tTze").textContent = fmt0(son.tze);
+  document.getElementById("tAyrilan").textContent = fmt0(son.ayrilan);
+  document.getElementById("tKbg").textContent = son.tze ? fmt0(son.kbg) : "—";
+  document.getElementById("tTcowP").textContent = son.gelir ? fmt1(son.tcp) : "—";
+  document.getElementById("tRoi").textContent = son.ucret ? fmt1(son.roi) : "—";
+  document.getElementById("tDevir").textContent = son.tze ? fmt1(son.dev) : "—";
+
+  kart.innerHTML =
+    '<div class="card"><b>' + (son.tze?fmt0(son.kbg):"—") + '</b><span>Kişi başı gelir (' + son.ad + ')</span></div>' +
+    '<div class="card"><b>' + (son.ucret?fmt1(son.roi)+" %":"—") + '</b><span>İnsan sermayesi RoI</span></div>' +
+    '<div class="card alt"><b>' + (son.gelir?fmt1(son.tcp)+" %":"—") + '</b><span>Toplam işgücü maliyeti / gelir</span></div>' +
+    '<div class="card alt"><b>' + (son.tze?fmt1(son.dev)+" %":"—") + '</b><span>Devir oranı</span></div>' +
+    '<div class="card warn"><b>' + fmt0(son.tze) + '</b><span>TZE (' + son.ad + ')</span></div>';
+
+  var not = satirlar.length + " yıllık seri. Son yıl (" + son.ad + "): kişi başı gelir " +
+            (son.tze?fmt0(son.kbg):"—") + ", TCOW oranı " + (son.gelir?fmt1(son.tcp):"—") + " %, insan sermayesi RoI " +
+            (son.ucret?fmt1(son.roi):"—") + " %, devir " + (son.tze?fmt1(son.dev):"—") + " %. ";
+  if(satirlar.length > 1 && ilk.gelir){
+    not += ilk.ad + "–" + son.ad + " arasında gelir " + fmt1(100*(son.gelir-ilk.gelir)/ilk.gelir) + " % değişti. ";
+  }
+  if(satirlar.length < 3){
+    not += "Standart, karşılaştırılabilirlik için cari dönem ve iki önceki dönemi (üç yıllık seri) birlikte ister; ilk raporlamada bir yıl kabul edilebilir. ";
+  }
+  not += "Nicel göstergeleri, İK stratejisi, hedefler ve önemlilik temelli anlatıyla birlikte raporlayın.";
+  document.getElementById("pNot").textContent = not;
+}
+
+function loadYilExample(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("d_ad_"+i).value = ORNEK_YIL[i][0];
+    ALANLAR.forEach(function(k, j){
+      document.getElementById("d_"+k+"_"+i).value = ORNEK_YIL[i][j+1];
+    });
+  }
+  computeYil();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadYilExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("d_ad_"+i).value = "";
+    ALANLAR.forEach(function(k){ document.getElementById("d_"+k+"_"+i).value = ""; });
+  }
+  computeYil();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Yil;Gelir;Gider;Toplam isgucu maliyeti;Ucret+yan hak;TZE;Ayrilan;Kisi basi gelir;TCOW %;RoI %;Devir %"];
+  if(SERI){
+    SERI.satirlar.forEach(function(s){
+      satir.push([s.ad, s.gelir, s.gider, s.tcow, s.ucret, s.tze, s.ayrilan,
+        Math.round(s.kbg), s.tcp.toFixed(1), s.roi.toFixed(1), s.dev.toFixed(1)].join(";"));
+    });
+  }
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30414_gosterge_tablosu.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+function n(x){ return Number(x).toLocaleString("tr-TR"); }
+
+var CALC = [
+ {id:"toplam_isgucu_maliyeti", name:"Toplam işgücü maliyeti", grp:"Maliyet",
+  formula:"Toplam işgücü maliyeti = Toplam ücret + Yan hak maliyeti + Dış işgücü maliyeti",
+  note:"Kurumun işgücünü yönetme, sürdürme ve geliştirme konusunda verdiği finansal değerin temel göstergesidir; dış işgücü maliyetlerini de içerir (Tablo 5). Dış işgücü önemli bir kalemse ayrıca raporlanması tercih edilir.",
+  fields:[{k:"toplam_ucret",l:"Toplam ücret (ödeme)",v:192400000},
+          {k:"yan_haklar",l:"Yan hak maliyeti",v:12300000},
+          {k:"dis_isgucu",l:"Dış işgücü maliyeti",v:6800000},
+          {k:"tze",l:"Tam zaman eşdeğeri",v:16400}],
+  unit:"para birimi",
+  py:"toplam_isgucu_maliyeti(192400000, 12300000, 6800000)",
+  calc:function(v){ var d=v.toplam_ucret+v.yan_haklar+v.dis_isgucu;
+    return {value:d, dec:0,
+      expl:n(v.toplam_ucret)+" + "+n(v.yan_haklar)+" + "+n(v.dis_isgucu),
+      detail:[["İç işgücü maliyeti", v.toplam_ucret+v.yan_haklar],
+              ["Dış işgücü payı (%)", d?+(100*v.dis_isgucu/d).toFixed(1):0],
+              ["TZE başına maliyet", v.tze?Math.round(d/v.tze):null]]}; },
+  bands:[[0,"ok","İşgücü maliyeti toplam maliyetin %25–60'ı olabilir; bu göstergeyi üretkenlik ve insan sermayesi RoI ile birlikte okuyun."]]},
+
+ {id:"kisi_basi_maliyet", name:"Kişi başı işe alım maliyeti", grp:"Maliyet",
+  formula:"Kişi başı maliyet = Toplam işe alım maliyeti &divide; İşe alınan kişi sayısı",
+  note:"ISO/TS 30407'ye göre işe alımla ilişkili maliyetleri belirler; iç ve dış işe alım maliyetlerinin toplamını işe alınan kişi sayısına böler.",
+  fields:[{k:"toplam_ise_alim_maliyeti",l:"Toplam işe alım maliyeti",v:9000000},
+          {k:"ise_alinan",l:"İşe alınan kişi",v:2500}],
+  unit:"para birimi / işe alım",
+  py:"kisi_basi_maliyet(9000000, 2500)",
+  calc:function(v){ var d=v.toplam_ise_alim_maliyeti/v.ise_alinan;
+    return {value:d, dec:0, expl:n(v.toplam_ise_alim_maliyeti)+" ÷ "+n(v.ise_alinan),
+      detail:[["İşe alınan kişi", v.ise_alinan],
+              ["Toplam işe alım maliyeti", v.toplam_ise_alim_maliyeti]]}; },
+  bands:[[0,"ok","Kurumlar arası karşılaştırma için 'cost-per-hire comparable' türevini kullanın; kanal ve pozisyon bazında kırın."]]},
+
+ {id:"devir_maliyeti", name:"Devir maliyeti", grp:"Maliyet",
+  formula:"Devir maliyeti = (Ayrılan &minus; Giren) &times; İlgili birim maliyet",
+  note:"Belirli bir dönemdeki net ayrılış, ilgili maliyetle (doğrudan fesih, işgücü ayrılış, yerine alım ve oryantasyon maliyetleri) çarpılır. Daha gelişmiş modeller ISO/TS 23378'de geliştirilmektedir.",
+  fields:[{k:"ayrilan",l:"Dönemdeki ayrılan",v:2764},
+          {k:"giren",l:"Dönemdeki giren",v:2500},
+          {k:"birim_maliyet",l:"Kişi başı ilgili maliyet",v:15000}],
+  unit:"para birimi",
+  py:"devir_maliyeti(2764, 2500, 15000)",
+  calc:function(v){ var d=(v.ayrilan-v.giren)*v.birim_maliyet;
+    return {value:d, dec:0, expl:"("+n(v.ayrilan)+" − "+n(v.giren)+") × "+n(v.birim_maliyet),
+      detail:[["Net ayrılış", v.ayrilan-v.giren],["Birim maliyet", v.birim_maliyet]]}; },
+  bands:[[0.0001,"warn","Pozitif değer net kadro kaybını gösterir; yüksek devir üretkenlik ve kaliteye engeldir, devri azaltmak maliyet tasarrufu sağlar."],
+         [-1e18,"ok","Negatif değer net büyümeyi (girenin ayrılandan çok olması) gösterir; oryantasyon ve yerleşme maliyetlerini yine de izleyin."]]},
+
+ {id:"ucret_orani", name:"Ortalama ücret ve ödeme oranı", grp:"Maliyet",
+  formula:"Oran = Tüm çalışanların ortalama toplam ücreti &divide; Tanımlı kategori ya da bireylerin yıllık ücreti",
+  note:"TZE tabanında raporlanır; kurumun fırsat eşitliği politikası uygulayıp uygulamadığını anlamaya yardımcı olur. Tanımlı kategori, örneğin kurumun en kıdemli yöneticileridir.",
+  fields:[{k:"ortalama_tum",l:"Tüm çalışan ortalama toplam ücreti",v:52000},
+          {k:"tanimli_kategori",l:"Tanımlı kategori yıllık ücreti",v:520000}],
+  unit:"oran",
+  py:"ucret_orani(52000, 520000)",
+  calc:function(v){ var d=v.ortalama_tum/v.tanimli_kategori;
+    return {value:d, dec:2, expl:n(v.ortalama_tum)+" ÷ "+n(v.tanimli_kategori),
+      detail:[["Tüm çalışan ortalaması", v.ortalama_tum],
+              ["Tanımlı kategori ücreti", v.tanimli_kategori],
+              ["Kategori / ortalama katı", +(v.tanimli_kategori/v.ortalama_tum).toFixed(1)]]}; },
+  bands:[[0,"ok","Oranı segmentler ve dönemler arası karşılaştırın; düşük oran, üst kademe ile ortalama arasındaki geniş ücret aralığına işaret eder."]]},
+
+ {id:"cinsiyet_yuzdesi", name:"Cinsiyet çeşitliliği yüzdesi", grp:"Çeşitlilik",
+  formula:"Yüzde = (İlgili cinsiyetteki çalışan &divide; Toplam çalışan) &times; 100",
+  note:"Adalet ve eşitliğe odaklanan kurumlar itibarını, yetenek çekme ve elde tutmasını güçlendirir (Tablo 7). Metriği yönetim–çalışan, bölge ve işlev bazında kırın.",
+  fields:[{k:"ilgili_cinsiyet",l:"İlgili cinsiyetteki çalışan",v:326},
+          {k:"toplam_calisan",l:"Toplam çalışan",v:1000},
+          {k:"onceki_oran",l:"Önceki dönem oranı (%)",v:33.8,step:0.1}],
+  unit:"% işgücü",
+  py:"cinsiyet_yuzdesi(326, 1000)",
+  calc:function(v){ var d=100*v.ilgili_cinsiyet/v.toplam_calisan;
+    return {value:d, dec:1, expl:"("+n(v.ilgili_cinsiyet)+" ÷ "+n(v.toplam_calisan)+") × 100",
+      detail:[["Diğer cinsiyetler (kişi)", v.toplam_calisan-v.ilgili_cinsiyet],
+              ["Önceki döneme fark (puan)", +(d-v.onceki_oran).toFixed(1)]]}; },
+  bands:[[0,"ok","Tek bir cinsiyet yüzdesi çeşitliliği anlatmaz; kadın/erkek/diğer dağılımını ve yönetim kademesindeki payı birlikte raporlayın."]]},
+
+ {id:"engelli_orani", name:"Engelli çalışan oranı", grp:"Çeşitlilik",
+  formula:"Oran = (Engelli çalışan sayısı &divide; Toplam çalışan) &times; 100",
+  note:"ICF'e göre engellilik; bozukluk, etkinlik kısıtı ve katılım kısıtı için kullanılan bir şemsiye terimdir. Engelli işgücünün payını yüzde olarak gösterir (Şekil 2).",
+  fields:[{k:"engelli",l:"Engelli çalışan",v:268},
+          {k:"toplam_calisan",l:"Toplam çalışan",v:10000}],
+  unit:"% işgücü",
+  py:"engelli_orani(268, 10000)",
+  calc:function(v){ var d=100*v.engelli/v.toplam_calisan;
+    return {value:d, dec:2, expl:"("+n(v.engelli)+" ÷ "+n(v.toplam_calisan)+") × 100",
+      detail:[["Engelli çalışan", v.engelli],["Toplam çalışan", v.toplam_calisan]]}; },
+  bands:[[0,"ok","Oranı yıllar içinde izleyin ve varsa yasal kotayla karşılaştırın; erişilebilirlik ve kapsayıcılık politikalarıyla birlikte raporlayın."]]},
+
+ {id:"kayip_zaman", name:"Milyon saat başına kayıp zamanlı yaralanma", grp:"Sağlık ve güvenlik",
+  formula:"Oran = (Kayıp zamanlı yaralanma &divide; Toplam çalışılan saat) &times; 1.000.000",
+  note:"Kayıp zamanlı yaralanma: ölüm, kalıcı sakatlık ya da bir gün/vardiya veya daha fazla iş kaybıyla sonuçlanan olay. ILO'ya göre iş kazaları ve meslek hastalıkları dünya GSYH'sinin ~%4'ünü soğurur (Şekil 3).",
+  fields:[{k:"kayip_zaman_vaka",l:"Kayıp zamanlı yaralanma sayısı",v:14},
+          {k:"calisilan_saat",l:"Toplam çalışılan saat",v:10000000}],
+  unit:"milyon saat başına kayıp zamanlı yaralanma",
+  py:"kayip_zaman_orani(14, 10000000)",
+  calc:function(v){ var d=1000000*v.kayip_zaman_vaka/v.calisilan_saat;
+    return {value:d, dec:2, expl:"("+n(v.kayip_zaman_vaka)+" ÷ "+n(v.calisilan_saat)+") × 1.000.000",
+      detail:[["Kayıp zamanlı vaka", v.kayip_zaman_vaka],["Çalışılan saat", v.calisilan_saat]]}; },
+  bands:[[1.5,"warn","Oran hedefin üzerinde görünüyor; kök neden analizi, risk değerlendirmesi ve tehlike tanımlama süreçlerini gözden geçirin."],
+         [0,"ok","Oranı geçmiş dönemler ve 2025 hedefi gibi kurum içi hedeflerle karşılaştırın; iş kazası ve meslek hastalığını birlikte sayın."]]},
+
+ {id:"kaza_orani", name:"İş kazası oranı", grp:"Sağlık ve güvenlik",
+  formula:"Oran = (İş kazası &divide; Çalışan iş saati) &times; Taban (1.000.000 ya da OSHA 200.000)",
+  note:"OSHA'ya uygun 200.000 tabanı 100 tam zamanlı çalışan başına oranı verir; milyon tabanı uluslararası karşılaştırma içindir. Her iki durumda da büyüklük ve menşe ülkesinden bağımsız karşılaştırma sağlar (Tablo 10).",
+  fields:[{k:"kaza",l:"İş kazası sayısı",v:13},
+          {k:"calisilan_saat",l:"Çalışan iş saati",v:16000000},
+          {k:"taban",l:"Taban (1000000 / 200000)",v:1000000}],
+  unit:"milyon saat başına kaza",
+  py:"kaza_orani(13, 16000000, 1000000)",
+  calc:function(v){ var taban=v.taban||1000000; var d=taban*v.kaza/v.calisilan_saat;
+    return {value:d, dec:2, expl:"("+n(v.kaza)+" ÷ "+n(v.calisilan_saat)+") × "+n(taban),
+      detail:[["Kaza sayısı", v.kaza],["Taban", taban],
+              ["Milyon saat oranı", +(1000000*v.kaza/v.calisilan_saat).toFixed(2)]]}; },
+  bands:[[0,"ok","Kaza; üretkenlik kaybı, ceza, tazminat ve sigorta artışı doğurur. Kadro ve kontenjan işgücü için ayrı ayrı izleyin (Tablo 10)."]]},
+
+ {id:"olum_orani", name:"Ölüm/fatalite oranı", grp:"Sağlık ve güvenlik",
+  formula:"Oran = Ölümcül meslek yaralanması sayısı &divide; Toplam çalışan sayısı",
+  note:"Kurumun itibarı, mali cezalar ve tazminatlar üzerindeki olumsuz etki nedeniyle izlenir; sonuç düşük sayı olduğundan çoğu zaman 10.000 çalışan başına ölçek kullanılır (Tablo 11).",
+  fields:[{k:"olumcul",l:"Ölümcül meslek yaralanması",v:2},
+          {k:"toplam_calisan",l:"Toplam çalışan",v:16400}],
+  unit:"çalışan başına ölüm",
+  py:"olum_orani(2, 16400)",
+  calc:function(v){ var d=v.olumcul/v.toplam_calisan;
+    return {value:d, dec:4, expl:n(v.olumcul)+" ÷ "+n(v.toplam_calisan),
+      detail:[["Ölümcül yaralanma", v.olumcul],["10.000 çalışan başına", +(10000*d).toFixed(2)]]}; },
+  bands:[[0.0000001,"bad","Sıfırdan büyük her ölüm oranı ciddi ele alınmalı; kök neden soruşturması, ISO 45001 bağlamı ve önleyici tedbirlerle birlikte raporlayın."],
+         [-1e18,"ok","Dönemde ölümcül yaralanma kaydedilmedi; yine de kayıp zaman ve kaza oranlarını izlemeyi sürdürün."]]},
+
+ {id:"egitim_katilim", name:"Eğitime katılan/onu tamamlayan çalışan oranı", grp:"Eğitim",
+  formula:"Oran = (Eğitime katılan/tamamlayan &divide; Toplam çalışan) &times; 100",
+  note:"Uyum ve etik (Tablo 4), sağlık-güvenlik (4.7.7-4) ve öğrenme-gelişim (4.7.10) alanlarında ortak kullanılır. 'Tamamlama', kurumun tanımladığı içeriğe göre değerlendirmenin karşılanmasıdır.",
+  fields:[{k:"katilan",l:"Katılan/tamamlayan çalışan",v:750},
+          {k:"toplam_calisan",l:"Toplam çalışan",v:1000},
+          {k:"hedef",l:"Hedef oran (%)",v:95,step:0.1}],
+  unit:"% katılım",
+  py:"egitim_katilim(750, 1000)",
+  calc:function(v){ var d=100*v.katilan/v.toplam_calisan;
+    return {value:d, dec:1, expl:"("+n(v.katilan)+" ÷ "+n(v.toplam_calisan)+") × 100",
+      detail:[["Katılmayan (kişi)", v.toplam_calisan-v.katilan],
+              ["Hedeften sapma (puan)", +(d-v.hedef).toFixed(1)]]}; },
+  bands:[[90,"ok","Katılım yüksek; hangi pozisyonlar için hangi eğitimin zorunlu olduğunu ve tamamlama süresini birlikte raporlayın."],
+         [70,"warn","Katılım hedefin altında; eğitim paketinin pozisyona göre tanımını ve takip sürecini gözden geçirin."],
+         [0,"bad","Çalışanların önemli bölümü eğitime katılmamış; kadro artışı mı, süreç aksaması mı olduğunu araştırın."]]},
+
+ {id:"kisi_basi_ebit", name:"Çalışan başına EBIT / kâr", grp:"Üretkenlik",
+  formula:"EBIT/kâr per çalışan = (Gelirler &minus; Giderler) &divide; Toplam çalışan sayısı",
+  note:"EBIT faiz ve gelir vergisi dışındaki tüm giderleri içerir; kurumun faaliyetlerinden gelir üretme yeteneğinin ölçüsüdür. Hesaplamalarda TZE kullanılır. Kamu için önerilmez (Tablo 12, Ek B.3).",
+  fields:[{k:"gelir",l:"Gelirler",v:1540000000},
+          {k:"giderler",l:"Giderler (ör. SMM, satış, idari)",v:1380625000},
+          {k:"toplam_calisan",l:"Toplam çalışan (TZE)",v:16400}],
+  unit:"para birimi / çalışan",
+  py:"kisi_basi_ebit(1540000000, 1380625000, 16400)",
+  calc:function(v){ var d=(v.gelir-v.giderler)/v.toplam_calisan;
+    return {value:d, dec:0, expl:"("+n(v.gelir)+" − "+n(v.giderler)+") ÷ "+n(v.toplam_calisan),
+      detail:[["EBIT / kâr", v.gelir-v.giderler],["Toplam çalışan (TZE)", v.toplam_calisan]]}; },
+  bands:[[0,"ok","Oranı büyüklük, ülke, yaş ve sektör bağlamında yorumlayın; tarihsel seriyle stratejinin başarısını değerlendirin."]]},
+
+ {id:"insan_sermayesi_roi", name:"İnsan sermayesi RoI", grp:"Üretkenlik",
+  formula:"RoI = {[Gelir &minus; (Giderler &minus; (Ücret + Yan haklar))] &divide; (Ücret + Yan haklar)} &minus; 1",
+  note:"Her yatırılan birim için geri dönen tutarı gösterir; sonuç vergi öncesi getiri oranıdır. Standart örneği: gelir 4,5M, gider 3,75M, ücret+yan hak 1,5M → %50. İşgücü maliyeti toplam maliyetin %25–60'ı olabilir.",
+  fields:[{k:"gelir",l:"Gelir",v:4500000},
+          {k:"giderler",l:"Giderler (işletme maliyeti)",v:3750000},
+          {k:"ucret_yan_hak",l:"İşgücü maliyeti (ücret + yan hak)",v:1500000}],
+  unit:"% getiri",
+  py:"insan_sermayesi_roi(4500000, 3750000, 1500000)",
+  calc:function(v){ var d=(v.gelir-(v.giderler-v.ucret_yan_hak))/v.ucret_yan_hak - 1;
+    return {value:100*d, dec:1,
+      expl:"{["+n(v.gelir)+" − ("+n(v.giderler)+" − "+n(v.ucret_yan_hak)+")] ÷ "+n(v.ucret_yan_hak)+"} − 1",
+      detail:[["RoI oranı", +(d+1).toFixed(2)],
+              ["İşgücü maliyeti (ücret+yan hak)", v.ucret_yan_hak],
+              ["Her 1 birim için geri dönen", +(1+d).toFixed(2)]]}; },
+  bands:[[0,"ok","Pozitif getiri: yatırılan her birim geri döner ve üzerine kâr eklenir. Getiri büyüdükçe insan yatırımı daha verimli çalışıyor demektir."],
+         [-1e18,"warn","Negatif getiri: işgücü maliyeti, ürettiği değeri aşıyor. Bileşenleri ve TZE tabanını kontrol edin."]]},
+
+ {id:"devir_orani", name:"Devir oranı", grp:"İşe alım ve devir",
+  formula:"Devir oranı = (Dönemdeki toplam ayrılan &divide; Ortalama toplam çalışan) &times; 100",
+  note:"Tüm ayrılanları içerir (emeklilik, fesih, istifa). Gönüllü devir ayrıca hesaplanır; plansız ve öngörülemez olduğu için iş üzerinde daha olumsuz etki yaratabilir (Tablo 14).",
+  fields:[{k:"ayrilan",l:"Dönemdeki ayrılan",v:142},
+          {k:"ortalama_calisan",l:"Ortalama toplam çalışan",v:1000},
+          {k:"gonullu",l:"Bunun gönüllü (istifa) kısmı",v:53},
+          {k:"onceki_oran",l:"Önceki dönem devir oranı (%)",v:13.9,step:0.1}],
+  unit:"% devir",
+  py:"devir_orani(142, 1000)",
+  calc:function(v){ var d=100*v.ayrilan/v.ortalama_calisan;
+    return {value:d, dec:1, expl:"("+n(v.ayrilan)+" ÷ "+n(v.ortalama_calisan)+") × 100",
+      detail:[["Ayrılan", v.ayrilan],
+              ["Gönüllü devir (%)", +(100*v.gonullu/v.ortalama_calisan).toFixed(1)],
+              ["Önceki döneme fark (puan)", +(d-v.onceki_oran).toFixed(1)]]}; },
+  bands:[[20,"warn","Devir yüksek: yerine alım, oryantasyon ve ayrılış maliyetleri üretkenliği ve kârı zorlar. Gönüllü ve kritik devri ayrı izleyin."],
+         [0,"ok","Devri kurumun insan sermayesi stratejisi ve dış bağlam içinde yorumlayın; çok düşük devir de durgunluk işareti olabilir."]]},
+
+ {id:"ic_doldurma", name:"İçeriden doldurulan pozisyon oranı", grp:"İşe alım ve devir",
+  formula:"Oran = (İç işe alım sayısı &divide; Tüm işe alım sayısı) &times; 100",
+  note:"Boş pozisyonların içeriden doldurulma payını gösterir; %70–80 arası bir oran iyi yetenek yönetiminin işaretidir. Aynı hesap kritik pozisyonlar için ayrıca yapılır (Tablo 13).",
+  fields:[{k:"ic_ise_alim",l:"İç işe alım",v:75},
+          {k:"tum_ise_alim",l:"Tüm işe alım",v:100}],
+  unit:"% içeriden doldurulan",
+  py:"ic_doldurma_orani(75, 100)",
+  calc:function(v){ var d=100*v.ic_ise_alim/v.tum_ise_alim;
+    return {value:d, dec:1, expl:"("+n(v.ic_ise_alim)+" ÷ "+n(v.tum_ise_alim)+") × 100",
+      detail:[["Dışarıdan doldurulan", v.tum_ise_alim-v.ic_ise_alim],
+              ["Dış işe alım oranı (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[70,"ok","%70–80 aralığı iyi yetenek yönetiminin işaretidir; kritik pozisyonlarda oranın ayrıca izlenmesi önerilir."],
+         [40,"warn","İç doldurma payı düşük; halefiyet havuzu ve iç hareketlilik mekanizmalarını gözden geçirin."],
+         [0,"bad","Pozisyonların çoğu dışarıdan doldruluyor: iç gelişim ve halefiyet planlaması zayıf olabilir."]]},
+
+ {id:"ic_hareketlilik", name:"İç hareketlilik oranı", grp:"İşe alım ve devir",
+  formula:"Oran = (İç transfer sayısı &divide; Toplam çalışan) &times; 100",
+  note:"Konum ve işlevler arasındaki iç transfer sayısını (hiyerarşik, yatay, terfi) gösterir; iç kariyer hareketliliğinin canlılığını ölçer.",
+  fields:[{k:"ic_transfer",l:"İç transfer sayısı",v:150},
+          {k:"toplam_calisan",l:"Toplam çalışan",v:16400}],
+  unit:"% iç hareketlilik",
+  py:"ic_hareketlilik_orani(150, 16400)",
+  calc:function(v){ var d=100*v.ic_transfer/v.toplam_calisan;
+    return {value:d, dec:1, expl:"("+n(v.ic_transfer)+" ÷ "+n(v.toplam_calisan)+") × 100",
+      detail:[["İç transfer", v.ic_transfer],["Toplam çalışan", v.toplam_calisan]]}; },
+  bands:[[0,"ok","Hareketlilik türlerini (terfi, yatay, konum) ayrı raporlayın; çok düşük oran kariyer tıkanıklığına işaret edebilir."]]},
+
+ {id:"elde_tutma", name:"Elde tutma oranı", grp:"Örgüt kültürü",
+  formula:"Oran = (Bir yıl+ hizmeti olan &divide; Bir yıl önce o pozisyonlardaki çalışan) &times; 100",
+  note:"Kararlılık indeksi olarak da bilinir; kurumun işgücünü belirli bir dönemde elde tutma yeteneğini gösterir. Ayrıntı ISO/TS 23378'de geliştirilmektedir.",
+  fields:[{k:"bir_yil_kalan",l:"Bir yıl ve üzeri hizmeti olan",v:858},
+          {k:"bir_yil_once_kadro",l:"Bir yıl önceki kadro",v:1000}],
+  unit:"% elde tutma",
+  py:"elde_tutma_orani(858, 1000)",
+  calc:function(v){ var d=100*v.bir_yil_kalan/v.bir_yil_once_kadro;
+    return {value:d, dec:1, expl:"("+n(v.bir_yil_kalan)+" ÷ "+n(v.bir_yil_once_kadro)+") × 100",
+      detail:[["Ayrılan (kişi)", v.bir_yil_once_kadro-v.bir_yil_kalan],
+              ["Örtük devir (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[85,"ok","Elde tutma yüksek; yine de bağlılık indeksi ve devamsızlıkla birlikte okuyun."],
+         [70,"warn","Elde tutma orta düzeyde; kritik segment ve pozisyonlarda ayrı izleyin."],
+         [0,"bad","Elde tutma düşük: bağlılık, liderlik güveni ve ücret göstergelerini birlikte inceleyin."]]},
+
+ {id:"halefiyet_etkinligi", name:"Halefiyet etkinlik oranı", grp:"Halefiyet",
+  formula:"Oran = (İç terfiyle doldurulan kritik pozisyon &divide; Doldurulan toplam kritik pozisyon) &times; 100",
+  note:"Halefiyet hattının gücünü anlamaya çalışan kurumlar için yararlıdır; %70–80 arası bir oran iyi halefiyet etkinliğinin işaretidir (Tablo 15).",
+  fields:[{k:"ic_hire_kritik",l:"İç terfiyle doldurulan kritik pozisyon",v:17},
+          {k:"toplam_kritik",l:"Doldurulan toplam kritik pozisyon",v:23}],
+  unit:"% halefiyet etkinliği",
+  py:"halefiyet_etkinligi(17, 23)",
+  calc:function(v){ var d=100*v.ic_hire_kritik/v.toplam_kritik;
+    return {value:d, dec:1, expl:"("+n(v.ic_hire_kritik)+" ÷ "+n(v.toplam_kritik)+") × 100",
+      detail:[["Dış işe alımla doldurulan", v.toplam_kritik-v.ic_hire_kritik],
+              ["İyi yönetim eşiği (%)", "70–80"]]}; },
+  bands:[[70,"ok","%70–80 aralığı güçlü bir halefiyet hattını gösterir; derinlik oranlarıyla birlikte raporlayın."],
+         [50,"warn","Halefiyet etkinliği orta; halef havuzunu ve gelişim programlarını güçlendirin."],
+         [0,"bad","Kritik pozisyonlar çoğunlukla dışarıdan doluyor: halefiyet planlaması yetersiz."]]},
+
+ {id:"halef_kapsama", name:"Halef kapsama oranı", grp:"Halefiyet",
+  formula:"Oran = (Liderlik halef havuzundaki çalışan &divide; Halefiyet uygulanan toplam lider) &times; 100",
+  note:"Liderlik pozisyonları için potansiyel halef belirleyen kurumlar için yararlıdır; lider başına ortalama halef sayısını gösterir.",
+  fields:[{k:"halef_havuzu",l:"Liderlik halef havuzu",v:45},
+          {k:"halefiyet_gereken",l:"Halefiyet uygulanan lider",v:30}],
+  unit:"% halef kapsama",
+  py:"halef_kapsama_orani(45, 30)",
+  calc:function(v){ var d=100*v.halef_havuzu/v.halefiyet_gereken;
+    return {value:d, dec:1, expl:"("+n(v.halef_havuzu)+" ÷ "+n(v.halefiyet_gereken)+") × 100",
+      detail:[["Halef havuzu", v.halef_havuzu],["Halefiyet uygulanan lider", v.halefiyet_gereken]]}; },
+  bands:[[100,"ok","Lider başına birden fazla halef var; havuzun hazırlık düzeyini (şimdi / 1–3 / 4–5 yıl) ayrıca ölçün."],
+         [0,"warn","Lider başına birden az halef; kritik liderlik rollerinde hat riski oluşabilir."]]},
+
+ {id:"halefiyet_derinligi", name:"Halefiyet derinlik oranı", grp:"Halefiyet",
+  formula:"Oran = (İlgili hazırlık düzeyindeki aday &divide; Halefiyet uygulanan kritik pozisyon) &times; 100",
+  note:"Hazırlık düzeyi 'şimdi hazır', '1–3 yılda hazır' ya da '4–5 yılda hazır' seçilir; aynı formül her düzeye uygulanır. Hattın gücüne dair güçlü bir göstergedir.",
+  fields:[{k:"hazir_aday",l:"İlgili düzeyde hazır aday",v:12},
+          {k:"kritik_pozisyon",l:"Halefiyet uygulanan kritik pozisyon",v:40}],
+  unit:"% derinlik",
+  py:'hesapla("halefiyet_derinligi", hazir_aday=12, kritik_pozisyon=40)',
+  calc:function(v){ var d=100*v.hazir_aday/v.kritik_pozisyon;
+    return {value:d, dec:1, expl:"("+n(v.hazir_aday)+" ÷ "+n(v.kritik_pozisyon)+") × 100",
+      detail:[["Hazır aday", v.hazir_aday],["Kritik pozisyon", v.kritik_pozisyon],
+              ["Not", "Aynı formül şimdi / 1–3 / 4–5 yıl düzeylerine uygulanır"]]}; },
+  bands:[[75,"ok","Kritik pozisyonların çoğu için hazır aday var; hazırlık düzeyi kırılımını da gösterin."],
+         [40,"warn","Derinlik orta; hangi kritik pozisyonların 'şimdi hazır' adayı olmadığını belirleyin."],
+         [0,"bad","Kritik pozisyonların çoğunda hazır aday yok: halefiyet hattı sığ."]]},
+
+ {id:"devamsizlik", name:"Devamsızlık oranı", grp:"İşgücü mevcudiyeti",
+  formula:"Oran = (Devamsız gün sayısı &divide; Dönemdeki mevcut çalışma günü) &times; 100",
+  note:"Tatil, resmî bayram ve izinli devamsızlık hesaba katılmaz. Hastalık, kaza, kişisel sorun ya da iş memnuniyetsizliği kaynaklı kaçınılabilir/kaçınılmaz devamsızlıkları kapsar (Tablo 18).",
+  fields:[{k:"devamsiz_gun",l:"Devamsız gün sayısı",v:340},
+          {k:"mevcut_is_gunu",l:"Mevcut çalışma günü",v:10000}],
+  unit:"% devamsızlık",
+  py:"devamsizlik_orani(340, 10000)",
+  calc:function(v){ var d=100*v.devamsiz_gun/v.mevcut_is_gunu;
+    return {value:d, dec:1, expl:"("+n(v.devamsiz_gun)+" ÷ "+n(v.mevcut_is_gunu)+") × 100",
+      detail:[["Devamsız gün", v.devamsiz_gun],["Mevcut çalışma günü", v.mevcut_is_gunu],
+              ["Devam oranı (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[5,"warn","Devamsızlık yüksek: kayıp üretkenlik ve maliyet artışı demektir; bölge ve birim bazında kök nedeni araştırın."],
+         [0,"ok","Devamsızlığı bağlılık ve sağlık-güvenlik göstergeleriyle birlikte okuyun; bölgesel dağılımı raporlayın (Tablo 18)."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    if(f.text){
+      return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+        '<input type="text" id="in_' + f.k + '" value="" placeholder="' + f.v + '"></div>';
+    }
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function parseList(s){
+  return String(s).split(/[,;\s]+/).map(function(x){ return parseFloat(x); })
+    .filter(function(x){ return !isNaN(x); });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    if(f.text){
+      var raw = el && el.value.trim() !== "" ? el.value : null;
+      if(raw === null){ missing = true; raw = f.v; }
+      v[f.k] = parseList(raw);
+      if(!v[f.k].length){ v[f.k] = parseList(f.v); missing = true; }
+    } else {
+      var num = el && el.value !== "" ? parseFloat(el.value) : NaN;
+      if(isNaN(num)){ missing = true; v[f.k] = f.v; } else { v[f.k] = num; }
+    }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (d[1] === null || d[1] === undefined) ? "—" :
+                ((typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1]);
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){
+      var val = r.v[f.k];
+      return f.k + "=" + (Array.isArray(val) ? "[" + val.join(",") + "]" : val);
+    }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30414_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!SERI){ loadYilExample(); }
+  var son = SERI.satirlar[SERI.satirlar.length-1];
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("insan_sermayesi_roi");
+  sel.value = idx; buildFields();
+  document.getElementById("in_gelir").value = son.gelir;
+  document.getElementById("in_giderler").value = son.gider;
+  document.getElementById("in_ucret_yan_hak").value = son.ucret;
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30414_metrikler')\n" +
+      "_m.__file__ = 'iso30414_metrikler.py'\n" +
+      "sys.modules['iso30414_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30414_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30414_metrikler import *\n" +
+      "import iso30414_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30414_metrikler import *\n' +
+  'import iso30414_metrikler as m\n\n' +
+  '# Girdi: maliyetler (Tablo 5)\n' +
+  'print("Toplam işgücü maliyeti:", toplam_isgucu_maliyeti(192400000, 12300000, 6800000))\n\n' +
+  '# Çıktı: insan sermayesi RoI (4.7.8 örneği)\n' +
+  'print("İnsan sermayesi RoI  :", round(insan_sermayesi_roi(4_500_000, 3_750_000, 1_500_000)*100, 1), "%")\n' +
+  'print("Kişi başı kâr        :", round(kisi_basi_ebit(1_540_000_000, 1_380_625_000, 16_400), 2))\n\n' +
+  '# Faaliyet: devir ve halefiyet\n' +
+  'print("Devir oranı          :", round(devir_orani(142, 1000), 1), "%")\n' +
+  'print("Halefiyet etkinliği  :", round(halefiyet_etkinligi(17, 23), 1), "%")\n' +
+  'print("İç doldurma          :", round(ic_doldurma_orani(75, 100), 1), "%")\n\n' +
+  '# Çeşitlilik (Tablo 7) ve devamsızlık (Tablo 18)\n' +
+  'print("Kadın oranı          :", round(cinsiyet_yuzdesi(326, 1000), 1), "%")\n' +
+  'print("Devamsızlık          :", round(devamsizlik_orani(340, 10000), 1), "%")\n\n' +
+  '# Çok yıllık tablo (Ek B.3 büyüklüğü)\n' +
+  't = ornek_tablo()\n' +
+  'for satir in t.tablo():\n' +
+  '    print(satir)\n' +
+  'for anahtar, deger in t.ozet().items():\n' +
+  '    print(f"{anahtar:<22}: {deger}")\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("insan_sermayesi_roi", gelir=4_500_000, giderler=3_750_000, ucret_yan_hak=1_500_000))\n\n' +
+  '# Rapor denetimi: hangi kılavuz ilkeler eksik?\n' +
+  'for uyari in metrik_denetimi(strateji_baglantisi=True, veri_kalitesi=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30414_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30414_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildYilTable();
+loadYilExample();
+buildFields();
+run();
+</script>
+</body>
+</html>

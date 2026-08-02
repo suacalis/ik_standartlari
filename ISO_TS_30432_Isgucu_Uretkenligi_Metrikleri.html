@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS 30432 İşgücü Üretkenliği Metrikleri Kümesi — Sınıflandırma ve Hesaplayıcı</title>
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --panel:#0e1520;
+    --panel-2:#16202e;
+    --panel-line:#28394f;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --ok:#1d6f42; --warn:#8a6100; --bad:#992121;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);padding:56px 60px 80px;
+    box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:36px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:52px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  h3{font-size:17px;margin:32px 0 6px;letter-spacing:.01em}
+  h4{font-size:15px;margin:22px 0 4px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  ul,ol{margin:12px 0;padding-left:22px}
+  li{margin:6px 0}
+  small{color:var(--ink-soft)}
+  .lede{font-size:17px;color:var(--ink-soft)}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 26px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  .toc{background:var(--canvas);border:1px solid var(--line);padding:16px 20px;margin:26px 0 0;
+    font-size:14px;columns:2;column-gap:34px}
+  @media(max-width:640px){.toc{columns:1}}
+  .toc a{display:block;padding:3px 0;text-decoration:none;color:var(--ink)}
+  .toc a:hover{color:var(--accent);text-decoration:underline}
+  .toc b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:8px 0 4px}
+
+  .keypoints li{margin:10px 0}
+  .keypoints b{font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  caption{caption-side:top;text-align:left;font-size:13px;color:var(--ink-soft);padding-bottom:6px}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650;font-size:13px}
+  tbody tr:nth-child(even){background:#fcfdfe}
+  td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:66px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+  .dot.o{background:var(--out-ink)} .dot.e{background:var(--eff-ink)} .dot.v{background:var(--efc-ink)}
+
+  .tag{display:inline-block;font-size:11px;line-height:1.5;padding:1px 7px;border-radius:3px;
+    letter-spacing:.03em;white-space:nowrap;font-weight:600}
+  .tag.o{color:var(--out-ink);background:var(--out-bg)}
+  .tag.e{color:var(--eff-ink);background:var(--eff-bg)}
+  .tag.v{color:var(--efc-ink);background:var(--efc-bg)}
+  .tag.iso{color:#4a4a4a;background:#eeeeee}
+  .tag.lvl{color:#5a3a86;background:#f0eaf8}
+
+  code{font-family:var(--mono);font-size:13px;background:var(--line-soft);padding:1px 5px;border-radius:3px}
+  pre{background:var(--panel);color:#e7eef6;border-radius:6px;padding:18px 20px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:14px 0}
+  pre b{color:#f0b866;font-weight:400}      /* anahtar kelime */
+  pre i{color:#7f8ea1;font-style:normal}    /* yorum */
+  pre u{color:#9fd28a;text-decoration:none} /* dize/sayı */
+  pre .fn{color:#79c0e8}
+  .filename{font-family:var(--mono);font-size:12px;color:var(--ink-soft);margin:14px 0 -8px}
+
+  .formula{font-family:var(--serif);font-size:16.5px;background:var(--canvas);
+    border-left:3px solid var(--accent);padding:12px 16px;margin:12px 0;overflow-x:auto}
+  .formula em{font-style:italic}
+
+  .note{border-left:3px solid var(--line);padding:2px 0 2px 14px;color:var(--ink-soft);font-size:14px;margin:14px 0}
+
+  /* --- panel --- */
+  .panel{background:var(--panel);color:#dbe5f0;border-radius:8px;padding:22px 24px;margin:20px 0}
+  .panel h3{color:#fff;margin:0 0 4px;font-size:16px}
+  .panel .hint{color:#8fa2b8;font-size:13px;margin:0 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+  .field label{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:#8fa2b8;margin-bottom:5px}
+  .field label .req{color:#e08a5a}
+  select,input[type=number],input[type=text]{
+    width:100%;background:var(--panel-2);border:1px solid var(--panel-line);color:#eef4fb;
+    border-radius:5px;padding:9px 10px;font-family:var(--sans);font-size:14px}
+  input[type=number]{font-family:var(--mono)}
+  select:focus,input:focus{outline:2px solid #4a8fc0;outline-offset:1px}
+  .checks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-size:13.5px;color:#b9c7d6}
+  .checks label{display:flex;gap:7px;align-items:center;cursor:pointer}
+  .panel-foot{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}
+  button{font-family:var(--sans);font-size:14px;font-weight:600;border-radius:5px;cursor:pointer;
+    border:1px solid transparent;padding:9px 18px}
+  .btn-run{background:#1c74ab;color:#fff}
+  .btn-run:hover{background:#2385c2}
+  .btn-ghost{background:transparent;color:#9fb3c9;border-color:var(--panel-line)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:#9fb3c9;
+    border:1px solid var(--panel-line);border-radius:99px;padding:5px 12px;white-space:nowrap}
+  .chip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7c8ea3}
+  .chip.busy::before{background:#e0a13c}
+  .chip.on::before{background:#4ec07a}
+  .chip.off::before{background:#c05a5a}
+
+  .console{border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:14px 0}
+  .console-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:var(--canvas);border-bottom:1px solid var(--line);padding:8px 12px;font-size:12.5px;color:var(--ink-soft)}
+  .console textarea{width:100%;border:0;display:block;background:var(--panel);color:#e7eef6;
+    font-family:var(--mono);font-size:12.5px;line-height:1.65;padding:16px 20px;resize:vertical;min-height:190px}
+  .console textarea:focus{outline:2px solid #4a8fc0;outline-offset:-2px}
+  .console pre{margin:0;border-radius:0;background:#0a1017;border-top:1px solid var(--panel-line);min-height:64px}
+  .btn-sm{padding:6px 14px;font-size:13px}
+  details.src pre{max-height:420px;overflow:auto}
+  .btn-ghost:hover{color:#fff;border-color:#47607d}
+
+  .result{border:1px solid var(--line);border-top:3px solid var(--accent);padding:18px 20px;margin:18px 0}
+  .result .big{font-family:var(--serif);font-size:32px;line-height:1.1}
+  .result .big span{font-size:16px;color:var(--ink-soft);font-family:var(--sans)}
+  .result dl{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;margin:14px 0 0;font-size:14px}
+  .result dt{color:var(--ink-soft)}
+  .result dd{margin:0;font-variant-numeric:tabular-nums}
+  .verdict{margin-top:14px;padding:10px 12px;font-size:14px;border-radius:4px;background:var(--canvas)}
+  .verdict.ok{color:var(--ok);background:#eef6f1}
+  .verdict.warn{color:var(--warn);background:#fbf5e7}
+  .verdict.bad{color:var(--bad);background:#faeeee}
+
+  /* --- matris --- */
+  .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;
+    background:var(--canvas);border:1px solid var(--line);padding:14px 16px;margin:16px 0}
+  .filters label{display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .filters select,.filters input{background:#fff;border:1px solid var(--line);color:var(--ink)}
+  .matrix{font-size:13.5px}
+  .matrix th.rot{width:72px;text-align:center;font-size:11.5px;line-height:1.25;vertical-align:bottom}
+  .matrix td.name{font-weight:500}
+  .matrix td.name em{display:block;font-style:normal;font-size:12px;color:var(--ink-soft);margin-top:2px}
+  .matrix tr.group td{background:#f2f5f8;font-weight:650;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-soft)}
+  .count{font-size:13px;color:var(--ink-soft);margin:8px 0}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0}
+
+  /* --- pozisyon tablosu --- */
+  .postbl{font-size:13.5px}
+  .postbl input[type=text],.postbl input[type=date],.postbl input[type=number]{
+    width:100%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .postbl input[type=text]{font-family:var(--sans)}
+  .postbl input:focus{outline:2px solid var(--accent);outline-offset:-1px}
+  .postbl td.chk{text-align:center}
+  .postbl td.calc{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);white-space:nowrap}
+  .postbl tfoot td{background:var(--canvas);font-weight:650}
+  .tblbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+  .tblbar button{border-color:var(--line);color:var(--ink-soft);background:#fff}
+  .tblbar button:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tblbar .inline{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-soft)}
+  .tblbar .inline input{width:78px;background:#fff;border:1px solid var(--line);color:var(--ink);
+    border-radius:4px;padding:5px 7px;font-family:var(--mono);font-size:13px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .card{border:1px solid var(--line);border-top:3px solid var(--eff-ink);padding:12px 14px}
+  .card b{display:block;font-family:var(--serif);font-size:24px;line-height:1.2}
+  .card span{font-size:12px;color:var(--ink-soft)}
+  .card.alt{border-top-color:var(--efc-ink)}
+  .card.warn{border-top-color:var(--out-ink)}
+
+  details{border-bottom:1px solid var(--line);padding:12px 0}
+  summary{cursor:pointer;font-weight:600;font-size:15px}
+  summary::marker{color:var(--accent)}
+  details p{margin:10px 0 0;font-size:15px;color:var(--ink-soft)}
+
+  footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint)}
+  @media (prefers-reduced-motion:no-preference){
+    .result{transition:border-color .2s}
+  }
+  @media print{
+    body{background:#fff} .sheet{box-shadow:none;max-width:none;padding:0}
+    .panel{background:#fff;color:#000;border:1px solid #000}
+    pre{background:#f4f4f4;color:#000}
+  }
+  .tblwrap{overflow-x:auto;margin:12px 0}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<h1>ISO/TS 30432 İşgücü Üretkenliği Metrikleri Kümesi</h1>
+<div class="srcbar">
+  <span><b>Kaynak:</b> ISO/TS 30432:2021 — <i>Human resource management — Workforce productivity metrics cluster</i></span>
+  <span><b>Kapsam:</b> 5 kullanıcı · 3 metrik ailesi · <span id="srcCount">—</span></span>
+  <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+  <span><b>Sürüm:</b> Temmuz 2026</span>
+</div>
+
+<h2 id="genel">Genel Bakış</h2>
+<p>ISO/TS 30432, ISO 30414'ün <b>üretkenlik</b> kümesini ayrıntılandıran bir teknik şartnamedir. İki ana
+metrik ailesi tanımlar: <b>çalışan başına EBIT, gelir, ciro ve kâr</b> ile <b>insan sermayesi getirisi
+(HC RoI)</b>. Her ikisini de üç ayrı kurum türü için ele alır — kâr amaçlı kurumlar, sivil toplum
+kuruluşları ve kâr amacı gütmeyen kuruluşlar, kamu kurumları — ve her metrik için tanım, amaç, formül,
+kullanım biçimi, hedef kullanıcılar, bağlam etkenleri ve öngörü etkenlerini verir. Belgenin sonunda
+çalışan başına gelir, kâr ve EBIT için ayrı formüller ek ölçüt olarak sunulur. Bu sayfa, standardın
+metrik kümesini filtrelenebilir bir matrise; hesaplanabilir metrikleri de formül + canlı hesaplayıcı +
+Python koduna dönüştürür.</p>
+
+<h3>Önemli Noktalar</h3>
+<ul class="keypoints">
+  <li><b>İki metrik birbirinin eksiğini kapatır.</b> Çalışan başına EBIT üretilen değeri, insan sermayesi
+  getirisi ise o değerin işgücüne harcanan her liraya oranını gösterir. Kadro küçültülerek çalışan başına
+  kâr yükseltilebilir; getiri oranı bu manevrayı görünür kılar.</li>
+  <li><b>Payda tanımı metriğin kendisi kadar önemlidir.</b> Standart, kimi kurumların çalışan sayısı
+  yerine tam zaman eşdeğerini (TZE) tercih ettiğini, geçici işgücü büyükse hesabın onu da kapsayacak
+  biçimde kurulduğunu belirtir. Tercih ne olursa olsun dönemler boyunca aynı kalmalıdır.</li>
+  <li><b>Kamu kurumları için üretkenlik metriği önerilmez.</b> Ölçmenin güçlüğü nedeniyle standart, bu
+  kurumlarda kullanıcı memnuniyeti ya da hizmet kalitesi gibi göstergelerin kullanılabileceğini söyler.</li>
+  <li><b>STK'larda payda para değil etkidir.</b> Desteklenen kişi ve hizmet, bütçe ve uygulanan program
+  yüzdesi; idari kadronun saha çalışanlarına oranı; çalışan başına gerçekleştirilen proje ve bu projelerin
+  etkilediği kişi sayısı EBIT'in yerini alır.</li>
+  <li><b>İşgücü maliyeti toplam maliyetin dörtte biri ile beşte üçü arasındadır.</b> Standardın andığı bu
+  aralık, insan sermayesi getirisinin neden giderek daha çok izlenen bir ölçüt hâline geldiğini açıklar.</li>
+  <li><b>Getiri oranı uzun vadeli bir göstergedir.</b> Piyasa değeri denetim dışı olaylarla sert biçimde
+  dalgalandığı için standart, bu metriği kısa dönemli ölçüm yerine uzun vadeli stratejik öngörüde
+  kullanmayı önerir. Karşılaştırma aralığı üç ilâ beş yıldır.</li>
+  <li><b>Üretkenlik ölçümü tek taraflı kurulmaz.</b> Standart, çalışanların ve varsa çalışan
+  temsilcilerinin, iş konseylerinin ve sendika temsilcilerinin üretkenlik ve ölçümü konusunda
+  istişareye dâhil edilebileceğini açıkça belirtir.</li>
+</ul>
+
+<div class="toc">
+  <b>İçindekiler</b>
+  <a href="#genel">Genel bakış ve önemli noktalar</a>
+  <a href="#nezaman">Ne zaman kullanılır</a>
+  <a href="#cerceve">Çerçeve ve metodoloji</a>
+  <a href="#adimlar">Metrik seçim adımları</a>
+  <a href="#kavramlar">Temel kavramlar</a>
+  <a href="#matris">Metrik matrisi</a>
+  <a href="#tablo">Dönem karşılaştırma tablosu</a>
+  <a href="#formuller">Formüller ve tanımlar</a>
+  <a href="#hesaplayici">Hesaplayıcı</a>
+  <a href="#python">Python kod örnekleri</a>
+  <a href="#yorum">Sonuçların yorumlanması</a>
+  <a href="#sinirlamalar">Sınırlamalar</a>
+  <a href="#raporlama">Metriklerin raporlanması</a>
+  <a href="#ilgili">İlgili standartlar</a>
+  <a href="#sss">Sıkça sorulan sorular</a>
+</div>
+
+<h2 id="nezaman">Ne Zaman Kullanılır</h2>
+<ul>
+  <li><b>Piyasadaki konum değerlendirilirken:</b> çalışan başına oranlar, kurumun üretkenliğini benzer
+  kurumlarla karşılaştırmanın en yaygın yoludur.</li>
+  <li><b>Maliyet azaltma ve denetim programlarında:</b> oran, basit ve izlenebilir bir gösterge olarak
+  kullanılır.</li>
+  <li><b>Performansa dayalı ücret sistemi kurulurken:</b> standardın açıkça andığı kullanım
+  alanlarından biridir.</li>
+  <li><b>Seçilen stratejinin işleyip işlemediği sorgulandığında:</b> oranın tarihsel seyri, kurumun
+  başarısının ya da izlenen stratejinin gelişimi hakkında bilgi verir.</li>
+  <li><b>Büyüme dönemlerinde katma değer izlenirken:</b> kadro büyürken çalışan başına değerin korunup
+  korunmadığı görülür.</li>
+  <li><b>Dış raporlamada:</b> düzenleyiciler ve yatırımcılar için karşılaştırılabilir üretkenlik
+  göstergesi üretilir (ISO 30414 ile birlikte).</li>
+</ul>
+<div class="note">Standart, bu oranların uygulanabilirliğinin bağlama göre değiştiğini belirtir:
+büyüklük, ülke, kurumun yaşı ve faaliyet gösterilen iş kolu. Aynı sektörde olmayan iki kurumun çalışan
+başına geliri karşılaştırıldığında ölçülen şey üretkenlik değil, iş modelidir.</div>
+
+<h2 id="cerceve">Çerçeve ve Metodoloji</h2>
+
+<h3>Her metrik için yedi bileşen</h3>
+<p>Standart, ele aldığı her metriği aynı yedi başlıkla tanımlar. Kurum içi metrik kartlarınızı da bu
+yapıda hazırlamak, metriğin sonradan tartışılmasını önler.</p>
+<table>
+  <thead><tr><th>Bileşen</th><th>Yanıtladığı soru</th></tr></thead>
+  <tbody>
+    <tr><td>Tanım</td><td>Metrik neyi ölçer?</td></tr>
+    <tr><td>Amaç</td><td>Hangi kurumsal soruya hizmet eder?</td></tr>
+    <tr><td>Formül</td><td>Nasıl hesaplanır, pay ve payda nedir?</td></tr>
+    <tr><td>Kullanım biçimi</td><td>Sonuçla ne yapılır, hangi metrikle birlikte okunur?</td></tr>
+    <tr><td>Hedef kullanıcılar</td><td>Kime raporlanır (iç ve dış)?</td></tr>
+    <tr><td>Bağlam etkenleri</td><td>Sonucu bugün ne etkiliyor olabilir?</td></tr>
+    <tr><td>Öngörü etkenleri</td><td>Bilinen ve beklenen olaylar sonucu nasıl değiştirecek?</td></tr>
+  </tbody>
+</table>
+
+<h3>Üç kurum türü, üç ayrı yol</h3>
+<p>Standardın ayırt edici yanı, aynı üretkenlik sorusunu kurum türüne göre farklı biçimde
+yanıtlamasıdır. Yanlış yolu seçmek, teknik olarak doğru ama anlamsız bir sayı üretir.</p>
+<table>
+  <thead><tr><th>Kurum türü</th><th>Payda ne olur</th><th>Önerilen ölçütler</th></tr></thead>
+  <tbody>
+    <tr><td><b>Kâr amaçlı kurum</b></td><td>Çalışan sayısı ya da tam zaman eşdeğeri</td>
+      <td>Çalışan başına EBIT, gelir (ciro) ve kâr; insan sermayesi getirisi</td></tr>
+    <tr><td><b>STK / kâr amacı gütmeyen</b></td><td>Çalışan sayısı, saha çalışanı, bütçe</td>
+      <td>Yıllık bütçe, kullanılan fon oranı, idari kadronun saha kadrosuna oranı, saha çalışanı sayısı,
+      eğitim günlerinin payı, çalışan başına gerçekleştirilen proje ve etkilenen kişi sayısı</td></tr>
+    <tr><td><b>Kamu kurumu</b></td><td>—</td>
+      <td>Üretkenlik metriği önerilmez; kullanıcı memnuniyeti ve hizmet kalitesi gibi göstergeler
+      kullanılabilir</td></tr>
+  </tbody>
+</table>
+<div class="note">STK'larda işgücünün etkisi; desteklenen hizmet ve kişiler, bütçe ve uygulanan program
+yüzdesi üzerinden ölçülür. Amaç kâr üretkenliği değil, <b>işgücü ve kurum etkililiğidir</b>.</div>
+
+<h3>Ölçüm noktası ve karşılaştırma</h3>
+<ul>
+  <li>Raporlama, önceki dönemlerle cari dönemi ve geçmiş yıllarla cari yılı karşılaştırır; tipik
+  karşılaştırma aralığı üç ilâ beş yıldır.</li>
+  <li>Bu aralık eğilimin kurulmasını sağlar ve gelecek dönemler için hedef belirleyerek beklenti ile
+  sonucun yönetilmesine imkân verir.</li>
+  <li>Ölçüm dönemi genellikle bütçelenmiş projeksiyonlar ve raporlama takvimiyle hizalanır.</li>
+  <li>Başka bir ölçüm noktası seçilirse tercih tutarlı biçimde uygulanır ve açıkça yazılır.</li>
+  <li>Aynı ilke paydada da geçerlidir: çalışan sayısı mı, tam zaman eşdeğeri mi, geçici işgücü dâhil mi —
+  bir kez karar verilir, dipnotta belirtilir.</li>
+</ul>
+
+<h2 id="adimlar">Metrik Seçim Adımları</h2>
+<ol>
+  <li><b>Kurum türünü belirleyin.</b> Kâr amaçlı, STK ya da kamu; yol buradan ayrılır.</li>
+  <li><b>Paydayı tanımlayın.</b> Çalışan sayısı mı, tam zaman eşdeğeri mi; dönem sonu mu, dönem ortalaması
+  mı; geçici ve dış işgücü dâhil mi?</li>
+  <li><b>Payı tanımlayın.</b> Net gelir, net faaliyet kârı ve EBIT ayrı ayrı tanımlanır; hangisinin
+  raporlandığı yazılır.</li>
+  <li><b>Toplam işgücü maliyetini (TCOW) kurun.</b> Ücret, yan haklar ve dış işgücü maliyetlerinin
+  toplamı; ülke ve sektöre göre tanım değişebildiği için kendi tanımınızı belgeleyin.</li>
+  <li><b>Ölçüm noktasını sabitleyin</b> ve bütçe döngüsüyle hizalayın.</li>
+  <li><b>Kırılımları seçin.</b> İş kolu, bölge, ürün hattı, tesis.</li>
+  <li><b>Üç–beş yıllık seriyi kurun</b> ve hedefleri bu seri üzerinden belirleyin.</li>
+  <li><b>Bağlam ve öngörü etkenlerini yazın.</b> Sayının yanına kadro değişimi, yeniden yapılanma,
+  ekonomik koşullar ve beklenen olaylar not edilir.</li>
+  <li><b>İstişareyi planlayın.</b> Çalışan temsilcileri, iş konseyi ve sendika temsilcileri varsa
+  üretkenlik ölçümü konusunda görüşleri alınır.</li>
+</ol>
+
+<h2 id="kavramlar">Temel Kavramlar</h2>
+<table>
+  <thead><tr><th>Kısaltma</th><th>Kavram</th><th>Tanım</th></tr></thead>
+  <tbody>
+    <tr><td><b>EBIT</b></td><td>Faiz ve vergi öncesi kâr</td>
+      <td>Faiz ve gelir vergisi giderleri dışındaki tüm giderleri içeren kâr ölçüsü; kurumun belirli bir
+      dönemde faaliyetlerinden gelir üretme kabiliyetini gösterir</td></tr>
+    <tr><td><b>Gelir</b></td><td>Ciro / hasılat</td>
+      <td>Bazı ülke ve kültürlerde ciro (turnover) olarak da anılır; çalışan başına hesapta net gelir
+      kullanılır</td></tr>
+    <tr><td><b>Kâr</b></td><td>Net faaliyet kârı</td><td>Çalışan başına kâr hesabının payı</td></tr>
+    <tr><td><b>TCOW</b></td><td>Toplam işgücü maliyeti</td>
+      <td>Toplam ücret maliyeti + toplam yan hak maliyeti + dış işgücü maliyeti; eşdeğer ifadeyle dış
+      işgücü maliyeti + toplam istihdam maliyeti</td></tr>
+    <tr><td><b>HC RoI</b></td><td>İnsan sermayesi getirisi</td>
+      <td>İnsan sermayesine harcanan her lira ya da avro karşılığında geri dönen tutar; gelirin istihdam
+      maliyetine oranını gösterir</td></tr>
+    <tr><td><b>TZE</b></td><td>Tam zaman eşdeğeri</td>
+      <td>Kısmi ve esnek çalışmayı ortak bir tam zamanlı çalışma dönemine (hafta, ay, yıl) standartlaştırmak
+      için kullanılan payda</td></tr>
+    <tr><td><b>Ortalama çalışan</b></td><td>Dönem ortalaması</td>
+      <td>Ek ölçütlerde payda olarak kullanılan, ölçüm döneminin ortalama çalışan sayısı</td></tr>
+    <tr><td><b>Geçici işgücü</b></td><td>Contingent workforce</td>
+      <td>Sayısı büyük olduğunda hesaba dâhil edilmesi tercih edilen, kadro dışı çalışan grubu</td></tr>
+  </tbody>
+</table>
+
+<h2 id="matris">Metrik Matrisi</h2>
+<p>Aşağıdaki tablo, standardın tanımladığı ve türettiği metrikler ile bağlam–öngörü etkenlerinin
+kullanıcı × kurum türü × raporlama sınıflandırmasıdır. Filtreleri değiştirdiğinizde tablo anında
+daralır.</p>
+
+<div class="filters">
+  <div><label for="fUser">Kullanıcı</label>
+    <select id="fUser">
+      <option value="">Tümü</option>
+      <option value="hr">İK hizmet birimleri</option>
+      <option value="exec">Üst yönetim</option>
+      <option value="line">Hat yönetimi</option>
+      <option value="fin">Finans ve yatırımcı ilişkileri</option>
+      <option value="ext">Dış paydaş</option>
+    </select></div>
+  <div><label for="fStage">Kurum türü</label>
+    <select id="fStage">
+      <option value="">Tümü</option>
+      <option value="kar">Kâr amaçlı kurum</option>
+      <option value="stk">STK / kâr amacı gütmeyen</option>
+      <option value="kamu">Kamu kurumu</option>
+      <option value="genel">Tüm kurum türleri</option>
+    </select></div>
+  <div><label for="fType">Metrik ailesi</label>
+    <select id="fType">
+      <option value="">Tümü</option>
+      <option value="v">Çalışan başına üretkenlik</option>
+      <option value="e">Getiri ve işgücü maliyeti</option>
+      <option value="o">Bağlam ve öngörü</option>
+    </select></div>
+  <div><label for="fRep">Raporlama</label>
+    <select id="fRep">
+      <option value="">Tümü</option>
+      <option value="ic">İç raporlama</option>
+      <option value="dis">Dış raporlama</option>
+    </select></div>
+  <div><label for="fQ">Metrik adında ara</label>
+    <input type="text" id="fQ" placeholder="ör. maliyet"></div>
+</div>
+
+<div class="count" id="mCount"></div>
+<div class="tblwrap">
+<table class="matrix">
+  <thead><tr>
+    <th>Metrik</th>
+    <th class="rot">İK</th>
+    <th class="rot">Üst yönetim</th>
+    <th class="rot">Hat yönetimi</th>
+    <th class="rot">Finans / yatırımcı</th>
+    <th class="rot">Dış paydaş</th>
+  </tr></thead>
+  <tbody id="mBody"></tbody>
+</table>
+</div>
+<div class="legend">
+  <span><span class="dot v"></span> çalışan başına üretkenlik</span>
+  <span><span class="dot e"></span> getiri ve işgücü maliyeti</span>
+  <span><span class="dot o"></span> bağlam ve öngörü</span>
+  <span><span class="tag iso">30414</span> insan sermayesi raporlamasında da yer alan metrik</span>
+  <span><span class="tag lvl">hesaplayıcı</span> bu sayfada hesaplanabilen metrik</span>
+  <span>Hesaplayıcıya bağlı metrikler <b>koyu</b> işaretlenmiştir.</span>
+</div>
+
+<h2 id="tablo">Dönem Karşılaştırma Tablosu</h2>
+<p>Standart, üretkenlik metriklerinin tek bir dönem için değil, önceki dönemler ve geçmiş yıllarla
+birlikte raporlanmasını ister. Aşağıdaki tabloya her dönem için gelir, toplam gider, toplam işgücü
+maliyeti ve kadro bilgisini girin; çalışan başına EBIT ile insan sermayesi getirisi satır satır
+hesaplanır ve eğilim aşağıda özetlenir.</p>
+
+<div class="tblbar">
+  <button class="btn-ghost" id="btnOrnek">Örnek veriyi yükle</button>
+  <button class="btn-ghost" id="btnTemizle">Tabloyu temizle</button>
+  <button class="btn-ghost" id="btnCsv">CSV olarak indir</button>
+  <button class="btn-ghost" id="btnAktar">Hesaplayıcıya aktar</button>
+  <span class="inline"><label for="paraBirim">Para birimi</label>
+    <input type="text" id="paraBirim" value="TL"></span>
+</div>
+
+<div class="tblwrap">
+<table class="postbl">
+  <thead><tr>
+    <th style="width:88px">Dönem</th>
+    <th>Gelir</th><th>Toplam gider</th><th>İşgücü maliyeti (TCOW)</th>
+    <th class="num">Kişi</th><th class="num">TZE</th>
+    <th class="calc" style="width:110px">EBIT / kişi</th>
+    <th class="calc" style="width:90px">İS getirisi</th>
+  </tr></thead>
+  <tbody id="pBody"></tbody>
+  <tfoot><tr>
+    <td>Seri</td>
+    <td class="calc" colspan="3">Dönem sayısı: <span id="tDonem">—</span></td>
+    <td class="calc" colspan="2" id="tKadro">—</td>
+    <td class="calc" id="tEbit">—</td>
+    <td class="calc" id="tRoi">—</td>
+  </tr></tfoot>
+</table>
+</div>
+
+<div class="cards" id="pCards"></div>
+<div class="note" id="pNot"></div>
+
+<h2 id="formuller">Formüller ve Tanımlar</h2>
+<p>Metriklerin bir bölümü sayımdır (saha çalışanı sayısı, desteklenen kişi, yıllık bütçe) ve formül
+gerektirmez. Hesaplanabilir olanların tamamı aşağıdadır.</p>
+<table>
+  <thead><tr><th>Metrik</th><th>Formül</th><th>Not</th></tr></thead>
+  <tbody id="fBody"></tbody>
+</table>
+
+<h2 id="hesaplayici">Hesaplayıcı</h2>
+<p>Metriği seçin, alanları doldurun; sonuç, formülün yerine konmuş hâli ve yorum aşağıda görünür.
+Kurulum gerekmez, veriler tarayıcıdan çıkmaz.</p>
+
+<div class="panel">
+  <h3>Üretkenlik Metrik Hesaplayıcısı</h3>
+  <p class="hint">Alanlar seçtiğiniz metriğe göre değişir. Tutarlar TL, oranlar yüzde olarak raporlanır.</p>
+  <div class="grid">
+    <div class="field" style="grid-column:1/-1">
+      <label for="cMetric">Metrik <span class="req">*</span></label>
+      <select id="cMetric"></select>
+    </div>
+  </div>
+  <div class="grid" id="cFields" style="margin-top:14px"></div>
+  <div class="checks">
+    <label><input type="checkbox" id="oAll"> Tümünü seç</label>
+    <label><input type="checkbox" id="oFormula" checked> Formülün açık hâli</label>
+    <label><input type="checkbox" id="oInterp" checked> Yorum ve eşik</label>
+    <label><input type="checkbox" id="oPy"> Python karşılığı</label>
+  </div>
+  <div class="panel-foot">
+    <button class="btn-run" id="btnRun">Hesapla</button>
+    <button class="btn-ghost" id="btnExample">Örnek veriyi yükle</button>
+    <button class="btn-ghost" id="btnPy">Python motorunu yükle</button>
+    <span class="chip" id="engStatus">Motor: tarayıcı (JavaScript)</span>
+  </div>
+  <p class="hint" style="margin:14px 0 0">Python motoru seçildiğinde hesaplama, bu sayfaya gömülü
+  <code style="background:#1c2836;color:#cfe0f0">iso30432_metrikler.py</code> modülünün
+  <code style="background:#1c2836;color:#cfe0f0">hesapla()</code> fonksiyonu tarafından, tarayıcı içinde
+  çalışan gerçek bir CPython yorumlayıcısında (Pyodide/WebAssembly) yapılır. İlk yüklemede yaklaşık
+  10–12 MB indirilir; sonrası önbellekten gelir. Çevrimdışıysanız sayfa JavaScript yedeğiyle aynı
+  sonuçları vermeye devam eder.</p>
+</div>
+
+<div id="cResult"></div>
+
+<h2 id="python">Python Kod Örnekleri</h2>
+<p>Bu sayfadaki hesaplamalar JavaScript'te taklit edilmez: modülün tamamı sayfaya gömülüdür ve Pyodide
+(WebAssembly üzerinde CPython) ile tarayıcı içinde çalıştırılır. Hesaplayıcıda Python motorunu
+seçtiğinizde her sonuç <code>hesapla()</code> fonksiyonundan gelir. Aynı dosya
+(<code>iso30432_metrikler.py</code>) komut satırında da bağımsız çalışır; doğrudan çalıştırıldığında
+örnek değerlerle doğrulama çıktısı üretir.</p>
+
+<div class="filename">iso30432_metrikler.py (özet)</div>
+<pre><i># --- Kâr amaçlı kurumlar ---</i>
+
+<b>def</b> <span class="fn">ebit</span>(gelir, giderler):
+    <i>"""Faiz ve vergi öncesi kâr: gelir − (satılan malın maliyeti,
+    satış ve idari giderler dâhil tüm giderler)."""</i>
+    <b>return</b> gelir - giderler
+
+<b>def</b> <span class="fn">ebit_calisan</span>(gelir, giderler, calisan):
+    <i>"""Çalışan başına EBIT. Payda yerine TZE de kullanılabilir."""</i>
+    <b>return</b> ebit(gelir, giderler) / calisan
+
+<b>def</b> <span class="fn">gelir_calisan</span>(net_gelir, ortalama_calisan):
+    <i>"""Çalışan başına gelir: dönemin ortalama çalışan sayısına bölünür."""</i>
+    <b>return</b> net_gelir / ortalama_calisan
+
+<i># --- İnsan sermayesi getirisi ---</i>
+
+<b>def</b> <span class="fn">tcow</span>(ucret, yan_haklar, dis_isgucu):
+    <i>"""Toplam işgücü maliyeti = ücret + yan haklar + dış işgücü."""</i>
+    <b>return</b> ucret + yan_haklar + dis_isgucu
+
+<b>def</b> <span class="fn">hc_roi</span>(gelir, toplam_gider, isgucu_maliyeti):
+    <i>"""[Gelir − (Toplam gider − İşgücü maliyeti)] / İşgücü maliyeti − 1."""</i>
+    <b>return</b> (gelir - (toplam_gider - isgucu_maliyeti)) / isgucu_maliyeti - <u>1</u>
+
+<b>def</b> <span class="fn">isgucu_maliyet_payi</span>(isgucu_maliyeti, toplam_gider):
+    <i>"""Standart, bu payın çoğu kurumda %25 ile %60 arasında olduğunu anar."""</i>
+    <b>return</b> <u>100</u> * isgucu_maliyeti / toplam_gider
+
+<i># --- STK ve kâr amacı gütmeyen kuruluşlar ---</i>
+
+<b>def</b> <span class="fn">fon_kullanim_orani</span>(kullanilan_fon, yillik_butce):
+    <b>return</b> <u>100</u> * kullanilan_fon / yillik_butce
+
+<b>def</b> <span class="fn">idari_saha_orani</span>(idari, saha):
+    <i>"""Hem kadro hem ücret maliyeti üzerinden ayrı ayrı hesaplanır."""</i>
+    <b>return</b> <u>100</u> * idari / saha
+
+<b>def</b> <span class="fn">calisan_basina_proje</span>(proje, calisan):
+    <i>"""Etki ölçeğine göre ayrı raporlanır: 10–100, 100–1.000, 1.000+ kişi."""</i>
+    <b>return</b> proje / calisan
+</pre>
+
+<h3>Çalıştırılabilir konsol</h3>
+<p>Aşağıdaki kod, sayfaya gömülü modüle karşı çalışır. <b>Kodu çalıştır</b> düğmesi Python motorunu
+(yüklü değilse) indirir, modülü içe aktarır ve çıktıyı altta gösterir. Kodu serbestçe değiştirebilir,
+kendi verinizi yazabilirsiniz; her şey tarayıcıda kalır.</p>
+
+<div class="console">
+  <div class="console-bar">
+    <span>iso30432_metrikler modülüne karşı çalışır · Python 3 (Pyodide)</span>
+    <span style="display:flex;gap:8px;align-items:center">
+      <button class="btn-run btn-sm" id="btnRunPy">Kodu çalıştır</button>
+      <button class="btn-ghost btn-sm" id="btnDemo" style="border-color:var(--line);color:var(--ink-soft)">Tam demoyu yükle</button>
+      <button class="btn-ghost btn-sm" id="btnReset" style="border-color:var(--line);color:var(--ink-soft)">Sıfırla</button>
+    </span>
+  </div>
+  <textarea id="pyCode" spellcheck="false"></textarea>
+  <pre id="pyOut">Çıktı burada görünecek. İlk çalıştırmada Python motoru indirilir (10–12 MB).</pre>
+</div>
+
+<details class="src"><summary>Gömülü modülün tam kaynağı (iso30432_metrikler.py)</summary>
+  <pre id="srcView">yükleniyor…</pre>
+</details>
+
+<h2 id="yorum">Sonuçların Yorumlanması</h2>
+<ul>
+  <li><b>Çalışan başına EBIT artarken kadro küçülüyorsa</b> artışın kaynağı üretkenlik değil, paydadır.
+  Standardın bağlam etkenleri tam olarak bunu söyler: her ölçüm noktasındaki kadro ve TZE, metriğin
+  anlamını değiştirecek kadar büyümüş ya da küçülmüş olabilir.</li>
+  <li><b>İnsan sermayesi getirisi %50 ise</b> işgücüne harcanan her liranın kendisi geri gelmiş, üstüne
+  50 kuruş vergi öncesi kâr eklenmiştir. Yüzde ne kadar büyükse, insana yapılan yatırım o kadar
+  etkili çalışıyor demektir.</li>
+  <li><b>Getiri oranı düşerken çalışan başına EBIT sabitse</b> işgücü maliyeti üretilen değerden hızlı
+  artıyordur; ücret artışı, dış işgücü kullanımı ve yan hak maliyetlerini ayrı ayrı inceleyin.</li>
+  <li><b>Gelir bazlı ve kâr bazlı oranlar farklı yöne gidiyorsa</b> sorun üretkenlikte değil maliyet
+  yapısındadır: çalışan başına gelir artarken çalışan başına EBIT düşüyorsa marj eriyor demektir.</li>
+  <li><b>Sonuç beklenenin altındaysa hemen olumsuz yorumlamayın.</b> Standart, sonucun kötü göründüğü
+  durumlarda daha ileri incelemenin olumlu göstergeler ortaya çıkarabileceğini söyler: genişleyen üretim,
+  yeni ürün hattı, yeniden yapılanma ya da işgücü eğitimine yapılan yatırım kısa vadede oranı düşürür.</li>
+  <li><b>Getiri oranını tek dönemle yorumlamayın.</b> Standart bu metriğin uzun vadeli stratejik öngörüde
+  kullanılmasını önerir; kurumsal piyasa değerleri denetim dışı olaylar ve sektör değişimleriyle sert
+  dalgalanır.</li>
+  <li><b>STK sonuçlarında oranın yanına ölçeği yazın.</b> Çalışan başına proje sayısı, projelerin
+  etkilediği kişi sayısı belirtilmeden tek başına bir şey söylemez: 10–100 kişiyi etkileyen beş proje
+  ile 1.000 kişiyi aşan tek proje aynı hanede toplanamaz.</li>
+  <li><b>Kamu kurumlarında bu oranları zorlamayın.</b> Standart ölçmenin güçlüğü nedeniyle üretkenlik
+  metriği önermez; kullanıcı memnuniyeti ve hizmet kalitesi göstergeleri daha anlamlıdır.</li>
+</ul>
+
+<h2 id="sinirlamalar">Sınırlamalar</h2>
+<ul>
+  <li><b>Payda oynadıkça oran oynar.</b> Çalışan sayısı, TZE ve geçici işgücü dâhil hesap üç farklı sonuç
+  verir. Tercih dipnota yazılmazsa dönem ve kurum karşılaştırması geçersizdir.</li>
+  <li><b>Metrik sektöre bağımlıdır.</b> Sermaye yoğun bir kurumun çalışan başına geliri, emek yoğun bir
+  kurumunkinden yapısal olarak yüksektir; oran üretkenlik farkını değil iş modeli farkını gösterebilir.</li>
+  <li><b>Kadro küçültme oranı iyileştirir.</b> Çalışan başına kâr, işten çıkarmayla kısa vadede yükselir;
+  bu nedenle getiri oranı, devir, performans ve öngörülen kadro değişiklikleriyle birlikte okunmalıdır.</li>
+  <li><b>TCOW tanımı evrensel değildir.</b> Standart, kimi ülke ve sektörlerin toplam işgücü maliyeti için
+  biraz farklı tanımlar kullandığını belirtir; kıyaslama ancak tanımlar açıklandığında anlamlıdır.</li>
+  <li><b>İnsan sermayesi getirisi çoğu kurumda izlenmez.</b> Standart bu metriğin kurumlar tarafından
+  tipik olarak takip edilmediğini söyler; seri kurmak için geçmiş verinin yeniden üretilmesi gerekebilir.</li>
+  <li><b>Piyasa değeriyle ilişkilendirme yalnızca ölçülebildiği yerde geçerlidir.</b> Halka açık olmayan
+  ve göreli piyasa değeri elde edilemeyen kurumlarda bu kullanım düşer.</li>
+  <li><b>Oran nedeni söylemez.</b> Üretkenlik oranı bir sonuç göstergesidir; nedeni bulmak için maliyet,
+  devir, beceri ve süreç metrikleriyle birlikte incelenmesi gerekir.</li>
+</ul>
+
+<h2 id="raporlama">Metriklerin Raporlanması</h2>
+<table>
+  <thead><tr><th>Alıcı</th><th>Ne görmek ister</th><th>Rapor biçimi</th></tr></thead>
+  <tbody>
+    <tr><td>İK hizmet birimleri</td>
+      <td>Tüm metrikler, işgücü maliyeti bileşenleri, kırılımlar, payda tanımı</td>
+      <td>Analitik rapor, çeyreklik</td></tr>
+    <tr><td>Üst yönetim</td>
+      <td>Çalışan başına EBIT ve getiri oranının üç–beş yıllık eğilimi, hedefe göre sapma</td>
+      <td>Skor kartı, dönemsel</td></tr>
+    <tr><td>Hat yönetimi</td>
+      <td>Kendi biriminin çalışan başına değeri, kadro ve TZE değişimi</td>
+      <td>Birim panosu, aylık</td></tr>
+    <tr><td>Finans ve yatırımcı ilişkileri</td>
+      <td>TCOW, işgücü maliyetinin gider içindeki payı, getiri oranı, bütçe projeksiyonuyla hizalama</td>
+      <td>Bütçe ekli rapor, çeyreklik</td></tr>
+    <tr><td>Dış paydaş (düzenleyici, yatırımcı, analist)</td>
+      <td>Karşılaştırılabilir toplam göstergeler ve yöntem dipnotu</td>
+      <td>Faaliyet ve sürdürülebilirlik raporu, yıllık</td></tr>
+  </tbody>
+</table>
+<p><b>Her raporda bulunması gerekenler:</b> payda tanımı (kişi mi TZE mi, geçici işgücü dâhil mi),
+pay tanımı (net gelir, net faaliyet kârı, EBIT), TCOW kapsamı, ölçüm noktası, dönem, kırılım düzeyi,
+karşılaştırma tabanı ve bağlam notu. Çalışan temsilcileri, iş konseyleri ve sendika temsilcileri de
+üretkenlik ölçümünün istişare tarafıdır.</p>
+
+<h2 id="ilgili">İlgili Standartlar</h2>
+<ul>
+  <li><b>ISO 30414</b> — iç ve dış insan sermayesi raporlaması; üretkenlik kümesinin tanımı oradan gelir
+  (2018 sürümünde 4.7.8).</li>
+  <li><b>ISO 30400</b> — insan kaynakları yönetimi terimler sözlüğü.</li>
+  <li><b>ISO/TS 30427</b> — insan kaynakları maliyet metrikleri; TCOW'un bileşenleri ve maliyet tarafı.</li>
+  <li><b>ISO/TS 30421</b> — devir ve elde tutma metrikleri; getiri oranının birlikte okunması gereken
+  metriklerden biri.</li>
+  <li><b>ISO/TS 30430</b> — işe alım metrikleri; boş pozisyonun üretkenliğe yansıması buradan izlenir.</li>
+  <li><b>ISO/TS 30437</b> — öğrenme ve gelişim metrikleri; işgücü eğitimine yapılan yatırım, üretkenlik
+  oranının bağlam etkenlerinden biridir.</li>
+</ul>
+
+<h2 id="sss">Sıkça Sorulan Sorular</h2>
+<details><summary>Paydada çalışan sayısı mı, tam zaman eşdeğeri mi kullanmalıyım?</summary>
+<p>Standart ikisine de izin verir: kimi kurumlar çalışan sayısı yerine tam zaman eşdeğerini tercih eder.
+Kısmi ve esnek çalışmanın yaygın olduğu kurumlarda TZE daha doğru bir üretkenlik resmi verir; kadro
+büyüklüğünü izlemek isteyen kurumlarda kişi sayısı daha okunaklıdır. Belirleyici olan tercihin dönemler
+boyunca değişmemesi ve raporda yazılı olmasıdır. Bu sayfadaki dönem tablosu iki paydayı da hesaplar,
+böylece farkı görebilirsiniz.</p></details>
+
+<details><summary>Geçici işgücünü hesaba katmalı mıyım?</summary>
+<p>Standart, geçici işgücünün sayısı büyük olduğunda kimi kurumların hesabı bu grubu da kapsayacak
+biçimde kurmayı tercih ettiğini belirtir. Mantık şudur: iş dış kaynakla yapılıyorsa üretilen değer
+kadroya bölündüğünde yapay olarak yükselir. Aynı sorun getiri oranında yoktur, çünkü dış işgücü maliyeti
+zaten toplam işgücü maliyetinin içindedir.</p></details>
+
+<details><summary>Kamu kurumunda üretkenliği nasıl ölçerim?</summary>
+<p>Standart kamu kurumları için üretkenlik metriği önermez; gerekçesi ölçmenin güçlüğüdür. Bunun yerine
+kullanıcı memnuniyeti ya da hizmet kalitesi gibi göstergelerin uygulanabileceğini söyler. Uygulamada
+bunlar hizmet standardına uyum, başvuru sonuçlanma süresi, memnuniyet anketi sonuçları ve şikâyet
+oranları gibi ölçütlerle somutlaşır.</p></details>
+
+<details><summary>İnsan sermayesi getirisi ile eğitim yatırımının getirisi aynı şey mi?</summary>
+<p>Hayır. Buradaki getiri, tüm işgücü maliyetine karşılık üretilen değeri ölçer; paydası ücret, yan hak
+ve dış işgücü maliyetlerinin toplamıdır. Bir eğitim programının getirisi ise tek bir müdahalenin
+maliyet–fayda hesabıdır ve öğrenme metrikleri kümesinin konusudur. İkisi karıştırılırsa insan sermayesi
+getirisi, eğitim bütçesi kadar küçük bir paydayla hesaplanmış gibi görünür.</p></details>
+
+<details><summary>Getiri oranını her çeyrek raporlayabilir miyim?</summary>
+<p>Hesaplayabilirsiniz, ama standart bu metriğin kısa dönemli ölçüm yerine uzun vadeli stratejik
+öngörüde kullanılmasını önerir; kurumsal piyasa değerleri denetim dışı olaylarla ve sektör
+değişimleriyle sert biçimde dalgalanır. Çeyreklik seri iç izleme için tutulabilir, dış raporlamada
+yıllık ve üç–beş yıllık eğilim tercih edilir.</p></details>
+
+<details><summary>Standardın çalışan başına EBIT örneği neyi gösteriyor?</summary>
+<p>Yayımlanmış örnekte gelir 4,5 milyon, faaliyet giderleri 3,75 milyon, işgücü maliyeti (ücret ve yan
+haklar) 1,5 milyondur; getiri {[4.500.000 − (3.750.000 − 1.500.000)] ÷ 1.500.000} − 1 = 0,5, yani %50
+çıkar. Aynı veride EBIT 750.000'dir; beş çalışanlık bir kadroda bu, çalışan başına 150.000 eder. Bu
+sayfadaki örnek seri, son dönemi bu örnekle aynı olacak biçimde kurulmuştur.</p></details>
+
+<details><summary>STK'da çalışan başına projeyi nasıl raporlamalıyım?</summary>
+<p>Etki ölçeğine göre ayırarak. Standart, çalışan başına gerçekleştirilen ya da olgunlaşmış proje
+sayısını üç bantta ele alır: 10–100 kişiyi, 100–1.000 kişiyi ve 1.000'den fazla kişiyi etkileyen
+projeler. Bu ayrım yapılmadan verilen tek bir ortalama, küçük ölçekli çok sayıda projeyi büyük ölçekli
+tek projeyle aynı hanede toplar. Yanına yıllık bütçe, kullanılan fon oranı ve idari kadronun saha
+kadrosuna oranı da konur.</p></details>
+
+<footer>
+  ISO/TS 30432:2021 çerçevesinden üretilmiş çalışma aracı. Metrik adları, sınıflandırma ve formüller
+  standarda dayanır; açıklamalar, örnek değerler ve kod özgün olarak yazılmıştır. Standardın kendisi
+  telif korumalıdır ve bu sayfa onun yerine geçmez.
+</footer>
+
+</div>
+<script type="text/x-python" id="pysrc">
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+iso30432_metrikler.py
+=====================
+ISO/TS 30432:2021 (Human resource management — Workforce productivity metrics
+cluster) çerçevesindeki işgücü üretkenliği metriklerinin Python karşılığı.
+
+Standart, ISO 30414'ün "üretkenlik" kümesini iki ana metrik ailesi üzerinden
+tanımlar ve bunları kurum türüne göre ayrıştırır. Modül dört bölüme ayrılmıştır:
+
+    1) Kâr amaçlı kurumlar — çalışan başına EBIT, gelir (ciro) ve kâr
+    2) İnsan sermayesi getirisi — HC RoI ve toplam işgücü maliyeti (TCOW)
+    3) STK ve kâr amacı gütmeyen kuruluşlar — bütçe, fon, saha kadrosu, proje
+    4) Dönem serisi — üç ilâ beş yıllık karşılaştırma ve eğilim
+
+Kullanım:
+    from iso30432_metrikler import ebit_calisan, hc_roi
+    ebit_calisan(4_500_000, 3_750_000, 5)      ->  150000.0
+    hc_roi(4_500_000, 3_750_000, 1_500_000)    ->  0.5
+
+Doğrudan çalıştırıldığında (python3 iso30432_metrikler.py) tüm fonksiyonlar
+örnek verilerle çalıştırılır ve sonuçlar tablo hâlinde yazdırılır.
+
+Not: Metrik adları, sınıflandırma ve formüller ISO/TS 30432:2021'e dayanır.
+Kod ve açıklamalar özgün olarak yazılmıştır; standardın kendisi telif korumalıdır.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from statistics import mean
+from typing import Optional, Sequence
+
+__all__ = [
+    # kâr amaçlı kurumlar
+    "ebit", "ebit_calisan", "gelir_calisan", "kar_calisan", "ebit_marji",
+    # getiri ve işgücü maliyeti
+    "tcow", "hc_roi", "isgucu_maliyet_payi", "tze_donusum",
+    # STK
+    "fon_kullanim_orani", "idari_saha_orani", "egitim_gunu_orani",
+    "calisan_basina_proje", "etki_bandi",
+    # dönem serisi
+    "Donem", "DonemSerisi", "ornek_seri", "metrik_denetimi",
+    # dağıtıcı
+    "hesapla", "METRIK_LISTESI",
+]
+
+
+# ---------------------------------------------------------------------------
+# 1) Kâr amaçlı kurumlar: çalışan başına üretkenlik oranları
+# ---------------------------------------------------------------------------
+
+def ebit(gelir: float, giderler: float) -> float:
+    """Faiz ve vergi öncesi kâr (EBIT).
+
+    EBIT, faiz ve gelir vergisi giderleri dışındaki tüm giderleri içeren bir
+    kâr ölçüsüdür: satılan malın maliyeti ile satış ve idari giderler paya
+    değil, gidere yazılır. Kurumun belirli bir dönemde (örneğin bir yıl)
+    faaliyetlerinden gelir üretme kabiliyetini gösterir.
+    """
+    return gelir - giderler
+
+
+def ebit_calisan(gelir: float, giderler: float, calisan: float) -> float:
+    """Çalışan başına EBIT = (Gelir − Giderler) / Toplam çalışan sayısı.
+
+    Kimi kurumlar payda olarak çalışan sayısı yerine tam zaman eşdeğerini
+    (TZE) kullanmayı tercih eder. Geçici işgücünün sayısı büyükse hesabın bu
+    grubu da kapsayacak biçimde kurulması tercih edilir. Hangi payda seçilirse
+    seçilsin, tercih dönemler boyunca korunmalı ve raporda yazılmalıdır.
+    """
+    return ebit(gelir, giderler) / calisan
+
+
+def gelir_calisan(net_gelir: float, ortalama_calisan: float) -> float:
+    """Çalışan başına gelir = Toplam net gelir / Dönemin ortalama çalışan sayısı.
+
+    Gelir, kimi ülke ve kültürlerde ciro (turnover) olarak anılır. Kısmi ve
+    esnek çalışma saatlerini ortak bir tam zamanlı çalışma dönemine (hafta,
+    ay, yıl) standartlaştırmak için TZE bazında da hesaplanabilir.
+    """
+    return net_gelir / ortalama_calisan
+
+
+def kar_calisan(net_faaliyet_kari: float, ortalama_calisan: float) -> float:
+    """Çalışan başına kâr = Net faaliyet kârı / Ortalama çalışan sayısı.
+
+    Çalışan başına düşen net faaliyet kârının ortalaması olarak kaba bir
+    üretkenlik ölçüsüdür.
+    """
+    return net_faaliyet_kari / ortalama_calisan
+
+
+def ebit_marji(ebit_tutari: float, gelir: float) -> float:
+    """EBIT marjı (%) — türetilmiş.
+
+    Çalışan başına EBIT iki bileşene ayrılır: çalışan başına gelir ve marj.
+    Çalışan başına gelir artarken çalışan başına EBIT düşüyorsa, sorun
+    üretkenlikte değil maliyet yapısındadır.
+    """
+    return 100 * ebit_tutari / gelir
+
+
+# ---------------------------------------------------------------------------
+# 2) İnsan sermayesi getirisi ve toplam işgücü maliyeti
+# ---------------------------------------------------------------------------
+
+def tcow(ucret: float, yan_haklar: float, dis_isgucu: float) -> float:
+    """Toplam işgücü maliyeti (TCOW).
+
+    Toplam çalışan ücret maliyeti + toplam yan hak maliyeti + dış işgücü
+    maliyeti. Eşdeğer ifadeyle: dış işgücü maliyeti + toplam istihdam maliyeti.
+    Kimi ülke ve sektörler biraz farklı tanımlar kullanır; kurum kendi tanımını
+    belgelemelidir.
+    """
+    return ucret + yan_haklar + dis_isgucu
+
+
+def hc_roi(gelir: float, toplam_gider: float, isgucu_maliyeti: float) -> float:
+    """İnsan sermayesi getirisi (HC RoI), oran olarak.
+
+        [Gelir − (Toplam gider − Toplam işgücü maliyeti)] / Toplam işgücü maliyeti − 1
+
+    Sonuç 0,5 ise: işgücüne harcanan her lira geri gelmiş, üstüne 50 kuruş
+    vergi öncesi kâr eklenmiştir; bu %50 getiri olarak ifade edilir.
+    """
+    return (gelir - (toplam_gider - isgucu_maliyeti)) / isgucu_maliyeti - 1
+
+
+def isgucu_maliyet_payi(isgucu_maliyeti: float, toplam_gider: float) -> float:
+    """İşgücü maliyetinin toplam gider içindeki payı (%).
+
+    Standart, kurumsal işgücü maliyetlerinin toplam maliyetin %25 ile %60'ı
+    arasında olabileceğini belirtir; bu ölçünün neden giderek daha çok
+    izlendiğini açıklayan gerekçe budur.
+    """
+    return 100 * isgucu_maliyeti / toplam_gider
+
+
+def tze_donusum(deger_kisi: float, kisi: float, tze: float) -> float:
+    """Kişi başına hesaplanmış bir değeri TZE başına çevirir.
+
+    Kısmi zamanlı çalışmanın yaygın olduğu kurumlarda kişi bazlı oran
+    üretkenliği olduğundan düşük gösterir.
+    """
+    return deger_kisi * kisi / tze
+
+
+# ---------------------------------------------------------------------------
+# 3) STK ve kâr amacı gütmeyen kuruluşlar
+# ---------------------------------------------------------------------------
+
+def fon_kullanim_orani(kullanilan_fon: float, yillik_butce: float) -> float:
+    """Kullanılan (sahaya aktarılan) fonun yıllık bütçeye oranı (%)."""
+    return 100 * kullanilan_fon / yillik_butce
+
+
+def idari_saha_orani(idari: float, saha: float) -> float:
+    """İdari kadronun saha çalışanlarına oranı (%).
+
+    Standart bu oranı hem kadro sayısı hem de ücret maliyeti üzerinden
+    ayrı ayrı raporlamayı öngörür.
+    """
+    return 100 * idari / saha
+
+
+def egitim_gunu_orani(egitim_gun: float, yararlanilan_gun: float) -> float:
+    """Yıllık eğitim günlerinin yararlanılan (kullanılabilir) günlere oranı (%)."""
+    return 100 * egitim_gun / yararlanilan_gun
+
+
+def calisan_basina_proje(proje: float, calisan: float) -> float:
+    """Çalışan başına gerçekleştirilen ya da olgunlaşmış proje sayısı."""
+    return proje / calisan
+
+
+def etki_bandi(etkilenen_kisi: float) -> str:
+    """Proje etkisinin standarttaki üç bandından hangisine düştüğü.
+
+    Bantlar: 10–100 kişi, 100–1.000 kişi, 1.000'den fazla kişi. Farklı
+    ölçekteki projeler tek bir ortalamada toplanmaz.
+    """
+    if etkilenen_kisi > 1000:
+        return "1.000+ kişi"
+    if etkilenen_kisi >= 100:
+        return "100–1.000 kişi"
+    if etkilenen_kisi >= 10:
+        return "10–100 kişi"
+    return "10 kişiden az"
+
+
+# ---------------------------------------------------------------------------
+# 4) Dönem serisi: üç ilâ beş yıllık karşılaştırma
+# ---------------------------------------------------------------------------
+
+@dataclass
+class Donem:
+    """Tek bir ölçüm döneminin üretkenlik verisi."""
+    ad: str
+    gelir: float
+    gider: float
+    isgucu: float
+    kisi: float
+    tze: Optional[float] = None
+
+    @property
+    def ebit(self) -> float:
+        return ebit(self.gelir, self.gider)
+
+    @property
+    def ebit_kisi(self) -> float:
+        return self.ebit / self.kisi
+
+    @property
+    def ebit_tze(self) -> Optional[float]:
+        return self.ebit / self.tze if self.tze else None
+
+    @property
+    def gelir_kisi(self) -> float:
+        return self.gelir / self.kisi
+
+    @property
+    def roi(self) -> float:
+        return hc_roi(self.gelir, self.gider, self.isgucu)
+
+    @property
+    def isgucu_payi(self) -> float:
+        return isgucu_maliyet_payi(self.isgucu, self.gider)
+
+
+@dataclass
+class DonemSerisi:
+    """Karşılaştırma dönemlerinin serisi (tipik olarak üç ilâ beş yıl)."""
+    donemler: list = field(default_factory=list)
+
+    def ekle(self, ad: str, gelir: float, gider: float, isgucu: float,
+             kisi: float, tze: Optional[float] = None) -> "DonemSerisi":
+        self.donemler.append(Donem(ad, gelir, gider, isgucu, kisi, tze))
+        return self
+
+    def ozet(self) -> dict:
+        son = self.donemler[-1]
+        ilk = self.donemler[0]
+        return {
+            "donem_sayisi": len(self.donemler),
+            "son_donem": son.ad,
+            "ebit_kisi": round(son.ebit_kisi, 2),
+            "ebit_tze": round(son.ebit_tze, 2) if son.ebit_tze else None,
+            "gelir_kisi": round(son.gelir_kisi, 2),
+            "roi_yuzde": round(100 * son.roi, 1),
+            "isgucu_payi_yuzde": round(son.isgucu_payi, 1),
+            "ebit_kisi_degisim_yuzde": round(
+                100 * (son.ebit_kisi - ilk.ebit_kisi) / ilk.ebit_kisi, 1),
+            "roi_degisim_puan": round(100 * (son.roi - ilk.roi), 1),
+            "kadro_degisim_yuzde": round(100 * (son.kisi - ilk.kisi) / ilk.kisi, 1),
+            "ortalama_roi_yuzde": round(100 * mean([d.roi for d in self.donemler]), 1),
+        }
+
+    def tablo(self) -> list:
+        """Raporlanabilir satır listesi."""
+        return [[d.ad, d.gelir, d.gider, d.isgucu, d.kisi,
+                 round(d.ebit_kisi, 2), round(100 * d.roi, 1)]
+                for d in self.donemler]
+
+
+def ornek_seri() -> DonemSerisi:
+    """Dört dönemlik örnek seri.
+
+    Son dönem, standardın yayımlanmış insan sermayesi getirisi örneğiyle
+    aynı büyüklüktedir: gelir 4,5 milyon, gider 3,75 milyon, işgücü maliyeti
+    1,5 milyon; getiri %50, EBIT 750.000, beş çalışanda kişi başı 150.000.
+    """
+    s = DonemSerisi()
+    s.ekle("2023", 3_400_000, 3_000_000, 1_150_000, 4, 3.8)
+    s.ekle("2024", 3_900_000, 3_350_000, 1_300_000, 5, 4.4)
+    s.ekle("2025", 4_200_000, 3_560_000, 1_400_000, 5, 4.6)
+    s.ekle("2026", 4_500_000, 3_750_000, 1_500_000, 5, 4.6)
+    return s
+
+
+def metrik_denetimi(payda_tanimi_yazili: bool = False,
+                    gecici_isgucu_karari_var: bool = False,
+                    tcow_tanimi_yazili: bool = False,
+                    uc_bes_yil_seri: bool = False,
+                    baglam_notu_var: bool = False,
+                    kurum_turu_dogru: bool = False,
+                    istisare_yapildi: bool = False) -> list:
+    """Bir üretkenlik raporunun eksiklerini listeler.
+
+    Standardın mantığı: çalışan başına oran ve getiri oranı, payda tanımı,
+    maliyet kapsamı, karşılaştırma tabanı ve bağlam yazılmadan kıyaslanabilir
+    değildir.
+    """
+    uyarilar = []
+    if not payda_tanimi_yazili:
+        uyarilar.append("Payda tanımı yazılı değil: kişi sayısı mı, tam zaman "
+                        "eşdeğeri mi kullanıldığı belirtilmeli.")
+    if not gecici_isgucu_karari_var:
+        uyarilar.append("Geçici işgücünün hesaba dâhil edilip edilmediği "
+                        "belirsiz: sayı büyükse oran yapay olarak yükselir.")
+    if not tcow_tanimi_yazili:
+        uyarilar.append("Toplam işgücü maliyetinin kapsamı yazılı değil: ücret, "
+                        "yan haklar ve dış işgücü ayrı ayrı gösterilmeli.")
+    if not uc_bes_yil_seri:
+        uyarilar.append("Üç ilâ beş yıllık karşılaştırma serisi yok: tek dönem "
+                        "eğilim göstermez, hedef belirlemeye de yetmez.")
+    if not baglam_notu_var:
+        uyarilar.append("Bağlam notu yok: kadro değişimi, yeniden yapılanma, "
+                        "üretim artışı ve ekonomik koşullar yazılmalı.")
+    if not kurum_turu_dogru:
+        uyarilar.append("Kurum türüne uygun metrik seti seçilmemiş: kamu "
+                        "kurumlarında üretkenlik oranı yerine memnuniyet ve "
+                        "hizmet kalitesi göstergeleri önerilir.")
+    if not istisare_yapildi:
+        uyarilar.append("Çalışan temsilcileri, iş konseyi ya da sendika "
+                        "temsilcileriyle istişare kaydı yok.")
+    return uyarilar
+
+
+# ---------------------------------------------------------------------------
+# 5) Dağıtıcı: hesaplayıcı arayüzünün kullandığı tek giriş noktası
+# ---------------------------------------------------------------------------
+
+METRIK_LISTESI = [
+    "ebit_calisan", "gelir_calisan", "kar_calisan", "ebit_marji",
+    "hc_roi", "tcow", "isgucu_payi", "tze_donusum",
+    "stk_fon", "stk_idari", "stk_egitim", "stk_proje",
+]
+
+
+def _s(x: float) -> str:
+    """Büyük tutarları bilimsel gösterime kaçmadan, Türkçe biçimde yazar."""
+    x = float(x)
+    if x == int(x):
+        return f"{int(x):,}".replace(",", ".")
+    t = f"{x:,.2f}".rstrip("0")
+    if t.endswith("."):
+        t = t[:-1]
+    return t.replace(",", "\u00a0").replace(".", ",").replace("\u00a0", ".")
+
+
+def hesapla(metrik: str, **g) -> dict:
+    """Metrik kimliği ve girdilerle hesabı yapar; sözlük döndürür.
+
+    Dönen anahtarlar: deger, ifade (formülün yerine konmuş hâli), ondalik,
+    birim, ayrinti (etiket–değer çiftleri).
+    """
+    if metrik == "ebit_calisan":
+        e = ebit(g["gelir"], g["giderler"])
+        d = e / g["calisan"]
+        return {"deger": d, "ondalik": 0, "birim": "TL / çalışan",
+                "ifade": f"({_s(g['gelir'])} − {_s(g['giderler'])}) ÷ {_s(g['calisan'])}",
+                "ayrinti": [["EBIT (TL)", round(e)],
+                            ["TZE başına EBIT (TL)", round(e / g["tze"])],
+                            ["EBIT marjı (%)", round(ebit_marji(e, g["gelir"]), 1)],
+                            ["Çalışan başına gelir (TL)",
+                             round(gelir_calisan(g["gelir"], g["calisan"]))]]}
+
+    if metrik == "gelir_calisan":
+        d = gelir_calisan(g["net_gelir"], g["ortalama_calisan"])
+        return {"deger": d, "ondalik": 0, "birim": "TL / çalışan",
+                "ifade": f"{_s(g['net_gelir'])} ÷ {_s(g['ortalama_calisan'])}",
+                "ayrinti": [["Çalışan başına işgücü maliyeti (TL)",
+                             round(g["isgucu_maliyeti"] / g["ortalama_calisan"])],
+                            ["Gelirin işgücü maliyetine oranı",
+                             round(g["net_gelir"] / g["isgucu_maliyeti"], 2)],
+                            ["İşgücü maliyetinin gelire oranı (%)",
+                             round(100 * g["isgucu_maliyeti"] / g["net_gelir"], 1)]]}
+
+    if metrik == "kar_calisan":
+        d = kar_calisan(g["net_faaliyet_kari"], g["ortalama_calisan"])
+        return {"deger": d, "ondalik": 0, "birim": "TL / çalışan",
+                "ifade": f"{_s(g['net_faaliyet_kari'])} ÷ {_s(g['ortalama_calisan'])}",
+                "ayrinti": [["Çalışan başına gelir (TL)",
+                             round(gelir_calisan(g["net_gelir"], g["ortalama_calisan"]))],
+                            ["Net kâr marjı (%)",
+                             round(100 * g["net_faaliyet_kari"] / g["net_gelir"], 1)],
+                            ["Toplam net faaliyet kârı (TL)", round(g["net_faaliyet_kari"])]]}
+
+    if metrik == "ebit_marji":
+        d = ebit_marji(g["ebit_tutari"], g["gelir"])
+        return {"deger": d, "ondalik": 1, "birim": "% EBIT marjı",
+                "ifade": f"({_s(g['ebit_tutari'])} ÷ {_s(g['gelir'])}) × 100",
+                "ayrinti": [["Çalışan başına EBIT (TL)",
+                             round(g["ebit_tutari"] / g["calisan"])],
+                            ["Çalışan başına gelir (TL)",
+                             round(g["gelir"] / g["calisan"])],
+                            ["Gelirin gidere giden payı (%)", round(100 - d, 1)]]}
+
+    if metrik == "hc_roi":
+        r = hc_roi(g["gelir"], g["toplam_gider"], g["isgucu_maliyeti"])
+        return {"deger": 100 * r, "ondalik": 1, "birim": "% getiri",
+                "ifade": (f"([{_s(g['gelir'])} − ({_s(g['toplam_gider'])} − "
+                          f"{_s(g['isgucu_maliyeti'])})] ÷ {_s(g['isgucu_maliyeti'])}) − 1"),
+                "ayrinti": [["Oran olarak getiri", round(r, 3)],
+                            ["1 TL işgücü harcamasının dönüşü (TL)", round(1 + r, 2)],
+                            ["İşgücü dışı gider (TL)",
+                             round(g["toplam_gider"] - g["isgucu_maliyeti"])],
+                            ["İşgücü maliyetinin gider içindeki payı (%)",
+                             round(isgucu_maliyet_payi(g["isgucu_maliyeti"],
+                                                       g["toplam_gider"]), 1)]]}
+
+    if metrik == "tcow":
+        d = tcow(g["ucret"], g["yan_haklar"], g["dis_isgucu"])
+        return {"deger": d, "ondalik": 0, "birim": "TL",
+                "ifade": f"{_s(g['ucret'])} + {_s(g['yan_haklar'])} + {_s(g['dis_isgucu'])}",
+                "ayrinti": [["Toplam gider içindeki pay (%)",
+                             round(isgucu_maliyet_payi(d, g["toplam_gider"]), 1)],
+                            ["Yan hakların payı (%)", round(100 * g["yan_haklar"] / d, 1)],
+                            ["Dış işgücünün payı (%)", round(100 * g["dis_isgucu"] / d, 1)],
+                            ["Toplam istihdam maliyeti (TL)",
+                             round(g["ucret"] + g["yan_haklar"])]]}
+
+    if metrik == "isgucu_payi":
+        d = isgucu_maliyet_payi(g["isgucu_maliyeti"], g["toplam_gider"])
+        return {"deger": d, "ondalik": 1, "birim": "% toplam gider içinde",
+                "ifade": f"({_s(g['isgucu_maliyeti'])} ÷ {_s(g['toplam_gider'])}) × 100",
+                "ayrinti": [["Çalışan başına işgücü maliyeti (TL)",
+                             round(g["isgucu_maliyeti"] / g["calisan"])],
+                            ["İşgücü dışı gider (TL)",
+                             round(g["toplam_gider"] - g["isgucu_maliyeti"])],
+                            ["Standardın andığı aralık", "%25 – %60"]]}
+
+    if metrik == "tze_donusum":
+        d = tze_donusum(g["deger_kisi"], g["kisi"], g["tze"])
+        return {"deger": d, "ondalik": 0, "birim": "TL / TZE",
+                "ifade": f"{_s(g['deger_kisi'])} × {_s(g['kisi'])} ÷ {_s(g['tze'])}",
+                "ayrinti": [["Kişi başına değer (TL)", round(g["deger_kisi"])],
+                            ["TZE / kişi oranı", round(g["tze"] / g["kisi"], 2)],
+                            ["İki payda arasındaki fark (TL)", round(d - g["deger_kisi"])]]}
+
+    if metrik == "stk_fon":
+        d = fon_kullanim_orani(g["kullanilan_fon"], g["yillik_butce"])
+        return {"deger": d, "ondalik": 1, "birim": "% kullanılan fon",
+                "ifade": f"({_s(g['kullanilan_fon'])} ÷ {_s(g['yillik_butce'])}) × 100",
+                "ayrinti": [["Kullanılmayan fon (TL)",
+                             round(g["yillik_butce"] - g["kullanilan_fon"])],
+                            ["Çalışan başına kullanılan fon (TL)",
+                             round(g["kullanilan_fon"] / g["calisan"])],
+                            ["Çalışan başına yıllık bütçe (TL)",
+                             round(g["yillik_butce"] / g["calisan"])]]}
+
+    if metrik == "stk_idari":
+        d = idari_saha_orani(g["idari_kisi"], g["saha_kisi"])
+        return {"deger": d, "ondalik": 1, "birim": "% idari / saha (kadro)",
+                "ifade": f"({_s(g['idari_kisi'])} ÷ {_s(g['saha_kisi'])}) × 100",
+                "ayrinti": [["Ücret maliyetinde idari / saha (%)",
+                             round(idari_saha_orani(g["idari_ucret"], g["saha_ucret"]), 1)],
+                            ["Toplam kadro (kişi)", g["idari_kisi"] + g["saha_kisi"]],
+                            ["Saha çalışanlarının payı (%)",
+                             round(100 * g["saha_kisi"] /
+                                   (g["idari_kisi"] + g["saha_kisi"]), 1)]]}
+
+    if metrik == "stk_egitim":
+        d = egitim_gunu_orani(g["egitim_gun"], g["yararlanilan_gun"])
+        return {"deger": d, "ondalik": 1, "birim": "% eğitim günü",
+                "ifade": f"({_s(g['egitim_gun'])} ÷ {_s(g['yararlanilan_gun'])}) × 100",
+                "ayrinti": [["Çalışan başına eğitim günü",
+                             round(g["egitim_gun"] / g["calisan"], 1)],
+                            ["Eğitim dışı gün",
+                             round(g["yararlanilan_gun"] - g["egitim_gun"])],
+                            ["Çalışan başına yararlanılan gün",
+                             round(g["yararlanilan_gun"] / g["calisan"], 1)]]}
+
+    if metrik == "stk_proje":
+        d = calisan_basina_proje(g["proje"], g["calisan"])
+        kisi_basi = g["etkilenen_kisi"] / g["proje"]
+        return {"deger": d, "ondalik": 2, "birim": "proje / çalışan",
+                "ifade": f"{_s(g['proje'])} ÷ {_s(g['calisan'])}",
+                "ayrinti": [["Proje başına etkilenen kişi", round(kisi_basi)],
+                            ["Çalışan başına etkilenen kişi",
+                             round(g["etkilenen_kisi"] / g["calisan"])],
+                            ["Etki bandı", etki_bandi(kisi_basi)],
+                            ["Toplam etkilenen kişi", round(g["etkilenen_kisi"])]]}
+
+    raise ValueError(f"Bilinmeyen metrik: {metrik}")
+
+
+# ---------------------------------------------------------------------------
+# 6) Doğrulama çıktısı
+# ---------------------------------------------------------------------------
+
+def _tl(x: float) -> str:
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def _demo() -> None:
+    cizgi = "-" * 72
+    print("ISO/TS 30432 — doğrulama çıktısı")
+    print(cizgi)
+
+    s = ornek_seri()
+    print("Dönem serisi (kâr amaçlı kurum)")
+    print(f"{'Dönem':<8}{'Gelir':>12}{'Gider':>12}{'İşgücü':>12}"
+          f"{'Kişi':>6}{'EBIT/kişi':>12}{'Getiri %':>10}")
+    for d in s.donemler:
+        print(f"{d.ad:<8}{_tl(d.gelir):>12}{_tl(d.gider):>12}{_tl(d.isgucu):>12}"
+              f"{d.kisi:>6.0f}{_tl(d.ebit_kisi):>12}{100 * d.roi:>10.1f}")
+    print(cizgi)
+    for k, v in s.ozet().items():
+        print(f"{k:<26}: {v}")
+    print(cizgi)
+
+    print("Çalışan başına oranlar (son dönem)")
+    print(f"Çalışan başına gelir     : {_tl(gelir_calisan(4_500_000, 5))} TL")
+    print(f"Çalışan başına kâr       : {_tl(kar_calisan(750_000, 5))} TL")
+    print(f"Çalışan başına EBIT      : {_tl(ebit_calisan(4_500_000, 3_750_000, 5))} TL")
+    print(f"TZE başına EBIT          : "
+          f"{_tl(tze_donusum(ebit_calisan(4_500_000, 3_750_000, 5), 5, 4.6))} TL")
+    print(f"EBIT marjı               : {ebit_marji(750_000, 4_500_000):.1f} %")
+    print(cizgi)
+
+    print("İnsan sermayesi getirisi")
+    print(f"TCOW                     : {_tl(tcow(1_150_000, 250_000, 100_000))} TL")
+    print(f"HC RoI                   : {100 * hc_roi(4_500_000, 3_750_000, 1_500_000):.1f} %")
+    print(f"İşgücü maliyeti payı     : {isgucu_maliyet_payi(1_500_000, 3_750_000):.1f} %")
+    print(cizgi)
+
+    print("STK metrikleri")
+    print(f"Kullanılan fon oranı     : {fon_kullanim_orani(8_200_000, 10_000_000):.1f} %")
+    print(f"İdari / saha (kadro)     : {idari_saha_orani(12, 48):.1f} %")
+    print(f"Eğitim günü oranı        : {egitim_gunu_orani(540, 12_000):.1f} %")
+    print(f"Çalışan başına proje     : {calisan_basina_proje(45, 60):.2f}")
+    print(f"Etki bandı (750 kişi)    : {etki_bandi(750)}")
+    print(cizgi)
+
+    print("Dağıtıcı örneği:")
+    print(hesapla("hc_roi", gelir=4_500_000, toplam_gider=3_750_000,
+                  isgucu_maliyeti=1_500_000))
+    print(cizgi)
+
+    print("Rapor denetimi (hiçbir ön koşulu sağlamayan bir kurum için):")
+    for u in metrik_denetimi():
+        print(" !", u)
+
+
+if __name__ == "__main__":
+    _demo()
+</script>
+<script>
+/* =========================================================
+   1) METRİK VERİ TABANI
+   u: kullanıcılar (hr İK / exec üst yönetim / line hat yönetimi /
+      fin finans ve yatırımcı ilişkileri / ext dış paydaş)
+   st: kurum türü (kar, stk, kamu, genel)
+   r: raporlama (ic, dis)
+   t: aile (v çalışan başına üretkenlik / e getiri ve işgücü maliyeti /
+      o bağlam ve öngörü)
+   calc: bu sayfadaki hesaplayıcı kimliği
+   k: ek etiket (ctx bağlam etkeni, pre öngörü etkeni, onk ön koşul, tur türetilmiş)
+   ========================================================= */
+var METRICS = [
+ {g:"Çalışan başına üretkenlik — kâr amaçlı kurumlar", t:"v", items:[
+  {n:"Çalışan başına gelir (ciro)", st:"kar", r:["ic","dis"], iso:1, calc:"gelir_calisan", d:"Toplam net gelir ÷ dönemin ortalama çalışan sayısı", u:["hr","exec","line","fin","ext"]},
+  {n:"Çalışan başına kâr", st:"kar", r:["ic","dis"], iso:1, calc:"kar_calisan", d:"Net faaliyet kârı ÷ ortalama çalışan sayısı", u:["hr","exec","fin","ext"]},
+  {n:"Çalışan başına EBIT", st:"kar", r:["ic","dis"], iso:1, calc:"ebit_calisan", d:"(Gelir − giderler) ÷ toplam çalışan sayısı; standardın ana üretkenlik oranı", u:["hr","exec","line","fin","ext"]},
+  {n:"EBIT marjı", st:"kar", r:["ic"], k:"tur", calc:"ebit_marji", d:"Çalışan başına EBIT'i gelir ve marj bileşenlerine ayırır", u:["exec","fin"]},
+  {n:"Tam zaman eşdeğeri (TZE) bazlı oran", st:"kar", r:["ic","dis"], k:"tur", calc:"tze_donusum", d:"Kısmi ve esnek çalışmayı ortak bir tam zamanlı döneme standartlaştırır", u:["hr","exec","fin"]},
+  {n:"Geçici işgücünü kapsayan hesap", st:"genel", r:["ic"], k:"onk", d:"Geçici işgücü sayısı büyükse hesabın bu grubu da içermesi tercih edilir", u:["hr","fin"]},
+  {n:"Payda tanımının yazılı olması", st:"genel", r:["ic"], k:"onk", d:"Kişi sayısı mı, TZE mi; dönem sonu mu, dönem ortalaması mı", u:["hr","fin"]},
+  {n:"Performansa dayalı ücret sistemiyle ilişkilendirme", st:"kar", r:["ic"], d:"Standardın andığı kullanım alanlarından biri", u:["hr","exec","line"]},
+  {n:"Maliyet azaltma ve denetim göstergesi olarak kullanım", st:"kar", r:["ic"], d:"Oranın basit bir izleme ölçütü olarak kullanılması", u:["exec","fin"]},
+  {n:"İş kolu, bölge ve ürün hattı kırılımı", st:"kar", r:["ic"], d:"Kurumun büyüklüğü ve karmaşıklığına göre alt kırılımlar", u:["hr","exec","line"]},
+  {n:"Üç–beş yıllık tarihsel seri", st:"genel", r:["ic","dis"], d:"Eğilimin kurulması ve gelecek dönem hedefi belirlenmesi", u:["hr","exec","fin","ext"]},
+  {n:"Katma değerin kadro büyümesiyle birlikte izlenmesi", st:"kar", r:["ic"], d:"Kurum büyürken çalışan başına değerin korunup korunmadığı", u:["exec","fin"]}
+ ]},
+ {g:"İnsan sermayesi getirisi ve işgücü maliyeti", t:"e", items:[
+  {n:"İnsan sermayesi getirisi (HC RoI)", st:"genel", r:["ic","dis"], iso:1, calc:"hc_roi", d:"İşgücüne harcanan her lira karşılığında geri dönen tutar", u:["hr","exec","fin","ext"]},
+  {n:"Toplam işgücü maliyeti (TCOW)", st:"genel", r:["ic","dis"], iso:1, calc:"tcow", d:"Ücret + yan haklar + dış işgücü maliyeti", u:["hr","exec","fin"]},
+  {n:"Toplam istihdam maliyeti", st:"genel", r:["ic"], d:"TCOW'un dış işgücü dışında kalan bileşeni", u:["hr","fin"]},
+  {n:"Dış işgücü maliyeti", st:"genel", r:["ic"], d:"TCOW'un ikinci bileşeni; kadro dışı çalışmanın maliyeti", u:["hr","fin"]},
+  {n:"İşgücü maliyetinin toplam gider içindeki payı", st:"genel", r:["ic"], k:"tur", calc:"isgucu_payi", d:"Standart bu payın %25 ile %60 arasında olabileceğini anar", u:["exec","fin"]},
+  {n:"TCOW tanımının yazılı olması", st:"genel", r:["ic"], k:"onk", d:"Kimi ülke ve sektörler biraz farklı tanımlar kullanır", u:["hr","fin"]},
+  {n:"Piyasa değeri eğilimiyle ilişkilendirme", st:"kar", r:["ic","dis"], d:"Büyük ölçekli işgücü değişimlerinin piyasa değerine yansıması", u:["exec","fin","ext"]},
+  {n:"Devir, performans ve üretkenlikle birlikte analiz", st:"genel", r:["ic"], d:"Getiri oranı bu kırılımlarla birlikte okunduğunda anlam kazanır", u:["hr","exec","line"]},
+  {n:"Uzun vadeli stratejik öngörüde kullanım", st:"genel", r:["ic"], k:"onk", d:"Kısa dönemli ölçüm yerine; piyasa değerleri sert dalgalanır", u:["exec","fin"]},
+  {n:"TZE ya da çalışan başına sağlanan değer", st:"genel", r:["ic"], d:"Getiri oranının kişi bazına indirgenmiş hâli", u:["hr","exec","fin"]}
+ ]},
+ {g:"STK ve kâr amacı gütmeyen kuruluşlar", t:"v", items:[
+  {n:"Yıllık bütçe", st:"stk", r:["ic","dis"], d:"Kâr amaçlı kurumlardaki gelirin yerini alan büyüklük", u:["exec","fin","ext"]},
+  {n:"Kullanılan fon oranı", st:"stk", r:["ic","dis"], calc:"stk_fon", d:"Sahaya aktarılan fonun yıllık bütçeye oranı", u:["exec","fin","ext"]},
+  {n:"İdari kadronun saha çalışanlarına oranı (kadro)", st:"stk", r:["ic"], calc:"stk_idari", d:"Kadro sayısı üzerinden idari–saha dengesi", u:["hr","exec","fin"]},
+  {n:"İdari kadronun saha çalışanlarına oranı (ücret maliyeti)", st:"stk", r:["ic"], d:"Aynı oranın ücret maliyeti üzerinden hesaplanması", u:["hr","fin"]},
+  {n:"Saha çalışanı sayısı", st:"stk", r:["ic","dis"], d:"Uygun olduğu durumlarda raporlanır", u:["hr","exec","ext"]},
+  {n:"Yıllık eğitim günlerinin yararlanılan günlere oranı", st:"stk", r:["ic"], calc:"stk_egitim", d:"Eğitime ayrılan kapasitenin payı", u:["hr","line"]},
+  {n:"Çalışan başına proje — 10–100 kişi etkisi", st:"stk", r:["ic","dis"], calc:"stk_proje", d:"Gerçekleştirilen ya da olgunlaşmış proje sayısı, küçük ölçek", u:["hr","exec","ext"]},
+  {n:"Çalışan başına proje — 100–1.000 kişi etkisi", st:"stk", r:["ic","dis"], d:"Aynı hesap, orta ölçekli etki bandı", u:["hr","exec","ext"]},
+  {n:"Çalışan başına proje — 1.000+ kişi etkisi", st:"stk", r:["ic","dis"], d:"Aynı hesap, büyük ölçekli etki bandı", u:["hr","exec","ext"]},
+  {n:"Uygulanan program yüzdesi", st:"stk", r:["ic","dis"], d:"İşgücü etkisinin ölçüldüğü üç büyüklükten biri", u:["exec","fin","ext"]},
+  {n:"Desteklenen hizmet ve kişi sayısı", st:"stk", r:["ic","dis"], d:"İşgücü etkisinin doğrudan çıktısı", u:["exec","ext"]}
+ ]},
+ {g:"Kamu kurumları", t:"v", items:[
+  {n:"Üretkenlik metriği önerilmemesi", st:"kamu", r:["ic"], k:"onk", d:"Ölçmenin güçlüğü nedeniyle standart bu kurumlar için oran önermez", u:["hr","exec","fin"]},
+  {n:"Kullanıcı memnuniyeti", st:"kamu", r:["ic","dis"], d:"Üretkenlik oranının yerine kullanılabilecek gösterge", u:["exec","line","ext"]},
+  {n:"Hizmet kalitesi", st:"kamu", r:["ic","dis"], d:"Üretkenlik oranının yerine kullanılabilecek ikinci gösterge", u:["exec","line","ext"]}
+ ]},
+ {g:"Bağlam ve öngörü etkenleri", t:"o", items:[
+  {n:"Ölçüm noktasındaki kadro ve TZE", st:"genel", r:["ic"], k:"ctx", d:"Metriğin anlamını değiştirecek ölçüde büyüme ya da küçülme", u:["hr","exec","fin"]},
+  {n:"Üretim artışı ya da ürün genişlemesi", st:"genel", r:["ic"], k:"ctx", d:"Kısa vadede oranı düşürebilir, uzun vadede yükseltir", u:["exec","line","fin"]},
+  {n:"Yeniden yapılanma", st:"genel", r:["ic"], k:"ctx", d:"Hem payı hem paydayı aynı anda değiştirir", u:["hr","exec","fin"]},
+  {n:"İşgücünün eğitimine yönelik çalışmalar", st:"genel", r:["ic"], k:"ctx", d:"Maliyeti bugün, getirisi sonraki dönemlerde görünür", u:["hr","line"]},
+  {n:"Kültürel değişim (olumlu ya da olumsuz)", st:"genel", r:["ic"], k:"ctx", d:"Üretkenliğe dolaylı ama sürekli etki eder", u:["hr","exec"]},
+  {n:"Kuşak bakış açıları", st:"genel", r:["ic"], k:"ctx", d:"Çalışma biçimi ve beklenti farklılıkları", u:["hr","line"]},
+  {n:"Kamuoyu ve raporlamada artışa yol açan toplumsal değişim", st:"genel", r:["ic","dis"], k:"ctx", d:"Açıklanan gösterge sayısını ve beklentiyi büyütür", u:["hr","exec","ext"]},
+  {n:"Sektör beklentisi", st:"genel", r:["ic","dis"], k:"ctx", d:"Kıyaslamanın anlamlı olduğu aralığı belirler", u:["exec","fin","ext"]},
+  {n:"Ekonomik döngü (daralma ya da genişleme)", st:"genel", r:["ic","dis"], k:"ctx", d:"Gelir ve maliyet tarafını aynı anda etkiler", u:["exec","fin","ext"]},
+  {n:"Planlanan yapısal ve kadro değişiklikleri", st:"genel", r:["ic"], k:"pre", d:"Bilinen ve beklenen olaylar üzerinden öngörü", u:["hr","exec","fin"]},
+  {n:"Yaklaşan iş, işlev ya da ürün değişiklikleri", st:"genel", r:["ic"], k:"pre", d:"Gelecek dönemin gelir ve maliyet profilini değiştirir", u:["exec","line","fin"]},
+  {n:"Satın almalar", st:"genel", r:["ic","dis"], k:"pre", d:"Kadroyu ve maliyet yapısını ani biçimde değiştirir", u:["exec","fin","ext"]},
+  {n:"İşgücünün farkındalığı ve eğitimi", st:"genel", r:["ic"], k:"pre", d:"Gelecek dönem üretkenliğinin öncü göstergesi", u:["hr","line"]},
+  {n:"Siyasi, sosyal, çevresel ve yasal dinamikler", st:"genel", r:["ic","dis"], k:"pre", d:"Mevzuat ve toplumsal beklenti kaynaklı değişim", u:["exec","fin","ext"]},
+  {n:"Sektörel etkiler", st:"genel", r:["ic","dis"], k:"pre", d:"Sektöre özgü daralma, büyüme ve maliyet baskısı", u:["exec","fin","ext"]},
+  {n:"Çalışan temsilcileri ve sendikalarla istişare", st:"genel", r:["ic"], k:"onk", d:"Üretkenlik ve ölçümü konusunda görüş alınabileceği belirtilir", u:["hr","exec","line"]},
+  {n:"Ölçüm noktasının tutarlı uygulanması", st:"genel", r:["ic","dis"], k:"onk", d:"Farklı bir nokta seçilirse tutarlı kullanılır ve açıkça yazılır", u:["hr","fin","ext"]}
+ ]}
+];
+
+var USERS = ["hr","exec","line","fin","ext"];
+var AILE_AD = {v:"çalışan başına üretkenlik", e:"getiri ve işgücü maliyeti", o:"bağlam ve öngörü"};
+var EK_AD = {ctx:"bağlam etkeni", pre:"öngörü etkeni", onk:"ön koşul", tur:"türetilmiş"};
+
+(function(){
+  var toplam = METRICS.reduce(function(a,g){ return a + g.items.length; }, 0);
+  document.getElementById("srcCount").textContent = toplam + " metrik ve etken";
+})();
+
+/* --- matris çizimi --- */
+function renderMatrix(){
+  var fu = document.getElementById("fUser").value;
+  var fs = document.getElementById("fStage").value;
+  var ft = document.getElementById("fType").value;
+  var fr = document.getElementById("fRep").value;
+  var fq = document.getElementById("fQ").value.toLocaleLowerCase("tr");
+  var body = document.getElementById("mBody");
+  var html = "", shown = 0;
+
+  METRICS.forEach(function(grp){
+    if(ft && grp.t !== ft) return;
+    var rows = "";
+    grp.items.forEach(function(m){
+      if(fu && m.u.indexOf(fu) === -1) return;
+      if(fs && m.st !== fs) return;
+      if(fr && m.r.indexOf(fr) === -1) return;
+      if(fq && m.n.toLocaleLowerCase("tr").indexOf(fq) === -1) return;
+      shown++;
+      var cells = USERS.map(function(u){
+        if(m.u.indexOf(u) === -1) return '<td class="num"></td>';
+        var mark = '<span class="dot ' + grp.t + '"></span>';
+        return '<td class="num" title="' + m.n + '">' + (m.calc ? '<b>' + mark + '</b>' : mark) + '</td>';
+      }).join("");
+      var tags = '<span class="tag ' + grp.t + '">' + AILE_AD[grp.t] + '</span>' +
+                 (m.k ? ' <span class="tag lvl">' + EK_AD[m.k] + '</span>' : "") +
+                 (m.iso ? ' <span class="tag iso">30414</span>' : "") +
+                 (m.calc ? ' <span class="tag lvl">hesaplayıcı</span>' : "") +
+                 (m.r.indexOf("dis") !== -1 ? ' <span class="tag iso">dış rapor</span>' : "");
+      rows += '<tr><td class="name">' + (m.calc ? '<b>' + m.n + '</b>' : m.n) + ' ' + tags +
+              '<em>' + m.d + '</em></td>' + cells + '</tr>';
+    });
+    if(rows){
+      html += '<tr class="group"><td colspan="6">' + grp.g + '</td></tr>' + rows;
+    }
+  });
+
+  body.innerHTML = html || '<tr><td colspan="6">Bu filtre birleşimiyle eşleşen metrik yok.</td></tr>';
+  document.getElementById("mCount").textContent = shown + " metrik ve etken gösteriliyor.";
+}
+["fUser","fStage","fType","fRep","fQ"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", renderMatrix);
+});
+renderMatrix();
+
+/* =========================================================
+   2) DÖNEM KARŞILAŞTIRMA TABLOSU
+   ========================================================= */
+var SATIR = 6;
+var ORNEK_DONEM = [
+  ["2023", 3400000, 3000000, 1150000, 4, 3.8],
+  ["2024", 3900000, 3350000, 1300000, 5, 4.4],
+  ["2025", 4200000, 3560000, 1400000, 5, 4.6],
+  ["2026", 4500000, 3750000, 1500000, 5, 4.6],
+  ["", "", "", "", "", ""],
+  ["", "", "", "", "", ""]
+];
+
+function buildPerTable(){
+  var html = "";
+  for(var i=0;i<SATIR;i++){
+    html += '<tr>' +
+      '<td><input type="text" id="d_ad_' + i + '" placeholder="Dönem ' + (i+1) + '"></td>' +
+      '<td><input type="number" id="d_gelir_' + i + '" step="any"></td>' +
+      '<td><input type="number" id="d_gider_' + i + '" step="any"></td>' +
+      '<td><input type="number" id="d_isgucu_' + i + '" step="any"></td>' +
+      '<td><input type="number" id="d_kisi_' + i + '" step="any"></td>' +
+      '<td><input type="number" id="d_tze_' + i + '" step="0.1"></td>' +
+      '<td class="calc" id="d_ebit_' + i + '">—</td>' +
+      '<td class="calc" id="d_roi_' + i + '">—</td></tr>';
+  }
+  document.getElementById("pBody").innerHTML = html;
+  document.getElementById("pBody").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", computePer);
+  });
+  document.getElementById("paraBirim").addEventListener("input", computePer);
+}
+
+function pNum(k, i){
+  var el = document.getElementById("d_" + k + "_" + i);
+  if(!el || el.value === "") return null;
+  var x = parseFloat(el.value);
+  return isNaN(x) ? null : x;
+}
+
+var SERI = [];
+
+function fmt0(x){ return Math.round(x).toLocaleString("tr-TR"); }
+function fmt1(x){ return x.toLocaleString("tr-TR", {minimumFractionDigits:1, maximumFractionDigits:1}); }
+
+function computePer(){
+  var birim = document.getElementById("paraBirim").value || "TL";
+  SERI = [];
+  var hata = false;
+
+  for(var i=0;i<SATIR;i++){
+    var gelir = pNum("gelir", i), gider = pNum("gider", i),
+        isgucu = pNum("isgucu", i), kisi = pNum("kisi", i), tze = pNum("tze", i);
+    var hEbit = document.getElementById("d_ebit_" + i);
+    var hRoi  = document.getElementById("d_roi_" + i);
+    if(gelir === null || gider === null || kisi === null || !kisi){
+      hEbit.textContent = "—"; hRoi.textContent = "—"; continue;
+    }
+    var ebit = gelir - gider;
+    hEbit.textContent = fmt0(ebit / kisi);
+    var roi = null;
+    if(isgucu !== null && isgucu > 0){
+      roi = (gelir - (gider - isgucu)) / isgucu - 1;
+      hRoi.textContent = fmt1(100 * roi) + " %";
+    } else {
+      hRoi.textContent = "—";
+      if(isgucu !== null) hata = true;
+    }
+    SERI.push({ad: (document.getElementById("d_ad_" + i).value || ("Dönem " + (i+1))),
+               gelir:gelir, gider:gider, isgucu:isgucu, kisi:kisi, tze:tze,
+               ebit:ebit, ebitKisi:ebit/kisi, roi:roi});
+  }
+
+  document.getElementById("tDonem").textContent = SERI.length || "—";
+  var kart = document.getElementById("pCards");
+
+  if(!SERI.length){
+    document.getElementById("tKadro").textContent = "—";
+    document.getElementById("tEbit").textContent = "—";
+    document.getElementById("tRoi").textContent = "—";
+    kart.innerHTML = "";
+    document.getElementById("pNot").textContent =
+      "Tabloya en az bir dönemin gelir, gider ve kadro bilgisini girin ya da örnek veriyi yükleyin.";
+    return;
+  }
+
+  var son = SERI[SERI.length - 1], ilk = SERI[0];
+  document.getElementById("tKadro").textContent = "Son dönem kadro: " + son.kisi +
+    (son.tze ? " kişi / " + son.tze + " TZE" : " kişi");
+  document.getElementById("tEbit").textContent = fmt0(son.ebitKisi);
+  document.getElementById("tRoi").textContent = son.roi === null ? "—" : fmt1(100 * son.roi) + " %";
+
+  var pay = (son.isgucu && son.gider) ? 100 * son.isgucu / son.gider : null;
+  kart.innerHTML =
+    '<div class="card"><b>' + fmt0(son.ebitKisi) + '</b><span>Çalışan başına EBIT (' + birim + ')</span></div>' +
+    '<div class="card"><b>' + (son.tze ? fmt0(son.ebit / son.tze) : "—") + '</b><span>TZE başına EBIT (' + birim + ')</span></div>' +
+    '<div class="card alt"><b>' + fmt0(son.gelir / son.kisi) + '</b><span>Çalışan başına gelir (' + birim + ')</span></div>' +
+    '<div class="card alt"><b>' + (son.roi === null ? "—" : fmt1(100 * son.roi) + " %") + '</b><span>İnsan sermayesi getirisi</span></div>' +
+    '<div class="card warn"><b>' + (pay === null ? "—" : fmt1(pay) + " %") + '</b><span>İşgücü maliyetinin gider payı</span></div>';
+
+  var not = son.ad + " döneminde EBIT " + fmt0(son.ebit) + " " + birim + ", kadro " + son.kisi +
+            " kişi → çalışan başına " + fmt0(son.ebitKisi) + " " + birim + ". ";
+  if(SERI.length > 1){
+    var dEbit = 100 * (son.ebitKisi - ilk.ebitKisi) / ilk.ebitKisi;
+    var dKadro = 100 * (son.kisi - ilk.kisi) / ilk.kisi;
+    not += ilk.ad + "–" + son.ad + " arasında çalışan başına EBIT " + fmt1(dEbit) +
+           " % değişti; kadro aynı dönemde " + fmt1(dKadro) + " % değişti. ";
+    if(dEbit > 0 && dKadro < -5){
+      not += "Artışın bir bölümü kadro küçülmesinden geliyor olabilir; paydadaki değişimi dipnota yazın. ";
+    }
+    if(son.roi !== null && ilk.roi !== null){
+      not += "Getiri oranı " + fmt1(100 * ilk.roi) + " % düzeyinden " + fmt1(100 * son.roi) +
+             " % düzeyine geldi. ";
+    }
+    if(SERI.length < 3){
+      not += "Standardın önerdiği karşılaştırma aralığı üç ilâ beş yıldır; seriyi genişletin. ";
+    }
+  }
+  if(pay !== null && (pay < 25 || pay > 60)){
+    not += "İşgücü maliyetinin gider içindeki payı, standardın andığı %25–%60 aralığının dışında; " +
+           "TCOW kapsamını gözden geçirin. ";
+  }
+  if(hata) not += "Bazı satırlarda işgücü maliyeti sıfır ya da geçersiz; getiri oranı hesaplanamadı.";
+  document.getElementById("pNot").textContent = not;
+}
+
+function loadPerExample(){
+  for(var i=0;i<SATIR;i++){
+    document.getElementById("d_ad_" + i).value     = ORNEK_DONEM[i][0];
+    document.getElementById("d_gelir_" + i).value  = ORNEK_DONEM[i][1];
+    document.getElementById("d_gider_" + i).value  = ORNEK_DONEM[i][2];
+    document.getElementById("d_isgucu_" + i).value = ORNEK_DONEM[i][3];
+    document.getElementById("d_kisi_" + i).value   = ORNEK_DONEM[i][4];
+    document.getElementById("d_tze_" + i).value    = ORNEK_DONEM[i][5];
+  }
+  computePer();
+}
+
+document.getElementById("btnOrnek").addEventListener("click", loadPerExample);
+document.getElementById("btnTemizle").addEventListener("click", function(){
+  for(var i=0;i<SATIR;i++){
+    ["ad","gelir","gider","isgucu","kisi","tze"].forEach(function(k){
+      document.getElementById("d_" + k + "_" + i).value = "";
+    });
+  }
+  computePer();
+});
+document.getElementById("btnCsv").addEventListener("click", function(){
+  var satir = ["Donem;Gelir;Gider;Isgucu maliyeti;Kisi;TZE;EBIT;EBIT_kisi;Getiri_yuzde"];
+  SERI.forEach(function(d){
+    satir.push([d.ad, d.gelir, d.gider, (d.isgucu === null ? "" : d.isgucu), d.kisi,
+                (d.tze === null ? "" : d.tze), d.ebit, d.ebitKisi.toFixed(2),
+                (d.roi === null ? "" : (100*d.roi).toFixed(1))].join(";"));
+  });
+  var blob = new Blob(["\ufeff" + satir.join("\n")], {type:"text/csv;charset=utf-8"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "iso30432_uretkenlik_serisi.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+/* =========================================================
+   3) FORMÜL TABLOSU + HESAPLAYICI
+   Alan adları gömülü Python modülünün hesapla() imzasıyla birebir aynıdır.
+   ========================================================= */
+function n(x){ return Number(x).toLocaleString("tr-TR"); }
+
+var CALC = [
+ {id:"ebit_calisan", name:"Çalışan başına EBIT", grp:"Kâr amaçlı kurum",
+  formula:"Çalışan başına EBIT = (Gelirler &minus; Giderler) &divide; Toplam çalışan sayısı",
+  note:"Giderler, satılan malın maliyeti ile satış ve idari giderleri kapsar; faiz ve gelir vergisi giderleri hariçtir. Kimi kurumlar payda olarak çalışan sayısı yerine tam zaman eşdeğerini kullanır; geçici işgücü büyükse hesap onu da kapsayacak biçimde kurulur.",
+  fields:[{k:"gelir",l:"Gelirler (TL)",v:4500000},{k:"giderler",l:"Giderler (TL)",v:3750000},
+          {k:"calisan",l:"Toplam çalışan (kişi)",v:5},{k:"tze",l:"Tam zaman eşdeğeri (TZE)",v:4.6,step:0.1}],
+  unit:"TL / çalışan",
+  py:"ebit_calisan(gelir=4500000, giderler=3750000, calisan=5)",
+  calc:function(v){ var e=v.gelir-v.giderler;
+    return {value:e/v.calisan, dec:0, expl:"(" + n(v.gelir) + " − " + n(v.giderler) + ") ÷ " + n(v.calisan),
+      detail:[["EBIT (TL)", Math.round(e)],
+              ["TZE başına EBIT (TL)", Math.round(e/v.tze)],
+              ["EBIT marjı (%)", +(100*e/v.gelir).toFixed(1)],
+              ["Çalışan başına gelir (TL)", Math.round(v.gelir/v.calisan)]]}; },
+  bands:[[0,"ok","Bu oranın anlamı sektöre, kurum büyüklüğüne, ülkeye ve kurumun yaşına göre değişir; yalnızca kendi geçmiş serinizle ve benzer iş modelindeki kurumlarla karşılaştırın."]]},
+
+ {id:"gelir_calisan", name:"Çalışan başına gelir (ciro)", grp:"Kâr amaçlı kurum",
+  formula:"Çalışan başına gelir = Toplam net gelir &divide; Ortalama çalışan sayısı",
+  note:"Gelir kimi ülke ve kültürlerde ciro olarak anılır. Kısmi ve esnek çalışma saatlerini standartlaştırmak için TZE bazında da hesaplanabilir.",
+  fields:[{k:"net_gelir",l:"Toplam net gelir (TL)",v:4500000},
+          {k:"ortalama_calisan",l:"Ortalama çalışan (kişi)",v:5},
+          {k:"isgucu_maliyeti",l:"Toplam işgücü maliyeti (TL)",v:1500000}],
+  unit:"TL / çalışan",
+  py:"gelir_calisan(net_gelir=4500000, ortalama_calisan=5)",
+  calc:function(v){ return {value:v.net_gelir/v.ortalama_calisan, dec:0,
+    expl:n(v.net_gelir) + " ÷ " + n(v.ortalama_calisan),
+    detail:[["Çalışan başına işgücü maliyeti (TL)", Math.round(v.isgucu_maliyeti/v.ortalama_calisan)],
+            ["Gelirin işgücü maliyetine oranı", +(v.net_gelir/v.isgucu_maliyeti).toFixed(2)],
+            ["İşgücü maliyetinin gelire oranı (%)", +(100*v.isgucu_maliyeti/v.net_gelir).toFixed(1)]]}; },
+  bands:[[0,"ok","Gelir bazlı oran, kârlılığı değil hacmi gösterir; çalışan başına EBIT ile birlikte okuyun."]]},
+
+ {id:"kar_calisan", name:"Çalışan başına kâr", grp:"Kâr amaçlı kurum",
+  formula:"Çalışan başına kâr = Net faaliyet kârı &divide; Ortalama çalışan sayısı",
+  note:"Ölçüm dönemi boyunca çalışan başına düşen net faaliyet kârının ortalamasıdır; kaba bir üretkenlik ölçüsü olarak tanımlanır.",
+  fields:[{k:"net_faaliyet_kari",l:"Net faaliyet kârı (TL)",v:750000},
+          {k:"ortalama_calisan",l:"Ortalama çalışan (kişi)",v:5},
+          {k:"net_gelir",l:"Toplam net gelir (TL)",v:4500000}],
+  unit:"TL / çalışan",
+  py:"kar_calisan(net_faaliyet_kari=750000, ortalama_calisan=5)",
+  calc:function(v){ return {value:v.net_faaliyet_kari/v.ortalama_calisan, dec:0,
+    expl:n(v.net_faaliyet_kari) + " ÷ " + n(v.ortalama_calisan),
+    detail:[["Çalışan başına gelir (TL)", Math.round(v.net_gelir/v.ortalama_calisan)],
+            ["Net kâr marjı (%)", +(100*v.net_faaliyet_kari/v.net_gelir).toFixed(1)],
+            ["Toplam net faaliyet kârı (TL)", Math.round(v.net_faaliyet_kari)]]}; },
+  bands:[[0,"ok","Kadro küçültme bu oranı kısa vadede yükseltir; getiri oranı, devir ve performansla birlikte değerlendirin."]]},
+
+ {id:"ebit_marji", name:"EBIT marjı", grp:"Kâr amaçlı kurum",
+  formula:"EBIT marjı = (EBIT &divide; Gelir) &times; 100",
+  note:"Türetilmiştir: çalışan başına EBIT = çalışan başına gelir × EBIT marjı. İki bileşenden hangisinin değiştiğini ayırmak için kullanılır.",
+  fields:[{k:"ebit_tutari",l:"EBIT (TL)",v:750000},{k:"gelir",l:"Gelir (TL)",v:4500000},
+          {k:"calisan",l:"Çalışan (kişi)",v:5}],
+  unit:"% EBIT marjı",
+  py:'hesapla("ebit_marji", ebit_tutari=750000, gelir=4500000, calisan=5)',
+  calc:function(v){ var d=100*v.ebit_tutari/v.gelir;
+    return {value:d, dec:1, expl:"(" + n(v.ebit_tutari) + " ÷ " + n(v.gelir) + ") × 100",
+      detail:[["Çalışan başına EBIT (TL)", Math.round(v.ebit_tutari/v.calisan)],
+              ["Çalışan başına gelir (TL)", Math.round(v.gelir/v.calisan)],
+              ["Gelirin gidere giden payı (%)", +(100-d).toFixed(1)]]}; },
+  bands:[[20,"ok","Marj güçlü; çalışan başına EBIT'teki değişimi büyük ölçüde üretkenlik açıklıyor."],
+         [8,"warn","Marj orta düzeyde; çalışan başına gelir artarken EBIT düşüyorsa maliyet tarafına bakın."],
+         [0,"warn","Marj çok ince: küçük maliyet dalgalanmaları çalışan başına EBIT'i sert biçimde oynatır."],
+         [-1000000,"bad","Faaliyetler faiz ve vergi öncesinde zarar üretiyor; üretkenlik oranı bu tabloda yön göstermez."]]},
+
+ {id:"hc_roi", name:"İnsan sermayesi getirisi (HC RoI)", grp:"Getiri ve maliyet",
+  formula:"HC RoI = [Gelir &minus; (Toplam gider &minus; Toplam işgücü maliyeti)] &divide; Toplam işgücü maliyeti &minus; 1",
+  note:"Sonuç 0,5 ise: işgücüne harcanan her lira geri gelmiş, üstüne 50 kuruş vergi öncesi kâr eklenmiştir. Standart bu metriğin kısa dönemli ölçüm yerine uzun vadeli stratejik öngörüde kullanılmasını önerir.",
+  fields:[{k:"gelir",l:"Gelir (TL)",v:4500000},{k:"toplam_gider",l:"Toplam gider (TL)",v:3750000},
+          {k:"isgucu_maliyeti",l:"Toplam işgücü maliyeti (TL)",v:1500000}],
+  unit:"% getiri",
+  py:"hc_roi(gelir=4500000, toplam_gider=3750000, isgucu_maliyeti=1500000)",
+  calc:function(v){ var r=(v.gelir-(v.toplam_gider-v.isgucu_maliyeti))/v.isgucu_maliyeti-1;
+    return {value:100*r, dec:1,
+      expl:"([" + n(v.gelir) + " − (" + n(v.toplam_gider) + " − " + n(v.isgucu_maliyeti) + ")] ÷ " + n(v.isgucu_maliyeti) + ") − 1",
+      detail:[["Oran olarak getiri", +r.toFixed(3)],
+              ["1 TL işgücü harcamasının dönüşü (TL)", +(1+r).toFixed(2)],
+              ["İşgücü dışı gider (TL)", Math.round(v.toplam_gider-v.isgucu_maliyeti)],
+              ["İşgücü maliyetinin gider içindeki payı (%)", +(100*v.isgucu_maliyeti/v.toplam_gider).toFixed(1)]]}; },
+  bands:[[50,"ok","İşgücüne yapılan yatırım güçlü biçimde geri dönüyor; oranı üç–beş yıllık seriyle birlikte sunun."],
+         [20,"warn","Getiri pozitif ama sınırlı; işgücü maliyetinin bileşenlerini (ücret, yan hak, dış işgücü) ayrı inceleyin."],
+         [0,"warn","Getiri sıfıra yakın: işgücü maliyeti üretilen değere çok yaklaşmış durumda."],
+         [-1000000,"bad","Negatif getiri: faaliyet, işgücü maliyetini karşılamıyor. Sonucu yorumlamadan önce dönemin bağlam etkenlerini yazın."]]},
+
+ {id:"tcow", name:"Toplam işgücü maliyeti (TCOW)", grp:"Getiri ve maliyet",
+  formula:"TCOW = Ücret maliyeti + Yan hak maliyeti + Dış işgücü maliyeti",
+  note:"Eşdeğer ifadeyle dış işgücü maliyeti + toplam istihdam maliyeti. Standart, kimi ülke ve sektörlerin biraz farklı tanımlar kullandığını belirtir; kendi tanımınızı belgeleyin.",
+  fields:[{k:"ucret",l:"Toplam ücret maliyeti (TL)",v:1150000},
+          {k:"yan_haklar",l:"Toplam yan hak maliyeti (TL)",v:250000},
+          {k:"dis_isgucu",l:"Dış işgücü maliyeti (TL)",v:100000},
+          {k:"toplam_gider",l:"Toplam gider (TL)",v:3750000}],
+  unit:"TL",
+  py:"tcow(ucret=1150000, yan_haklar=250000, dis_isgucu=100000)",
+  calc:function(v){ var t=v.ucret+v.yan_haklar+v.dis_isgucu;
+    return {value:t, dec:0, expl:n(v.ucret) + " + " + n(v.yan_haklar) + " + " + n(v.dis_isgucu),
+      detail:[["Toplam gider içindeki pay (%)", +(100*t/v.toplam_gider).toFixed(1)],
+              ["Yan hakların payı (%)", +(100*v.yan_haklar/t).toFixed(1)],
+              ["Dış işgücünün payı (%)", +(100*v.dis_isgucu/t).toFixed(1)],
+              ["Toplam istihdam maliyeti (TL)", Math.round(v.ucret+v.yan_haklar)]]}; },
+  bands:[[0,"ok","TCOW, insan sermayesi getirisinin paydasıdır; kapsamı değişirse getiri serisi kırılır."]]},
+
+ {id:"isgucu_payi", name:"İşgücü maliyetinin gider içindeki payı", grp:"Getiri ve maliyet",
+  formula:"Pay = (Toplam işgücü maliyeti &divide; Toplam gider) &times; 100",
+  note:"Standart, kurumsal işgücü maliyetlerinin toplam maliyetin %25 ile %60'ı arasında olabileceğini belirtir; insan sermayesi getirisinin neden giderek daha çok izlendiğini açıklayan gerekçe budur.",
+  fields:[{k:"isgucu_maliyeti",l:"Toplam işgücü maliyeti (TL)",v:1500000},
+          {k:"toplam_gider",l:"Toplam gider (TL)",v:3750000},
+          {k:"calisan",l:"Çalışan (kişi)",v:5}],
+  unit:"% toplam gider içinde",
+  py:"isgucu_maliyet_payi(isgucu_maliyeti=1500000, toplam_gider=3750000)",
+  calc:function(v){ var d=100*v.isgucu_maliyeti/v.toplam_gider;
+    return {value:d, dec:1, expl:"(" + n(v.isgucu_maliyeti) + " ÷ " + n(v.toplam_gider) + ") × 100",
+      detail:[["Çalışan başına işgücü maliyeti (TL)", Math.round(v.isgucu_maliyeti/v.calisan)],
+              ["İşgücü dışı gider (TL)", Math.round(v.toplam_gider-v.isgucu_maliyeti)],
+              ["Standardın andığı aralık", "%25 – %60"]]}; },
+  bands:[[60,"warn","Pay, standardın andığı aralığın üstünde: kurum emek yoğun olabilir ya da TCOW kapsamı geniş tutulmuş olabilir."],
+         [25,"ok","Pay, standardın andığı %25–%60 aralığında; getiri oranı anlamlı bir gösterge olarak izlenebilir."],
+         [0,"warn","Pay aralığın altında: işgücü maliyetinin bazı bileşenleri (yan haklar, dış işgücü) hesaba katılmamış olabilir."]]},
+
+ {id:"tze_donusum", name:"TZE bazlı üretkenlik dönüşümü", grp:"Getiri ve maliyet",
+  formula:"TZE başına değer = Kişi başına değer &times; Kişi sayısı &divide; Tam zaman eşdeğeri",
+  note:"Standart, kimi kurumların çalışan sayısı yerine TZE kullanmayı tercih ettiğini belirtir. Kısmi zamanlı çalışmanın yaygın olduğu kurumlarda kişi bazlı oran üretkenliği olduğundan düşük gösterir.",
+  fields:[{k:"deger_kisi",l:"Kişi başına değer (TL)",v:150000},
+          {k:"kisi",l:"Çalışan (kişi)",v:5},{k:"tze",l:"Tam zaman eşdeğeri",v:4.6,step:0.1}],
+  unit:"TL / TZE",
+  py:"tze_donusum(deger_kisi=150000, kisi=5, tze=4.6)",
+  calc:function(v){ var d=v.deger_kisi*v.kisi/v.tze;
+    return {value:d, dec:0, expl:n(v.deger_kisi) + " × " + n(v.kisi) + " ÷ " + n(v.tze),
+      detail:[["Kişi başına değer (TL)", Math.round(v.deger_kisi)],
+              ["TZE / kişi oranı", +(v.tze/v.kisi).toFixed(2)],
+              ["İki payda arasındaki fark (TL)", Math.round(d-v.deger_kisi)]]}; },
+  bands:[[0,"ok","İki paydayı aynı raporda vermek, oranın kadro yapısından mı üretkenlikten mi geldiğini ayırmanın en basit yoludur."]]},
+
+ {id:"stk_fon", name:"Kullanılan fon oranı", grp:"STK / kâr amacı gütmeyen",
+  formula:"Kullanılan fon oranı = (Kullanılan fon &divide; Yıllık bütçe) &times; 100",
+  note:"STK'larda işgücünün etkisi desteklenen hizmet ve kişiler, bütçe ve uygulanan program yüzdesi üzerinden ölçülür; kullanılan fon oranı bunların parasal karşılığıdır.",
+  fields:[{k:"kullanilan_fon",l:"Kullanılan fon (TL)",v:8200000},
+          {k:"yillik_butce",l:"Yıllık bütçe (TL)",v:10000000},
+          {k:"calisan",l:"Çalışan (kişi)",v:60}],
+  unit:"% kullanılan fon",
+  py:"fon_kullanim_orani(kullanilan_fon=8200000, yillik_butce=10000000)",
+  calc:function(v){ var d=100*v.kullanilan_fon/v.yillik_butce;
+    return {value:d, dec:1, expl:"(" + n(v.kullanilan_fon) + " ÷ " + n(v.yillik_butce) + ") × 100",
+      detail:[["Kullanılmayan fon (TL)", Math.round(v.yillik_butce-v.kullanilan_fon)],
+              ["Çalışan başına kullanılan fon (TL)", Math.round(v.kullanilan_fon/v.calisan)],
+              ["Çalışan başına yıllık bütçe (TL)", Math.round(v.yillik_butce/v.calisan)]]}; },
+  bands:[[90,"ok","Bütçenin büyük bölümü programlara aktarılmış; oranın yanına uygulanan program yüzdesini de verin."],
+         [70,"warn","Kayda değer bir kullanılmayan fon var; nedeni (takvim, mevzuat, kapasite) dipnota yazılmalı."],
+         [0,"bad","Bütçenin üçte birinden fazlası kullanılmamış; program uygulama kapasitesi ayrıca incelenmeli."]]},
+
+ {id:"stk_idari", name:"İdari kadronun saha çalışanlarına oranı", grp:"STK / kâr amacı gütmeyen",
+  formula:"Oran = (İdari kadro &divide; Saha çalışanı) &times; 100",
+  note:"Standart bu oranı hem kadro sayısı hem de ücret maliyeti üzerinden raporlamayı öngörür. İki oranın ayrışması, idari kadronun ortalama ücretinin saha kadrosundan belirgin farklı olduğunu gösterir.",
+  fields:[{k:"idari_kisi",l:"İdari kadro (kişi)",v:12},{k:"saha_kisi",l:"Saha çalışanı (kişi)",v:48},
+          {k:"idari_ucret",l:"İdari kadro ücret maliyeti (TL)",v:4800000},
+          {k:"saha_ucret",l:"Saha kadrosu ücret maliyeti (TL)",v:14400000}],
+  unit:"% idari / saha (kadro)",
+  py:'hesapla("stk_idari", idari_kisi=12, saha_kisi=48, idari_ucret=4800000, saha_ucret=14400000)',
+  calc:function(v){ var d=100*v.idari_kisi/v.saha_kisi;
+    return {value:d, dec:1, expl:"(" + n(v.idari_kisi) + " ÷ " + n(v.saha_kisi) + ") × 100",
+      detail:[["Ücret maliyetinde idari / saha (%)", +(100*v.idari_ucret/v.saha_ucret).toFixed(1)],
+              ["Toplam kadro (kişi)", v.idari_kisi+v.saha_kisi],
+              ["Saha çalışanlarının payı (%)", +(100*v.saha_kisi/(v.idari_kisi+v.saha_kisi)).toFixed(1)]]}; },
+  bands:[[50,"bad","Her iki saha çalışanına bir idari personel düşüyor; yapının gerekçesi açıklanmalı."],
+         [25,"warn","İdari kadro payı yüksek; ücret maliyeti oranıyla birlikte değerlendirin."],
+         [0,"ok","İdari kadro payı sınırlı; kaynağın büyük bölümü sahada."]]},
+
+ {id:"stk_egitim", name:"Eğitim günlerinin yararlanılan günlere oranı", grp:"STK / kâr amacı gütmeyen",
+  formula:"Oran = (Yıllık eğitim günü &divide; Yararlanılan gün) &times; 100",
+  note:"Eğitime ayrılan kapasitenin payını gösterir. Saha kapasitesini bugün azaltır, çalışan etkililiğini sonraki dönemlerde artırır; bu nedenle üretkenlik oranlarının bağlam etkeni olarak da okunur.",
+  fields:[{k:"egitim_gun",l:"Yıllık eğitim günü",v:540},
+          {k:"yararlanilan_gun",l:"Yararlanılan toplam gün",v:12000},
+          {k:"calisan",l:"Çalışan (kişi)",v:60}],
+  unit:"% eğitim günü",
+  py:"egitim_gunu_orani(egitim_gun=540, yararlanilan_gun=12000)",
+  calc:function(v){ var d=100*v.egitim_gun/v.yararlanilan_gun;
+    return {value:d, dec:1, expl:"(" + n(v.egitim_gun) + " ÷ " + n(v.yararlanilan_gun) + ") × 100",
+      detail:[["Çalışan başına eğitim günü", +(v.egitim_gun/v.calisan).toFixed(1)],
+              ["Eğitim dışı gün", Math.round(v.yararlanilan_gun-v.egitim_gun)],
+              ["Çalışan başına yararlanılan gün", +(v.yararlanilan_gun/v.calisan).toFixed(1)]]}; },
+  bands:[[15,"warn","Eğitime ayrılan pay yüksek; saha kapasitesine etkisini proje sayısıyla birlikte izleyin."],
+         [3,"ok","Eğitim payı makul aralıkta; çalışan başına gün sayısını da raporlayın."],
+         [0,"warn","Eğitime neredeyse kapasite ayrılmamış; işgücünün eğitimi standardın bağlam etkenlerinden biridir."]]},
+
+ {id:"stk_proje", name:"Çalışan başına gerçekleştirilen proje", grp:"STK / kâr amacı gütmeyen",
+  formula:"Çalışan başına proje = Gerçekleştirilen (ya da olgunlaşmış) proje &divide; Çalışan sayısı",
+  note:"Standart bu metriği etki ölçeğine göre üç bantta ele alır: 10–100 kişiyi, 100–1.000 kişiyi ve 1.000'den fazla kişiyi etkileyen projeler. Bantlar ayrılmadan verilen tek ortalama yanıltıcıdır.",
+  fields:[{k:"proje",l:"Gerçekleştirilen proje",v:45},{k:"calisan",l:"Çalışan (kişi)",v:60},
+          {k:"etkilenen_kisi",l:"Etkilenen toplam kişi",v:33000}],
+  unit:"proje / çalışan",
+  py:'hesapla("stk_proje", proje=45, calisan=60, etkilenen_kisi=33000)',
+  calc:function(v){ var kb=v.etkilenen_kisi/v.proje;
+    var band = kb>1000 ? "1.000+ kişi" : (kb>=100 ? "100–1.000 kişi" : (kb>=10 ? "10–100 kişi" : "10 kişiden az"));
+    return {value:v.proje/v.calisan, dec:2, expl:n(v.proje) + " ÷ " + n(v.calisan),
+      detail:[["Proje başına etkilenen kişi", Math.round(kb)],
+              ["Çalışan başına etkilenen kişi", Math.round(v.etkilenen_kisi/v.calisan)],
+              ["Etki bandı", band],
+              ["Toplam etkilenen kişi", Math.round(v.etkilenen_kisi)]]}; },
+  bands:[[0,"ok","Sayıyı tek başına değil, etki bandı ve uygulanan program yüzdesiyle birlikte raporlayın."]]}
+];
+
+/* --- formül tablosu --- */
+(function(){
+  var rows = CALC.map(function(c){
+    return '<tr><td><b>' + c.name + '</b></td><td><span style="font-family:var(--serif)">' +
+           c.formula + '</span></td><td>' + c.note + '</td></tr>';
+  }).join("");
+  document.getElementById("fBody").innerHTML = rows;
+})();
+
+/* --- hesaplayıcı --- */
+var sel = document.getElementById("cMetric");
+CALC.forEach(function(c, i){
+  var o = document.createElement("option");
+  o.value = i; o.textContent = c.grp + " — " + c.name;
+  sel.appendChild(o);
+});
+
+function buildFields(){
+  var c = CALC[+sel.value];
+  document.getElementById("cFields").innerHTML = c.fields.map(function(f){
+    return '<div class="field"><label for="in_' + f.k + '">' + f.l + '</label>' +
+      '<input type="number" id="in_' + f.k + '" value="" step="' + (f.step || "any") + '" placeholder="' + f.v + '"></div>';
+  }).join("");
+  document.getElementById("cFields").querySelectorAll("input").forEach(function(el){
+    el.addEventListener("input", run);
+  });
+}
+
+function readVals(){
+  var c = CALC[+sel.value], v = {}, missing = false;
+  c.fields.forEach(function(f){
+    var el = document.getElementById("in_" + f.k);
+    var raw = el && el.value !== "" ? parseFloat(el.value) : NaN;
+    if(isNaN(raw)){ missing = true; v[f.k] = f.v; } else { v[f.k] = raw; }
+  });
+  return {v:v, missing:missing};
+}
+
+function fmt(x, dec){
+  if(!isFinite(x)) return "—";
+  return x.toLocaleString("tr-TR", {minimumFractionDigits:dec, maximumFractionDigits:dec});
+}
+
+/* Hesaplama motoru: Python hazırsa gömülü modül, değilse JS yedeği */
+function compute(c, v){
+  if(PY.ready){
+    try{
+      PY.pyodide.globals.set("_metrik", c.id);
+      PY.pyodide.globals.set("_girdi", JSON.stringify(v));
+      var raw = PY.pyodide.runPython(
+        "import json\n" +
+        "json.dumps(hesapla(_metrik, **json.loads(_girdi)))");
+      var r = JSON.parse(raw);
+      return {value:r.deger, expl:r.ifade, dec:r.ondalik, detail:r.ayrinti,
+              unit:r.birim, engine:"python"};
+    }catch(err){
+      setEngine("off", "Motor: JS yedeği — Python hatası");
+    }
+  }
+  var out = c.calc(v);
+  out.engine = "js";
+  return out;
+}
+
+function run(){
+  var c = CALC[+sel.value];
+  var r = readVals();
+  var out;
+  try { out = compute(c, r.v); } catch(e){ out = null; }
+  var box = document.getElementById("cResult");
+  if(!out || !isFinite(out.value)){
+    box.innerHTML = '<div class="result"><b>Hesaplanamadı.</b> Payda sıfır olamaz; alanları kontrol edin.</div>';
+    return;
+  }
+  var dec = (out.dec === undefined) ? 1 : out.dec;
+  var unit = out.unit || c.unit;
+  var html = '<div class="result">';
+  html += '<div class="big">' + fmt(out.value, dec) + ' <span>' + unit + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--ink-soft);margin-top:6px">' + c.name +
+          ' · ' + (out.engine === "python" ? 'Python (Pyodide) ile hesaplandı' : 'JavaScript ile hesaplandı') +
+          (r.missing ? ' · <i>boş alanlar için örnek değer kullanıldı</i>' : '') + '</div>';
+
+  if(document.getElementById("oFormula").checked){
+    html += '<div class="formula">' + c.formula + '<br><span style="color:var(--ink-soft);font-size:15px">= ' +
+            out.expl + ' = <b>' + fmt(out.value, dec) + '</b> ' + unit + '</span></div>';
+  }
+  if(out.detail && out.detail.length){
+    html += '<dl>' + out.detail.map(function(d){
+      var val = (typeof d[1] === "number") ? d[1].toLocaleString("tr-TR") : d[1];
+      return '<dt>' + d[0] + '</dt><dd>' + val + '</dd>';
+    }).join("") + '</dl>';
+  }
+  if(document.getElementById("oInterp").checked && c.bands){
+    var band = c.bands[c.bands.length-1];
+    for(var i=0;i<c.bands.length;i++){ if(out.value >= c.bands[i][0]){ band = c.bands[i]; break; } }
+    html += '<div class="verdict ' + band[1] + '">' + band[2] + '</div>';
+    html += '<div class="note" style="margin-top:12px">' + c.note + '</div>';
+  }
+  if(document.getElementById("oPy").checked){
+    var args = c.fields.map(function(f){ return f.k + "=" + r.v[f.k]; }).join(", ");
+    var call = 'hesapla("' + c.id + '", ' + args + ')';
+    html += '<pre style="margin-top:16px"><i>&gt;&gt;&gt; from iso30432_metrikler import hesapla</i>\n' +
+            '&gt;&gt;&gt; ' + call + '["deger"]\n' + out.value + '\n\n' +
+            '<i># eşdeğer doğrudan çağrı</i>\n&gt;&gt;&gt; ' + c.py + '</pre>';
+  }
+  html += '</div>';
+  box.innerHTML = html;
+}
+
+sel.addEventListener("change", function(){ buildFields(); run(); });
+document.getElementById("btnRun").addEventListener("click", run);
+document.getElementById("btnExample").addEventListener("click", function(){
+  var c = CALC[+sel.value];
+  c.fields.forEach(function(f){ document.getElementById("in_" + f.k).value = f.v; });
+  run();
+});
+["oFormula","oInterp","oPy"].forEach(function(id){
+  document.getElementById(id).addEventListener("change", function(){
+    var all = document.getElementById("oFormula").checked &&
+              document.getElementById("oInterp").checked &&
+              document.getElementById("oPy").checked;
+    document.getElementById("oAll").checked = all;
+    run();
+  });
+});
+document.getElementById("oAll").addEventListener("change", function(){
+  var s = this.checked;
+  ["oFormula","oInterp","oPy"].forEach(function(id){ document.getElementById(id).checked = s; });
+  run();
+});
+
+/* --- tablodan hesaplayıcıya aktarma --- */
+document.getElementById("btnAktar").addEventListener("click", function(){
+  if(!SERI.length){ loadPerExample(); }
+  var son = SERI[SERI.length-1];
+  var idx = CALC.map(function(c){ return c.id; }).indexOf("hc_roi");
+  sel.value = idx; buildFields();
+  document.getElementById("in_gelir").value = son.gelir;
+  document.getElementById("in_toplam_gider").value = son.gider;
+  document.getElementById("in_isgucu_maliyeti").value = (son.isgucu === null ? "" : son.isgucu);
+  run();
+  document.getElementById("hesaplayici").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* =========================================================
+   4) PYTHON MOTORU (Pyodide / WebAssembly)
+   Gömülü iso30432_metrikler.py modülü tarayıcı içinde
+   gerçek CPython ile çalıştırılır. Erişim yoksa JS yedeği
+   devrede kalır ve sonuçlar değişmez.
+   ========================================================= */
+var PY = {ready:false, busy:false, pyodide:null};
+
+var PYODIDE_URLS = [
+  "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js",
+  "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"
+];
+
+function setEngine(state, text){
+  var chip = document.getElementById("engStatus");
+  chip.className = "chip" + (state ? " " + state : "");
+  chip.textContent = text;
+}
+
+function loadScript(src){
+  return new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = src;
+    s.onload = function(){ resolve(src); };
+    s.onerror = function(){ reject(new Error(src)); };
+    document.head.appendChild(s);
+  });
+}
+
+function pySource(){
+  return document.getElementById("pysrc").textContent;
+}
+
+async function initPython(){
+  if(PY.ready) return true;
+  if(PY.busy) return false;
+  PY.busy = true;
+  document.getElementById("btnPy").disabled = true;
+  setEngine("busy", "Motor: Pyodide indiriliyor…");
+  try{
+    if(typeof loadPyodide === "undefined"){
+      try { await loadScript(PYODIDE_URLS[0]); }
+      catch(e){ await loadScript(PYODIDE_URLS[1]); }
+    }
+    setEngine("busy", "Motor: Python başlatılıyor…");
+    PY.pyodide = await loadPyodide();
+
+    /* Modülü sanal dosya sistemine yazmadan, gerçek bir modül nesnesi olarak kur:
+       böylece __name__ != "__main__" olur ve _demo() kendiliğinden çalışmaz.
+       Kayıt exec'ten ÖNCE yapılır; @dataclass işlenirken modülü sys.modules'te arar. */
+    PY.pyodide.globals.set("_kaynak", pySource());
+    PY.pyodide.runPython(
+      "import sys, types\n" +
+      "_m = types.ModuleType('iso30432_metrikler')\n" +
+      "_m.__file__ = 'iso30432_metrikler.py'\n" +
+      "sys.modules['iso30432_metrikler'] = _m\n" +
+      "exec(compile(_kaynak, 'iso30432_metrikler.py', 'exec'), _m.__dict__)\n" +
+      "from iso30432_metrikler import *\n" +
+      "import iso30432_metrikler as m\n"
+    );
+    var sur = PY.pyodide.runPython(
+      "import sys\n'.'.join(str(x) for x in sys.version_info[:3])");
+    PY.ready = true;
+    setEngine("on", "Motor: Python " + sur + " (Pyodide)");
+    run();
+    return true;
+  }catch(e){
+    setEngine("off", "Motor: tarayıcı (JS) — Pyodide yüklenemedi");
+    document.getElementById("pyOut").textContent =
+      "Python motoru yüklenemedi. Bu genellikle çevrimdışı olmaktan ya da ağ kısıtından kaynaklanır.\n" +
+      "Sayfa çalışmaya devam eder; hesaplamalar JavaScript yedeğiyle aynı sonuçları verir.\n\n" + e;
+    return false;
+  }finally{
+    PY.busy = false;
+    document.getElementById("btnPy").disabled = false;
+  }
+}
+
+document.getElementById("btnPy").addEventListener("click", initPython);
+
+/* --- konsol --- */
+var VARSAYILAN_KOD =
+  'from iso30432_metrikler import *\n' +
+  'import iso30432_metrikler as m\n\n' +
+  '# Çalışan başına oranlar\n' +
+  'print("Çalışan başına gelir :", gelir_calisan(4_500_000, 5))\n' +
+  'print("Çalışan başına EBIT  :", ebit_calisan(4_500_000, 3_750_000, 5))\n' +
+  'print("EBIT marjı           :", round(ebit_marji(750_000, 4_500_000), 1), "%")\n\n' +
+  '# İnsan sermayesi getirisi\n' +
+  'print("TCOW                 :", tcow(1_150_000, 250_000, 100_000))\n' +
+  'print("HC RoI               :", round(100 * hc_roi(4_500_000, 3_750_000, 1_500_000), 1), "%")\n\n' +
+  '# Dönem serisi: üç ilâ beş yıllık karşılaştırma\n' +
+  's = ornek_seri()\n' +
+  'for satir in s.tablo():\n' +
+  '    print(satir)\n' +
+  'for anahtar, deger in s.ozet().items():\n' +
+  '    print(f"{anahtar:<26}: {deger}")\n\n' +
+  '# STK metrikleri\n' +
+  'print("Kullanılan fon oranı :", round(fon_kullanim_orani(8_200_000, 10_000_000), 1), "%")\n' +
+  'print("Etki bandı (750)     :", etki_bandi(750))\n\n' +
+  '# Dağıtıcı, hesaplayıcının kullandığı arayüzdür:\n' +
+  'print(hesapla("hc_roi", gelir=4_500_000, toplam_gider=3_750_000, isgucu_maliyeti=1_500_000))\n\n' +
+  '# Rapor denetimi: hangi ön koşullar eksik?\n' +
+  'for uyari in metrik_denetimi(payda_tanimi_yazili=True, tcow_tanimi_yazili=True):\n' +
+  '    print("!", uyari)\n';
+
+document.getElementById("pyCode").value = VARSAYILAN_KOD;
+
+async function runConsole(){
+  var out = document.getElementById("pyOut");
+  if(!PY.ready){
+    out.textContent = "Python motoru hazırlanıyor, ilk çalıştırma biraz sürebilir…";
+    var ok = await initPython();
+    if(!ok) return;
+  }
+  out.textContent = "çalışıyor…";
+  try{
+    PY.pyodide.globals.set("_kod", document.getElementById("pyCode").value);
+    var cikti = PY.pyodide.runPython(
+      "import io, contextlib, traceback\n" +
+      "_tampon = io.StringIO()\n" +
+      "with contextlib.redirect_stdout(_tampon), contextlib.redirect_stderr(_tampon):\n" +
+      "    try:\n" +
+      "        exec(_kod, globals())\n" +
+      "    except Exception:\n" +
+      "        traceback.print_exc()\n" +
+      "_tampon.getvalue()"
+    );
+    out.textContent = cikti && cikti.trim() ? cikti : "(çıktı yok)";
+  }catch(e){
+    out.textContent = "Hata: " + e;
+  }
+}
+
+document.getElementById("btnRunPy").addEventListener("click", runConsole);
+document.getElementById("btnReset").addEventListener("click", function(){
+  document.getElementById("pyCode").value = VARSAYILAN_KOD;
+  document.getElementById("pyOut").textContent = "Kod sıfırlandı.";
+});
+document.getElementById("btnDemo").addEventListener("click", function(){
+  document.getElementById("pyCode").value =
+    "import iso30432_metrikler as m\n\n" +
+    "# Modülün kendi doğrulama çıktısı (komut satırındaki\n" +
+    "# python3 iso30432_metrikler.py ile aynı sonucu verir)\n" +
+    "m._demo()\n";
+  runConsole();
+});
+
+/* modül kaynağını sayfada okunur kıl */
+document.getElementById("srcView").textContent = pySource().trim();
+
+buildPerTable();
+loadPerExample();
+buildFields();
+run();
+</script>
+</body>
+</html>
