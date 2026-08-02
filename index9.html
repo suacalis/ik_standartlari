@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISO/TS İnsan Kaynakları Metrik Rehberleri</title>
+<meta name="description" content="ISO/TS insan kaynakları yönetimi metrik standartlarının Türkçe rehberleri: sınıflandırma matrisi, formüller, canlı hesaplayıcı ve Python kod örnekleri.">
+<style>
+  :root{
+    --ink:#101418;
+    --ink-soft:#59636f;
+    --ink-faint:#8b95a1;
+    --line:#dde3ea;
+    --line-soft:#eef1f5;
+    --bg:#ffffff;
+    --canvas:#f6f8fa;
+    --accent:#0b5c8a;
+    --accent-soft:#e7f0f6;
+    --out-ink:#8a3b12;  --out-bg:#fbeee6;
+    --eff-ink:#14615c;  --eff-bg:#e6f2f1;
+    --efc-ink:#33478c;  --efc-bg:#eaedf8;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.62;
+  }
+  .sheet{max-width:1000px;margin:0 auto;background:var(--bg);
+    padding:56px 60px 80px;box-shadow:0 0 0 1px var(--line);}
+  @media(max-width:760px){ .sheet{padding:28px 20px 56px} }
+
+  h1{font-family:var(--serif);font-size:38px;line-height:1.15;margin:0 0 14px;letter-spacing:-.01em}
+  h2{font-family:var(--serif);font-size:25px;margin:56px 0 4px;padding-bottom:8px;
+     border-bottom:2px solid var(--ink);letter-spacing:-.01em}
+  p{margin:12px 0}
+  a{color:var(--accent)}
+  .lede{font-size:17.5px;color:var(--ink-soft);margin:0 0 22px}
+
+  .srcbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:0 0 34px;font-size:13.5px;color:var(--ink-soft)}
+  .srcbar b{color:var(--ink);font-weight:600}
+
+  /* ---- kart ızgarası ---- */
+  .grid{display:grid;grid-template-columns:1fr;gap:18px;margin:26px 0 0}
+
+  .card{
+    display:block;text-decoration:none;color:inherit;
+    border:1px solid var(--line);background:var(--bg);
+    padding:22px 24px 20px;position:relative;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--accent);box-shadow:0 2px 14px rgba(11,92,138,.10);transform:translateY(-1px)}
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .card .code{
+    display:inline-block;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
+    padding:3px 8px;margin-bottom:10px;
+  }
+  .card h3{font-family:var(--serif);font-size:23px;margin:0 0 6px;letter-spacing:-.01em;line-height:1.2}
+  .card .en{font-size:13px;color:var(--ink-faint);font-style:italic;margin:0 0 10px}
+  .card p.desc{margin:0 0 14px;font-size:15px;color:var(--ink-soft)}
+
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+  .tag{font-size:12px;padding:2px 8px;border:1px solid var(--line);color:var(--ink-soft);background:var(--canvas)}
+  .tag.a{color:var(--out-ink);background:var(--out-bg);border-color:transparent}
+  .tag.b{color:var(--eff-ink);background:var(--eff-bg);border-color:transparent}
+  .tag.c{color:var(--efc-ink);background:var(--efc-bg);border-color:transparent}
+
+  .go{font-size:14px;font-weight:600;color:var(--accent)}
+  .go::after{content:" →";}
+
+  @media(min-width:820px){
+    .grid{grid-template-columns:1fr 1fr}
+    .card.wide{grid-column:1 / -1}
+  }
+
+  /* ---- ortak özellikler listesi ---- */
+  .feat{background:var(--canvas);border:1px solid var(--line);padding:18px 22px;margin:22px 0 0;font-size:15px}
+  .feat ul{margin:8px 0 0;padding-left:20px}
+  .feat li{margin:6px 0;color:var(--ink-soft)}
+  .feat li b{color:var(--ink);font-weight:650}
+
+  table{border-collapse:collapse;width:100%;font-size:14px;margin:16px 0}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  thead th{background:var(--canvas);font-weight:650}
+  td.mono{font-family:var(--mono);font-size:13px;white-space:nowrap}
+
+  footer{margin-top:64px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13.5px;color:var(--ink-faint)}
+  footer p{margin:6px 0}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <h1>ISO/TS İnsan Kaynakları Metrik Rehberleri</h1>
+  <p class="lede">
+    ISO'nun insan kaynakları yönetimi teknik şartnamelerinin Türkçe uygulama rehberleri.
+    Her sayfa; standardın metrik kümesini filtrelenebilir bir matrise, hesaplanabilir
+    metrikleri de formül + canlı hesaplayıcı + Python koduna dönüştürür.
+  </p>
+
+  <div class="srcbar">
+    <span><b>Kapsam:</b> 1 çerçeve standardı + 8 teknik şartname · 480'den fazla metrik ve etken</span>
+    <span><b>Hesaplama:</b> gömülü Python modülü (Pyodide/WebAssembly)</span>
+    <span><b>Dil:</b> Türkçe</span>
+    <span><b>Sürüm:</b> Temmuz 2026</span>
+  </div>
+
+  <h2>Rehberler</h2>
+
+  <div class="grid">
+
+    <a class="card wide" href="ISO_30414_Insan_Sermayesi_Raporlama_Metrikleri.html">
+      <span class="code">ISO 30414:2018</span>
+      <h3>İnsan Sermayesi Raporlaması — Çerçeve Standardı</h3>
+      <p class="en">Human resource management — Guidelines for internal and external human capital reporting</p>
+      <p class="desc">
+        İnsan sermayesinin kuruma katkısını şeffaf kılmak için iç ve dış insan
+        sermayesi raporlamasına (HCR) kılavuzluk eden şemsiye standart. On bir
+        çekirdek raporlama alanını — uyum ve etik, maliyetler, çeşitlilik,
+        liderlik, örgüt kültürü, sağlık-güvenlik, üretkenlik, işe alım-hareketlilik-devir,
+        beceri-yetkinlik, yedekleme ve işgücü mevcudu — tek çerçevede toplar. Diğer
+        rehberlerdeki ISO/TS kümeleri bu alanların ayrıntılandırılmış hâlidir.
+      </p>
+      <div class="tags">
+        <span class="tag a">58 metrik ve etken</span>
+        <span class="tag b">11 raporlama alanı</span>
+        <span class="tag c">İç + dış raporlama</span>
+        <span class="tag">Kümelerin şemsiyesi</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30421_Devir_ve_Elde_Tutma_Metrikleri.html">
+      <span class="code">ISO/TS 30421:2021</span>
+      <h3>İşgücü Devri ve Elde Tutma Metrikleri</h3>
+      <p class="en">Human resource management — Turnover and retention metrics</p>
+      <p class="desc">
+        İşgücü devrini ve elde tutma düzeyini ölçmek, maliyetlendirmek ve
+        karşılaştırılabilir biçimde raporlamak için kullanılan metrik kümesi.
+        Kaba oranların nasıl hesaplandığını ve bağlam olmadan neden
+        yorumlanamayacağını birlikte gösterir.
+      </p>
+      <div class="tags">
+        <span class="tag a">35 metrik</span>
+        <span class="tag b">3 metrik ailesi</span>
+        <span class="tag c">4 kullanıcı</span>
+        <span class="tag">Aylık devir tablosu</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30430_Ise_Alim_Metrikleri.html">
+      <span class="code">ISO/TS 30430:2021</span>
+      <h3>İşe Alım Metrikleri Kümesi</h3>
+      <p class="en">Human resource management — Recruitment metrics cluster</p>
+      <p class="desc">
+        ISO 30414'ün işe alım ayağı: pozisyon başına nitelikli aday ve açık
+        pozisyonun doldurulma süresi. Süreyi dört ölçüm noktasına ayırarak
+        gecikmenin süreçte nerede oluştuğunu görünür kılar.
+      </p>
+      <div class="tags">
+        <span class="tag a">39 metrik ve etken</span>
+        <span class="tag b">3 metrik ailesi</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">Doldurulan pozisyon tablosu</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30437_Ogrenme_Gelisim_Metrikleri.html">
+      <span class="code">ISO/TS 30437:2023</span>
+      <h3>Öğrenme ve Gelişim Metrikleri</h3>
+      <p class="en">Human resource management — Learning and development metrics</p>
+      <p class="desc">
+        Öğrenme ve gelişim faaliyetinin ölçümü; metrikleri kimin kullanacağına,
+        neden ölçüldüğüne, türüne ve kuruluşun büyüklüğüne göre sınıflandırır.
+        Verimlilik, etkililik ve sonuç metriklerinin dengeli bir küme olarak
+        birlikte okunmasını esas alır.
+      </p>
+      <div class="tags">
+        <span class="tag a">50+ metrik</span>
+        <span class="tag b">3 metrik türü</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">Dengeli küme kuralı</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_24179_ISG_Metrikleri.html">
+      <span class="code">ISO/TS 24179:2020</span>
+      <h3>İş Sağlığı ve Güvenliği Metrikleri</h3>
+      <p class="en">Human resource management — Occupational health and safety metrics</p>
+      <p class="desc">
+        Kayıp zaman, iş kazası sayısı, ölümlü kaza sayısı ve İSG eğitimine katılım
+        oranı. Dördü de aynı biçimi paylaşır; standardın asıl katkısı formüller değil,
+        işgücü kategorilerinin tanımlanması, olayların kayda geçirilmesi ve verinin
+        kırılımlandırılması disiplinidir.
+      </p>
+      <div class="tags">
+        <span class="tag a">45 metrik ve etken</span>
+        <span class="tag b">4 metrik ailesi</span>
+        <span class="tag c">4 raporlama bağlamı</span>
+        <span class="tag">Dönem karşılaştırma tablosu</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30423_Uyum_ve_Etik_Metrikleri.html">
+      <span class="code">ISO/TS 30423:2021</span>
+      <h3>Uyum ve Etik Metrikleri Kümesi</h3>
+      <p class="en">Human resource management — Compliance and ethics metrics cluster</p>
+      <p class="desc">
+        ISO 30414'ün uyum ve etik ayağı: açılan şikâyetler, sonuçlandırılan disiplin
+        işlemleri, uyum-etik eğitimini tamamlayan çalışan oranı, dış taraflara havale
+        edilen uyuşmazlıklar ve dış/denetim bulguları. Metriklerin çoğunun sayım ve
+        sınıflandırmaya dayandığını, tek bir orana indirgenemeyeceğini gösterir.
+      </p>
+      <div class="tags">
+        <span class="tag a">71 metrik ve etken</span>
+        <span class="tag b">5 çekirdek metrik</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">Şikâyet sınıflandırması</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30428_Beceri_ve_Yetkinlik_Metrikleri.html">
+      <span class="code">ISO/TS 30428:2021</span>
+      <h3>Beceri ve Yetkinlik Metrikleri Kümesi</h3>
+      <p class="en">Human resource management — Skills and capabilities metrics cluster</p>
+      <p class="desc">
+        ISO 30414'ün beceriler ve yetkinlikler ayağı: toplam gelişim ve eğitim maliyeti,
+        eğitime katılan çalışan oranı, çalışan başına ortalama biçimsel eğitim saati,
+        kategoriye göre katılım oranı ve işgücü yetkinlik oranı. Her metrik için tanım,
+        formül ve iç/dış kullanım biçimini verir.
+      </p>
+      <div class="tags">
+        <span class="tag a">66 metrik ve etken</span>
+        <span class="tag b">5 çekirdek metrik</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">Eğitim saati hesaplayıcı</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30432_Isgucu_Uretkenligi_Metrikleri.html">
+      <span class="code">ISO/TS 30432:2021</span>
+      <h3>İşgücü Üretkenliği Metrikleri Kümesi</h3>
+      <p class="en">Human resource management — Workforce productivity metrics cluster</p>
+      <p class="desc">
+        ISO 30414'ün üretkenlik ayağı: çalışan başına EBIT, gelir, ciro ve kâr ile
+        insan sermayesi getirisi (HC RoI). Her iki metrik ailesini kâr amaçlı kurumlar,
+        sivil toplum kuruluşları/kâr amacı gütmeyen kuruluşlar ve kamu kurumları için
+        ayrı ayrı ele alır.
+      </p>
+      <div class="tags">
+        <span class="tag a">53 metrik ve etken</span>
+        <span class="tag b">2 çekirdek metrik</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">HC RoI hesaplayıcı</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+    <a class="card" href="ISO_TS_30433_Yedekleme_Planlamasi_Metrikleri.html">
+      <span class="code">ISO/TS 30433:2021</span>
+      <h3>Yedekleme Planlaması Metrikleri Kümesi</h3>
+      <p class="en">Human resource management — Succession planning metrics cluster</p>
+      <p class="desc">
+        ISO 30414'ün yedekleme planlaması ayağı: yedekleme etkililiği, yedek kapsama
+        oranı ve üç düzeyli hazır-olma göstergesi. Kritik pozisyonlar için hazır çalışan
+        havuzunu, kurumsal dayanıklılığın insan tarafındaki temel göstergesi olarak ele alır.
+      </p>
+      <div class="tags">
+        <span class="tag a">63 metrik ve etken</span>
+        <span class="tag b">3 çekirdek metrik</span>
+        <span class="tag c">5 kullanıcı</span>
+        <span class="tag">Hazır-olma düzeyleri</span>
+      </div>
+      <span class="go">Rehberi aç</span>
+    </a>
+
+  </div>
+
+  <h2>Her Rehberde Ne Var?</h2>
+  <div class="feat">
+    <p>Tüm rehberler aynı yapıyı izler:</p>
+    <ul>
+      <li><b>Metrik matrisi</b> — standardın tüm metrikleri; aileye, kullanıcıya ve türe göre filtrelenebilir.</li>
+      <li><b>Formüller ve tanımlar</b> — her metrik için pay, payda, birim ve tanım sınırları.</li>
+      <li><b>Canlı hesaplayıcı</b> — kendi verinizi girip sonucu anında görebileceğiniz alan.</li>
+      <li><b>Python kod örnekleri</b> — tarayıcıda çalışan (Pyodide) gömülü modül ve konsol.</li>
+      <li><b>Yorum, sınırlamalar ve raporlama</b> — sonucun nasıl okunacağı, neyi ölçmediği ve nasıl açıklanacağı.</li>
+      <li><b>İlgili standartlar ve SSS</b> — ISO 30414, ISO 30400 ve diğer teknik şartnamelerle bağlantılar.</li>
+    </ul>
+  </div>
+
+  <h2>Standartlara Genel Bakış</h2>
+  <table>
+    <thead>
+      <tr><th>Standart</th><th>Konu</th><th>Yıl</th><th>Metrik</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">ISO 30414</td>
+        <td><a href="ISO_30414_Insan_Sermayesi_Raporlama_Metrikleri.html">İnsan sermayesi raporlaması (çerçeve)</a></td>
+        <td>2018</td><td>11 alan</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30421</td>
+        <td><a href="ISO_TS_30421_Devir_ve_Elde_Tutma_Metrikleri.html">İşgücü devri ve elde tutma</a></td>
+        <td>2021</td><td>35</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30423</td>
+        <td><a href="ISO_TS_30423_Uyum_ve_Etik_Metrikleri.html">Uyum ve etik</a></td>
+        <td>2021</td><td>71</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30428</td>
+        <td><a href="ISO_TS_30428_Beceri_ve_Yetkinlik_Metrikleri.html">Beceri ve yetkinlik</a></td>
+        <td>2021</td><td>66</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30432</td>
+        <td><a href="ISO_TS_30432_Isgucu_Uretkenligi_Metrikleri.html">İşgücü üretkenliği</a></td>
+        <td>2021</td><td>53</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30433</td>
+        <td><a href="ISO_TS_30433_Yedekleme_Planlamasi_Metrikleri.html">Yedekleme planlaması</a></td>
+        <td>2021</td><td>63</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30430</td>
+        <td><a href="ISO_TS_30430_Ise_Alim_Metrikleri.html">İşe alım metrikleri kümesi</a></td>
+        <td>2021</td><td>39</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 30437</td>
+        <td><a href="ISO_TS_30437_Ogrenme_Gelisim_Metrikleri.html">Öğrenme ve gelişim</a></td>
+        <td>2023</td><td>50+</td>
+      </tr>
+      <tr>
+        <td class="mono">ISO/TS 24179</td>
+        <td><a href="ISO_TS_24179_ISG_Metrikleri.html">İş sağlığı ve güvenliği</a></td>
+        <td>2020</td><td>45</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <p>Bu sayfalar ISO/TS teknik şartnamelerinin öğretim ve uygulama amaçlı Türkçe
+      yorumlarıdır; standart metninin kendisi yerine geçmez. Resmî metin için ilgili
+      ISO/TSE yayınına başvurunuz.</p>
+    <p>Son güncelleme: Temmuz 2026</p>
+  </footer>
+
+</main>
+</body>
+</html>
